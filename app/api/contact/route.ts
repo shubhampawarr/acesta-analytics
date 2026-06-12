@@ -12,26 +12,13 @@ function escapeHtml(value: string) {
     .replaceAll("'", '&#039;');
 }
 
-function getErrorMessage(error: unknown) {
-  if (
-    typeof error === 'object' &&
-    error !== null &&
-    'message' in error &&
-    typeof error.message === 'string'
-  ) {
-    return error.message;
-  }
-
-  return 'Email could not be sent.';
-}
-
 export async function POST(request: Request) {
   try {
     if (!process.env.RESEND_API_KEY) {
       return NextResponse.json(
         {
           success: false,
-          message: 'RESEND_API_KEY is missing in Vercel environment variables.',
+          message: 'RESEND_API_KEY is missing.',
         },
         { status: 500 }
       );
@@ -64,12 +51,8 @@ export async function POST(request: Request) {
     const safeMessage = escapeHtml(message).replaceAll('\n', '<br />');
 
     const { data, error } = await resend.emails.send({
-      from: 'Acesta Analytics <onboarding@resend.dev>',
-
-      // Temporary receiver for testing.
-      // This should be the same email connected to your Resend account.
-      to: ['shuubhaampawar@gmail.com'],
-
+      from: 'Acesta Analytics <website@acestaanalytics.com>',
+      to: ['shubham@acestaanalytics.com'],
       replyTo: email,
       subject: `New enquiry from ${name} | Acesta Analytics`,
       html: `
@@ -103,13 +86,12 @@ export async function POST(request: Request) {
     });
 
     if (error) {
-      console.error('Resend error:', JSON.stringify(error, null, 2));
+      console.error('Resend error:', error);
 
       return NextResponse.json(
         {
           success: false,
-          message: getErrorMessage(error),
-          error,
+          message: 'Email could not be sent. Please try again.',
         },
         { status: 500 }
       );
@@ -125,11 +107,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: false,
-        message:
-          error instanceof Error
-            ? error.message
-            : 'Something went wrong. Please try again.',
-        error,
+        message: 'Something went wrong. Please try again.',
       },
       { status: 500 }
     );
