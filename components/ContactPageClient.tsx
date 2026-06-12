@@ -66,7 +66,7 @@ export default function ContactPageClient() {
                 </p>
 
                 <p className="mt-3 text-sm font-semibold text-[#f1d99b]">
-                  acestaanalytics@gmail.com
+                  shubham@acestaanalytics.com
                 </p>
 
                 <p className="mt-2 text-xs leading-5 text-[#7d7568] md:mt-3 md:text-sm md:leading-6">

@@ -71,11 +71,11 @@ export default function Footer() {
 
               <div className="mt-4 grid gap-2.5 text-xs text-[#b8b0a3] md:mt-5 md:gap-3 md:text-sm">
                 <a
-                  href="mailto:acestaanalytics@gmail.com"
+                  href="mailto:shubham@acestaanalytics.com"
                   className="flex items-center gap-2.5 transition hover:text-[#f1d99b] md:gap-3"
                 >
                   <Mail className="h-3.5 w-3.5 shrink-0 text-[#d8b25e] md:h-4 md:w-4" />
-                  <span className="break-all">acestaanalytics@gmail.com</span>
+                  <span className="break-all">shubham@acestaanalytics.com</span>
                 </a>
 
                 <a
