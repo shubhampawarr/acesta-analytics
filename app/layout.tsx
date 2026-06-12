@@ -22,7 +22,7 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://acestaanalytics.vercel.app'),
+  metadataBase: new URL('https://www.acestaanalytics.com'),
   title: {
     default: 'Acesta Analytics | Premium Data Intelligence Consulting',
     template: '%s | Acesta Analytics',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     title: 'Acesta Analytics | Premium Data Intelligence Consulting',
     description:
       'Premium data, web, and search systems for businesses that want clarity, authority, and growth structure.',
-    url: 'https://acestaanalytics.vercel.app',
+    url: 'https://www.acestaanalytics.com',
     siteName: 'Acesta Analytics',
     images: [
       {
