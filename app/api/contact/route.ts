@@ -52,7 +52,7 @@ export async function POST(request: Request) {
 
     const { data, error } = await resend.emails.send({
       from: 'Acesta Analytics <onboarding@resend.dev>',
-      to: ['shubham@acestaanalytics.com'],
+      to: ['shuubhaampawar@gmail.com'],
       replyTo: email,
       subject: `New enquiry from ${name} | Acesta Analytics`,
       html: `
