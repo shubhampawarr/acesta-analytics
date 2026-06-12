@@ -8,7 +8,7 @@ import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
-    <main className="relative min-h-[100dvh] overflow-x-hidden scroll-smooth md:h-[100dvh] md:overflow-y-auto md:snap-y md:snap-mandatory">
+    <main className="relative min-h-[100dvh] overflow-x-hidden bg-[#030303] scroll-smooth md:h-[100dvh] md:overflow-y-auto md:snap-y md:snap-mandatory">
       <div className="grid-bg pointer-events-none fixed inset-0 opacity-60" />
 
       <Navbar />
@@ -29,7 +29,7 @@ export default function Home() {
         <Process />
       </section>
 
-      <section className="flex min-h-[100dvh] flex-col justify-between md:snap-start md:snap-always">
+      <section className="flex flex-col justify-between md:min-h-[100dvh] md:snap-start md:snap-always">
         <FinalCTA />
         <Footer />
       </section>

@@ -21,31 +21,31 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="relative min-h-screen overflow-hidden">
+    <main className="relative min-h-screen overflow-hidden bg-[#030303]">
       <div className="grid-bg pointer-events-none fixed inset-0 opacity-30" />
 
       <Navbar />
 
-      <section className="relative z-10 px-0 pb-16 pt-28 md:pb-20 md:pt-32">
+      <section className="relative z-10 px-0 pb-8 pt-24 md:pb-20 md:pt-32">
         <div className="premium-container">
-          <div className="mx-auto max-w-6xl rounded-[1.75rem] border border-[#d8b25e]/12 bg-[#050403]/70 p-5 shadow-2xl shadow-black/30 md:rounded-[2.25rem] md:p-8 lg:p-10">
-            <div className="grid items-start gap-8 lg:grid-cols-[0.82fr_1fr] lg:gap-10">
+          <div className="mx-auto max-w-6xl rounded-[1.5rem] border border-[#d8b25e]/12 bg-[#050403]/70 p-4 shadow-2xl shadow-black/30 md:rounded-[2.25rem] md:p-8 lg:p-10">
+            <div className="grid items-start gap-6 lg:grid-cols-[0.82fr_1fr] lg:gap-10">
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#d8b25e] md:text-xs">
                   Contact
                 </p>
 
-                <h1 className="font-display mt-4 max-w-2xl text-5xl font-semibold leading-[0.9] tracking-[-0.055em] text-[#f8f4ea] md:text-7xl">
+                <h1 className="font-display mt-3 max-w-2xl text-4xl font-semibold leading-[0.9] tracking-[-0.055em] text-[#f8f4ea] md:mt-4 md:text-7xl">
                   Let’s build something precise.
                 </h1>
 
-                <p className="mt-5 max-w-lg text-sm leading-7 text-[#b8b0a3] md:text-base md:leading-8">
+                <p className="mt-4 max-w-lg text-xs leading-6 text-[#b8b0a3] md:mt-5 md:text-base md:leading-8">
                   Tell us what you are building, improving, or trying to
                   understand. We will help shape the right data, web, or growth
                   system around it.
                 </p>
 
-                <div className="mt-7 max-w-md rounded-[1.35rem] border border-[#d8b25e]/14 bg-black/25 p-4 md:mt-8 md:p-5">
+                <div className="mt-5 max-w-md rounded-[1.25rem] border border-[#d8b25e]/14 bg-black/25 p-4 md:mt-8 md:rounded-[1.35rem] md:p-5">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#a77b32] md:text-xs">
                     Direct enquiry
                   </p>
@@ -54,7 +54,7 @@ export default function ContactPage() {
                     acestaanalytics@gmail.com
                   </p>
 
-                  <p className="mt-3 text-xs leading-5 text-[#7d7568] md:text-sm md:leading-6">
+                  <p className="mt-2 text-xs leading-5 text-[#7d7568] md:mt-3 md:text-sm md:leading-6">
                     For project enquiries, collaborations, and business
                     conversations.
                   </p>
@@ -89,16 +89,12 @@ function ContactForm({
   return (
     <form
       onSubmit={onSubmit}
-      className="rounded-[1.5rem] border border-[#d8b25e]/14 bg-[#080705]/85 p-4 md:rounded-[1.75rem] md:p-5"
+      className="rounded-[1.35rem] border border-[#d8b25e]/14 bg-[#080705]/85 p-4 md:rounded-[1.75rem] md:p-5"
     >
       <div className="grid gap-3 md:grid-cols-2">
         <Field label="Name" name="name" placeholder="Your name" required />
 
-        <Field
-          label="Company"
-          name="company"
-          placeholder="Company name"
-        />
+        <Field label="Company" name="company" placeholder="Company name" />
 
         <Field
           label="Email"
@@ -145,13 +141,13 @@ function ContactForm({
           rows={4}
           placeholder="Tell us what you are trying to build, improve, or understand."
           required
-          className="min-h-[105px] w-full resize-none rounded-2xl border border-[#d8b25e]/14 bg-black/35 px-4 py-3 text-sm text-[#f8f4ea] outline-none transition placeholder:text-[#7d7568] focus:border-[#f1d99b]/45"
+          className="min-h-[95px] w-full resize-none rounded-2xl border border-[#d8b25e]/14 bg-black/35 px-4 py-3 text-sm text-[#f8f4ea] outline-none transition placeholder:text-[#7d7568] focus:border-[#f1d99b]/45 md:min-h-[105px]"
         />
       </div>
 
       <button
         type="submit"
-        className="gold-button group mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold transition"
+        className="gold-button group mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold transition md:mt-5"
       >
         Submit Enquiry
         <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
@@ -162,7 +158,7 @@ function ContactForm({
 
 function SuccessMessage({ onReset }: { onReset: () => void }) {
   return (
-    <div className="rounded-[1.5rem] border border-[#d8b25e]/14 bg-[#080705]/85 p-6 text-center md:rounded-[1.75rem]">
+    <div className="rounded-[1.35rem] border border-[#d8b25e]/14 bg-[#080705]/85 p-5 text-center md:rounded-[1.75rem] md:p-6">
       <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-[#d8b25e]/20 bg-[#d8b25e]/10 text-[#f1d99b]">
         <CheckCircle2 className="h-5 w-5" />
       </div>

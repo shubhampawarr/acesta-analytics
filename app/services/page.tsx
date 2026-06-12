@@ -104,61 +104,65 @@ const engagementSteps = [
 
 export default function ServicesPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden">
+    <main className="relative min-h-screen overflow-hidden bg-[#030303]">
       <div className="grid-bg pointer-events-none fixed inset-0 opacity-30" />
 
       <Navbar />
 
-      <section className="relative z-10 px-0 pb-16 pt-28 md:pb-20 md:pt-32">
+      <section className="relative z-10 px-0 pb-10 pt-24 md:pb-20 md:pt-32">
         <div className="premium-container">
-          <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-[#d8b25e]/12 bg-[#050403]/70 p-5 shadow-2xl shadow-black/30 md:rounded-[2.25rem] md:p-8 lg:p-10">
+          <div className="mx-auto max-w-7xl rounded-[1.5rem] border border-[#d8b25e]/12 bg-[#050403]/70 p-4 shadow-2xl shadow-black/30 md:rounded-[2.25rem] md:p-8 lg:p-10">
             <div className="mx-auto max-w-5xl text-center">
               <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#d8b25e] md:text-xs">
                 Services
               </p>
 
-              <h1 className="font-display mx-auto mt-4 max-w-4xl text-5xl font-semibold leading-[0.9] tracking-[-0.055em] text-[#f8f4ea] md:text-7xl">
+              <h1 className="font-display mx-auto mt-3 max-w-4xl text-4xl font-semibold leading-[0.9] tracking-[-0.055em] text-[#f8f4ea] md:mt-4 md:text-7xl">
                 Premium systems for clarity, presence, and growth.
               </h1>
 
-              <p className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-[#b8b0a3] md:text-base md:leading-8">
+              <p className="mx-auto mt-4 max-w-2xl text-xs leading-6 text-[#b8b0a3] md:mt-6 md:text-base md:leading-8">
                 Acesta brings together data intelligence, premium web
                 experiences, and search-led growth architecture for businesses
                 that want to look sharper, operate smarter, and convert with
                 confidence.
               </p>
 
-              <div className="mx-auto mt-7 h-px w-full max-w-2xl gold-line opacity-60" />
+              <div className="mx-auto mt-5 h-px w-full max-w-2xl gold-line opacity-60 md:mt-7" />
             </div>
 
-            <div className="mt-10 grid gap-4 lg:grid-cols-3">
-              {services.map((service) => {
+            <div className="mt-6 grid grid-cols-2 gap-3 md:mt-10 lg:grid-cols-3 lg:gap-4">
+              {services.map((service, index) => {
                 const Icon = service.icon;
 
                 return (
                   <article
                     key={service.title}
-                    className="group flex h-full flex-col rounded-[1.5rem] border border-[#d8b25e]/14 bg-[#080705]/85 p-5 transition duration-500 hover:-translate-y-1 hover:border-[#f1d99b]/32 hover:bg-[#0c0a07] md:p-6"
+                    className={`group flex h-full flex-col rounded-[1.15rem] border border-[#d8b25e]/14 bg-[#080705]/85 p-3 transition duration-500 hover:-translate-y-1 hover:border-[#f1d99b]/32 hover:bg-[#0c0a07] md:rounded-[1.5rem] md:p-6 ${
+                      index === 2
+                        ? 'col-span-2 mx-auto w-[52%] lg:col-span-1 lg:w-full'
+                        : ''
+                    }`}
                   >
-                    <div className="flex items-start justify-between gap-5">
-                      <p className="max-w-[230px] text-[10px] font-semibold uppercase leading-5 tracking-[0.22em] text-[#a77b32]">
+                    <div className="flex items-start justify-between gap-3 md:gap-5">
+                      <p className="max-w-[150px] text-[8px] font-semibold uppercase leading-4 tracking-[0.16em] text-[#a77b32] md:max-w-[230px] md:text-[10px] md:leading-5 md:tracking-[0.22em]">
                         {service.eyebrow}
                       </p>
 
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#d8b25e]/18 bg-[#d8b25e]/8 text-[#f1d99b] transition duration-500 group-hover:scale-110 group-hover:border-[#f1d99b]/45">
-                        <Icon className="h-4 w-4" />
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#d8b25e]/18 bg-[#d8b25e]/8 text-[#f1d99b] transition duration-500 group-hover:scale-110 group-hover:border-[#f1d99b]/45 md:h-9 md:w-9">
+                        <Icon className="h-3 w-3 md:h-4 md:w-4" />
                       </div>
                     </div>
 
-                    <h2 className="font-display mt-5 text-4xl font-semibold leading-[0.92] tracking-[-0.045em] text-[#f8f4ea] md:text-[2.45rem]">
+                    <h2 className="font-display mt-4 text-xl font-semibold leading-[0.95] tracking-[-0.045em] text-[#f8f4ea] md:mt-5 md:text-[2.45rem]">
                       {service.title}
                     </h2>
 
-                    <p className="mt-4 text-sm leading-6 text-[#a7a197]">
+                    <p className="mt-3 text-[10px] leading-4 text-[#a7a197] md:mt-4 md:text-sm md:leading-6">
                       {service.description}
                     </p>
 
-                    <div className="mt-6 grid gap-5">
+                    <div className="mt-5 hidden gap-5 md:grid">
                       <ServiceList
                         title="What we build"
                         items={service.deliverables}
@@ -170,13 +174,14 @@ export default function ServicesPage() {
                       />
                     </div>
 
-                    <div className="mt-auto pt-7">
+                    <div className="mt-auto pt-5 md:pt-7">
                       <Link
                         href="/contact"
-                        className="group/link inline-flex w-full items-center justify-center gap-2 rounded-full border border-[#d8b25e]/22 bg-[#d8b25e]/8 px-5 py-3 text-sm font-semibold text-[#f1d99b] transition hover:border-[#f1d99b]/45 hover:bg-[#d8b25e]/12"
+                        className="group/link inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-[#d8b25e]/22 bg-[#d8b25e]/8 px-3 py-2.5 text-[10px] font-semibold text-[#f1d99b] transition hover:border-[#f1d99b]/45 hover:bg-[#d8b25e]/12 md:gap-2 md:px-5 md:py-3 md:text-sm"
                       >
-                        Discuss this service
-                        <ArrowRight className="h-4 w-4 transition group-hover/link:translate-x-1" />
+                        Discuss
+                        <span className="hidden md:inline">this service</span>
+                        <ArrowRight className="h-3.5 w-3.5 transition group-hover/link:translate-x-1 md:h-4 md:w-4" />
                       </Link>
                     </div>
                   </article>
@@ -184,34 +189,34 @@ export default function ServicesPage() {
               })}
             </div>
 
-            <div className="mt-5 rounded-[1.5rem] border border-[#d8b25e]/14 bg-[#080705]/75 p-5 md:mt-6 md:p-7">
-              <div className="grid gap-7 lg:grid-cols-[0.7fr_1.3fr]">
+            <div className="mt-4 rounded-[1.35rem] border border-[#d8b25e]/14 bg-[#080705]/75 p-4 md:mt-6 md:rounded-[1.5rem] md:p-7">
+              <div className="grid gap-5 lg:grid-cols-[0.7fr_1.3fr] lg:gap-7">
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#d8b25e] md:text-xs">
                     Engagement
                   </p>
 
-                  <h2 className="font-display mt-3 max-w-xl text-4xl font-semibold leading-[0.92] tracking-[-0.05em] text-[#f8f4ea] md:text-5xl">
+                  <h2 className="font-display mt-3 max-w-xl text-3xl font-semibold leading-[0.92] tracking-[-0.05em] text-[#f8f4ea] md:text-5xl">
                     Simple outside. Structured underneath.
                   </h2>
 
-                  <p className="mt-4 max-w-md text-sm leading-6 text-[#a7a197]">
+                  <p className="mt-3 max-w-md text-xs leading-5 text-[#a7a197] md:mt-4 md:text-sm md:leading-6">
                     Every engagement is designed to be clear, practical, and
                     easy to understand before work begins.
                   </p>
                 </div>
 
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-2.5 md:gap-3 lg:grid-cols-4">
                   {engagementSteps.map((step) => (
                     <article
                       key={step.title}
-                      className="rounded-[1.2rem] border border-[#d8b25e]/12 bg-black/20 p-4"
+                      className="rounded-[1rem] border border-[#d8b25e]/12 bg-black/20 p-3 md:rounded-[1.2rem] md:p-4"
                     >
-                      <h3 className="font-display text-2xl font-semibold tracking-[-0.035em] text-[#f8f4ea]">
+                      <h3 className="font-display text-xl font-semibold tracking-[-0.035em] text-[#f8f4ea] md:text-2xl">
                         {step.title}
                       </h3>
 
-                      <p className="mt-2 text-xs leading-5 text-[#a7a197]">
+                      <p className="mt-2 text-[10px] leading-4 text-[#a7a197] md:text-xs md:leading-5">
                         {step.description}
                       </p>
                     </article>
@@ -220,25 +225,25 @@ export default function ServicesPage() {
               </div>
             </div>
 
-            <div className="premium-card mt-5 rounded-[1.75rem] p-6 text-center md:mt-6 md:p-8">
+            <div className="premium-card mt-4 rounded-[1.35rem] p-5 text-center md:mt-6 md:rounded-[1.75rem] md:p-8">
               <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#d8b25e] md:text-xs">
                 Start
               </p>
 
-              <h2 className="font-display mx-auto mt-4 max-w-3xl text-4xl font-semibold leading-[0.92] tracking-[-0.05em] text-[#f8f4ea] md:text-5xl">
+              <h2 className="font-display mx-auto mt-3 max-w-3xl text-3xl font-semibold leading-[0.92] tracking-[-0.05em] text-[#f8f4ea] md:mt-4 md:text-5xl">
                 Need clarity on what your business should build first?
               </h2>
 
-              <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-[#b8b0a3]">
+              <p className="mx-auto mt-4 max-w-2xl text-xs leading-6 text-[#b8b0a3] md:mt-5 md:text-sm md:leading-7">
                 Tell us where you are now. We’ll help identify whether your next
                 move should be data intelligence, a premium web experience, or
                 growth architecture.
               </p>
 
-              <div className="mt-6">
+              <div className="mt-5 md:mt-6">
                 <Link
                   href="/contact"
-                  className="gold-button group inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-bold transition"
+                  className="gold-button group inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold transition md:px-6 md:py-3.5"
                 >
                   Start a Conversation
                   <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
