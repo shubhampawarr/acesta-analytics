@@ -3,7 +3,13 @@
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { ArrowRight, CheckCircle2, ChevronDown, Loader2 } from 'lucide-react';
+import {
+  ArrowRight,
+  CheckCircle2,
+  ChevronDown,
+  Loader2,
+  MessageCircle,
+} from 'lucide-react';
 
 const serviceOptions = [
   'Executive Data Intelligence',
@@ -11,6 +17,9 @@ const serviceOptions = [
   'Search & Growth Architecture',
   'Not Sure Yet',
 ];
+
+const whatsappLink =
+  'https://wa.me/919869371603?text=Hello%20Acesta%20Analytics%2C%20I%20would%20like%20to%20discuss%20a%20project.';
 
 type FormState = {
   name: string;
@@ -71,6 +80,18 @@ export default function ContactPage() {
                     For project enquiries, collaborations, and business
                     conversations.
                   </p>
+
+                  <div className="mt-4">
+                    <a
+                      href={whatsappLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-[#d8b25e]/22 bg-[#d8b25e]/8 px-5 py-3 text-sm font-semibold text-[#f1d99b] transition hover:border-[#f1d99b]/45 hover:bg-[#d8b25e]/12"
+                    >
+                      <MessageCircle className="h-4 w-4" />
+                      Message on WhatsApp
+                    </a>
+                  </div>
                 </div>
               </div>
 
