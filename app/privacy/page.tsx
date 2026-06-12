@@ -1,6 +1,13 @@
+import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import BackButton from '@/components/BackButton';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy',
+  description:
+    'Read the privacy policy for Acesta Analytics, including how enquiry and website usage information may be handled.',
+};
 
 export default function PrivacyPage() {
   return (

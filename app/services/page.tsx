@@ -11,9 +11,9 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Services | Acesta Analytics',
+  title: 'Services',
   description:
-    'Explore Acesta Analytics services: executive data intelligence, premium web experiences, and search-led growth architecture.',
+    'Explore Acesta Analytics services including executive data intelligence, premium web experiences, and search-led growth architecture.',
 };
 
 const services = [

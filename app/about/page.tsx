@@ -6,9 +6,9 @@ import Footer from '@/components/Footer';
 import { ArrowRight, BarChart3, Globe2, SearchCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'About | Acesta Analytics',
+  title: 'About',
   description:
-    'About Acesta Analytics — a premium digital intelligence studio building data, web, and growth systems for modern businesses.',
+    'Learn about Acesta Analytics, a founder-led digital intelligence studio building data visualization, premium website, and search-led growth systems.',
 };
 
 const capabilities = [

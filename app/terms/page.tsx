@@ -1,6 +1,13 @@
+import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import BackButton from '@/components/BackButton';
+
+export const metadata: Metadata = {
+  title: 'Terms & Conditions',
+  description:
+    'Read the terms and conditions for using the Acesta Analytics website and engaging with Acesta Analytics services.',
+};
 
 export default function TermsPage() {
   return (

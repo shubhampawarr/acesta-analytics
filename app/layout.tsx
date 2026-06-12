@@ -22,10 +22,27 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Acesta Analytics | Premium Data Intelligence Consulting',
+  metadataBase: new URL('https://acestaanalytics.vercel.app'),
+  title: {
+    default: 'Acesta Analytics | Premium Data Intelligence Consulting',
+    template: '%s | Acesta Analytics',
+  },
   description:
     'Acesta Analytics builds premium data, web, and search systems for businesses that want to look sharper, operate smarter, and convert with confidence.',
-  metadataBase: new URL('https://acestaanalytics.vercel.app'),
+  keywords: [
+    'Acesta Analytics',
+    'data visualization',
+    'dashboard design',
+    'business dashboards',
+    'premium website development',
+    'SEO optimization',
+    'growth architecture',
+    'digital intelligence',
+    'business analytics',
+  ],
+  authors: [{ name: 'Acesta Analytics' }],
+  creator: 'Acesta Analytics',
+  publisher: 'Acesta Analytics',
   openGraph: {
     title: 'Acesta Analytics | Premium Data Intelligence Consulting',
     description:
