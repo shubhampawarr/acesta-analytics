@@ -12,13 +12,26 @@ function escapeHtml(value: string) {
     .replaceAll("'", '&#039;');
 }
 
+function getErrorMessage(error: unknown) {
+  if (
+    typeof error === 'object' &&
+    error !== null &&
+    'message' in error &&
+    typeof error.message === 'string'
+  ) {
+    return error.message;
+  }
+
+  return 'Email could not be sent.';
+}
+
 export async function POST(request: Request) {
   try {
     if (!process.env.RESEND_API_KEY) {
       return NextResponse.json(
         {
           success: false,
-          message: 'RESEND_API_KEY is missing.',
+          message: 'RESEND_API_KEY is missing in Vercel environment variables.',
         },
         { status: 500 }
       );
@@ -52,7 +65,11 @@ export async function POST(request: Request) {
 
     const { data, error } = await resend.emails.send({
       from: 'Acesta Analytics <onboarding@resend.dev>',
+
+      // Temporary receiver for testing.
+      // This should be the same email connected to your Resend account.
       to: ['shuubhaampawar@gmail.com'],
+
       replyTo: email,
       subject: `New enquiry from ${name} | Acesta Analytics`,
       html: `
@@ -86,10 +103,12 @@ export async function POST(request: Request) {
     });
 
     if (error) {
+      console.error('Resend error:', JSON.stringify(error, null, 2));
+
       return NextResponse.json(
         {
           success: false,
-          message: 'Email could not be sent.',
+          message: getErrorMessage(error),
           error,
         },
         { status: 500 }
@@ -101,10 +120,15 @@ export async function POST(request: Request) {
       data,
     });
   } catch (error) {
+    console.error('Contact API error:', error);
+
     return NextResponse.json(
       {
         success: false,
-        message: 'Something went wrong. Please try again.',
+        message:
+          error instanceof Error
+            ? error.message
+            : 'Something went wrong. Please try again.',
         error,
       },
       { status: 500 }
