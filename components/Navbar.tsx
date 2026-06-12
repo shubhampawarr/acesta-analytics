@@ -1,31 +1,42 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BarChart3, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import { useState } from 'react';
 
-const innerPageLinks = [
-  { label: 'Home', href: '/' },
-  { label: 'About', href: '/about' },
-  { label: 'Services', href: '/services' },
-  { label: 'Contact', href: '/contact' },
-];
-
-const homePageLinks = [
-  { label: 'About', href: '/about' },
-  { label: 'Services', href: '/services' },
-  { label: 'Contact', href: '/contact' },
+const navItems = [
+  {
+    label: 'About',
+    href: '/about',
+  },
+  {
+    label: 'Services',
+    href: '/services',
+  },
+  {
+    label: 'Contact',
+    href: '/contact',
+  },
 ];
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
 
-  const isHomePage = pathname === '/';
-  const navLinks = isHomePage ? homePageLinks : innerPageLinks;
+  const isHome = pathname === '/';
 
-  function isActiveLink(href: string) {
+  const visibleNavItems = isHome
+    ? navItems
+    : [
+        {
+          label: 'Home',
+          href: '/',
+        },
+        ...navItems,
+      ];
+
+  function isActive(href: string) {
     if (href === '/') {
       return pathname === '/';
     }
@@ -34,88 +45,97 @@ export default function Navbar() {
   }
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-50 border-b border-[#d8b25e]/10 bg-black/75 backdrop-blur-2xl">
-      <div className="premium-container flex h-16 items-center justify-between md:h-20">
-        <Link
-          href="/"
-          onClick={() => setIsOpen(false)}
-          className="group flex items-center gap-3"
-        >
-          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d8b25e]/20 bg-[#d8b25e]/10 transition group-hover:border-[#f1d99b]/40 md:h-11 md:w-11">
-            <BarChart3 className="h-5 w-5 text-[#f1d99b]" />
-          </div>
+    <header className="fixed left-0 right-0 top-0 z-50 border-b border-[#d8b25e]/10 bg-[#030303]/82 backdrop-blur-2xl">
+      <div className="premium-container">
+        <div className="flex h-20 items-center justify-between">
+          <Link
+            href="/"
+            onClick={() => setIsOpen(false)}
+            className="group flex items-center gap-3"
+            aria-label="Acesta Analytics home"
+          >
+            <img
+              src="/logos/acesta-logo-icon-dark.png"
+              alt="Acesta Analytics"
+              className="h-10 w-auto shrink-0 transition duration-300 group-hover:scale-105 md:h-11"
+            />
 
-          <div>
-            <p className="font-display text-lg font-semibold uppercase tracking-[0.18em] text-[#f8f4ea] md:text-xl">
-              Acesta
-            </p>
-            <p className="-mt-1 text-[9px] uppercase tracking-[0.32em] text-[#a7a197] md:text-[10px]">
-              Analytics
-            </p>
-          </div>
-        </Link>
+            <div className="leading-none">
+              <p className="font-display text-xl font-semibold tracking-[-0.045em] text-[#f8f4ea] md:text-2xl">
+                Acesta
+              </p>
+              <p className="mt-1 text-[8px] font-semibold uppercase tracking-[0.32em] text-[#d8b25e] md:text-[9px]">
+                Analytics
+              </p>
+            </div>
+          </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => {
-            const active = isActiveLink(link.href);
-
-            return (
-              <Link
-                key={link.label}
-                href={link.href}
-                className={`relative text-sm font-medium transition ${
-                  active ? 'text-[#f1d99b]' : 'text-[#a7a197] hover:text-[#f1d99b]'
-                }`}
-              >
-                {link.label}
-
-                {active && (
-                  <span className="absolute -bottom-2 left-1/2 h-px w-6 -translate-x-1/2 bg-[#d8b25e]" />
-                )}
-              </Link>
-            );
-          })}
-        </nav>
-
-        <Link
-          href="/contact"
-          className={`hidden rounded-full border px-5 py-2.5 text-sm font-semibold transition md:inline-flex ${
-            isActiveLink('/contact')
-              ? 'border-[#f1d99b]/60 bg-[#d8b25e]/15 text-[#f1d99b]'
-              : 'border-[#d8b25e]/30 bg-[#d8b25e]/10 text-[#f1d99b] hover:border-[#f1d99b]/60 hover:bg-[#d8b25e]/15'
-          }`}
-        >
-          Book a Call
-        </Link>
-
-        <button
-          type="button"
-          onClick={() => setIsOpen((current) => !current)}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#d8b25e]/18 bg-[#d8b25e]/[0.055] text-[#f1d99b] transition hover:border-[#f1d99b]/40 md:hidden"
-          aria-label="Toggle navigation menu"
-        >
-          {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
-      </div>
-
-      {isOpen && (
-        <div className="border-t border-[#d8b25e]/10 bg-black/95 md:hidden">
-          <nav className="premium-container flex flex-col gap-1 py-4">
-            {navLinks.map((link) => {
-              const active = isActiveLink(link.href);
+          <nav className="hidden items-center gap-8 md:flex">
+            {visibleNavItems.map((item) => {
+              const active = isActive(item.href);
 
               return (
                 <Link
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`rounded-2xl px-4 py-3 text-sm font-medium transition ${
+                  key={item.href}
+                  href={item.href}
+                  className={`relative text-sm font-medium transition ${
                     active
-                      ? 'border border-[#d8b25e]/20 bg-[#d8b25e]/10 text-[#f1d99b]'
-                      : 'text-[#b8b0a3] hover:bg-[#d8b25e]/10 hover:text-[#f1d99b]'
+                      ? 'text-[#f1d99b]'
+                      : 'text-[#b8b0a3] hover:text-[#f8f4ea]'
                   }`}
                 >
-                  {link.label}
+                  {item.label}
+
+                  {active && (
+                    <span className="absolute -bottom-2 left-0 h-px w-full bg-[#d8b25e]" />
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="hidden md:block">
+            <Link
+              href="/contact"
+              className={`rounded-full px-5 py-2.5 text-sm font-semibold transition ${
+                isActive('/contact')
+                  ? 'gold-button'
+                  : 'border border-[#d8b25e]/18 bg-white/[0.025] text-[#f8f4ea] hover:border-[#f1d99b]/40 hover:bg-[#d8b25e]/8'
+              }`}
+            >
+              Book a Call
+            </Link>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setIsOpen((current) => !current)}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d8b25e]/16 bg-white/[0.025] text-[#f8f4ea] md:hidden"
+            aria-label="Toggle navigation menu"
+          >
+            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
+      </div>
+
+      {isOpen && (
+        <div className="border-t border-[#d8b25e]/10 bg-[#030303]/96 px-4 pb-5 pt-3 backdrop-blur-2xl md:hidden">
+          <div className="grid gap-2">
+            {visibleNavItems.map((item) => {
+              const active = isActive(item.href);
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`rounded-2xl px-4 py-3 text-sm font-semibold transition ${
+                    active
+                      ? 'border border-[#d8b25e]/24 bg-[#d8b25e]/10 text-[#f1d99b]'
+                      : 'border border-transparent text-[#b8b0a3] hover:border-[#d8b25e]/16 hover:bg-[#d8b25e]/8 hover:text-[#f8f4ea]'
+                  }`}
+                >
+                  {item.label}
                 </Link>
               );
             })}
@@ -123,15 +143,15 @@ export default function Navbar() {
             <Link
               href="/contact"
               onClick={() => setIsOpen(false)}
-              className={`mt-2 rounded-full border px-4 py-3 text-center text-sm font-semibold transition ${
-                isActiveLink('/contact')
-                  ? 'border-[#f1d99b]/50 bg-[#d8b25e]/15 text-[#f1d99b]'
-                  : 'border-[#d8b25e]/25 bg-[#d8b25e]/10 text-[#f1d99b] hover:border-[#f1d99b]/50'
+              className={`mt-2 rounded-full px-5 py-3 text-center text-sm font-bold transition ${
+                isActive('/contact')
+                  ? 'gold-button'
+                  : 'border border-[#d8b25e]/18 bg-white/[0.025] text-[#f8f4ea] hover:border-[#f1d99b]/40 hover:bg-[#d8b25e]/8'
               }`}
             >
               Book a Call
             </Link>
-          </nav>
+          </div>
         </div>
       )}
     </header>
