@@ -8,28 +8,28 @@ import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
-    <main className="relative h-screen overflow-y-auto overflow-x-hidden scroll-smooth snap-y snap-mandatory">
+    <main className="relative min-h-[100dvh] overflow-x-hidden scroll-smooth md:h-[100dvh] md:overflow-y-auto md:snap-y md:snap-mandatory">
       <div className="grid-bg pointer-events-none fixed inset-0 opacity-60" />
 
       <Navbar />
 
-      <section className="min-h-screen snap-start snap-always">
+      <section className="min-h-[100dvh] md:snap-start md:snap-always">
         <Hero />
       </section>
 
-      <section className="min-h-screen snap-start snap-always">
+      <section className="min-h-[100dvh] md:snap-start md:snap-always">
         <HomeServices />
       </section>
 
-      <section className="min-h-screen snap-start snap-always">
+      <section className="min-h-[100dvh] md:snap-start md:snap-always">
         <Services />
       </section>
 
-      <section className="min-h-screen snap-start snap-always">
+      <section className="min-h-[100dvh] md:snap-start md:snap-always">
         <Process />
       </section>
 
-      <section className="flex min-h-screen snap-start snap-always flex-col justify-between">
+      <section className="flex min-h-[100dvh] flex-col justify-between md:snap-start md:snap-always">
         <FinalCTA />
         <Footer />
       </section>
