@@ -22,52 +22,53 @@ export default function ContactPage() {
 
   return (
     <main className="relative min-h-screen overflow-hidden">
-      <div className="grid-bg pointer-events-none absolute inset-0 opacity-35" />
+      <div className="grid-bg pointer-events-none fixed inset-0 opacity-30" />
 
       <Navbar />
 
-      <section className="relative z-10 px-0 pb-16 pt-28 md:pb-24 md:pt-32">
+      <section className="relative z-10 px-0 pb-16 pt-28 md:pb-20 md:pt-32">
         <div className="premium-container">
-          <div className="mx-auto grid max-w-7xl items-start gap-8 md:gap-12 lg:grid-cols-[0.85fr_1.15fr]">
-            <div className="lg:sticky lg:top-32">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#d8b25e] md:text-xs">
-                Contact
-              </p>
-
-              <h1 className="font-display mt-4 max-w-3xl text-5xl font-semibold leading-[0.9] tracking-[-0.055em] text-[#f8f4ea] md:mt-5 md:text-8xl">
-                Let’s build something precise.
-              </h1>
-
-              <p className="mt-5 max-w-xl text-sm leading-7 text-[#b8b0a3] md:mt-8 md:text-lg md:leading-8">
-                Tell us what you are building, improving, or trying to
-                understand. We will help shape the right data, web, or growth
-                system around it.
-              </p>
-
-              <div className="mt-6 rounded-[1.35rem] border border-[#d8b25e]/14 bg-[#080705]/70 p-4 md:mt-10 md:rounded-[1.5rem] md:p-5">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#a77b32] md:text-xs">
-                  Direct enquiry
+          <div className="mx-auto max-w-6xl rounded-[1.75rem] border border-[#d8b25e]/12 bg-[#050403]/70 p-5 shadow-2xl shadow-black/30 md:rounded-[2.25rem] md:p-8 lg:p-10">
+            <div className="grid items-start gap-8 lg:grid-cols-[0.82fr_1fr] lg:gap-10">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#d8b25e] md:text-xs">
+                  Contact
                 </p>
 
-                <a
-                  href="mailto:acestaanalytics@gmail.com"
-                  className="mt-3 block text-sm font-semibold text-[#f1d99b] underline decoration-[#d8b25e]/45 underline-offset-4 transition hover:text-[#f8f4ea]"
-                >
-                  acestaanalytics@gmail.com
-                </a>
+                <h1 className="font-display mt-4 max-w-2xl text-5xl font-semibold leading-[0.9] tracking-[-0.055em] text-[#f8f4ea] md:text-7xl">
+                  Let’s build something precise.
+                </h1>
 
-                <p className="mt-3 text-xs leading-5 text-[#7d7568] md:mt-4 md:text-sm md:leading-6">
-                  For project enquiries, collaborations, and business
-                  conversations.
+                <p className="mt-5 max-w-lg text-sm leading-7 text-[#b8b0a3] md:text-base md:leading-8">
+                  Tell us what you are building, improving, or trying to
+                  understand. We will help shape the right data, web, or growth
+                  system around it.
                 </p>
+
+                <div className="mt-7 max-w-md rounded-[1.35rem] border border-[#d8b25e]/14 bg-black/25 p-4 md:mt-8 md:p-5">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#a77b32] md:text-xs">
+                    Direct enquiry
+                  </p>
+
+                  <p className="mt-3 text-sm font-semibold text-[#f1d99b]">
+                    acestaanalytics@gmail.com
+                  </p>
+
+                  <p className="mt-3 text-xs leading-5 text-[#7d7568] md:text-sm md:leading-6">
+                    For project enquiries, collaborations, and business
+                    conversations.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mx-auto w-full max-w-xl">
+                {submitted ? (
+                  <SuccessMessage onReset={() => setSubmitted(false)} />
+                ) : (
+                  <ContactForm onSubmit={handleSubmit} />
+                )}
               </div>
             </div>
-
-            {submitted ? (
-              <SuccessMessage onReset={() => setSubmitted(false)} />
-            ) : (
-              <ContactForm onSubmit={handleSubmit} />
-            )}
           </div>
         </div>
       </section>
@@ -88,15 +89,15 @@ function ContactForm({
   return (
     <form
       onSubmit={onSubmit}
-      className="rounded-[1.6rem] border border-[#d8b25e]/14 bg-[#080705]/80 p-4 md:rounded-[2rem] md:p-8"
+      className="rounded-[1.5rem] border border-[#d8b25e]/14 bg-[#080705]/85 p-4 md:rounded-[1.75rem] md:p-5"
     >
-      <div className="grid gap-3.5 md:grid-cols-2 md:gap-4">
+      <div className="grid gap-3 md:grid-cols-2">
         <Field label="Name" name="name" placeholder="Your name" required />
 
         <Field
           label="Company"
           name="company"
-          placeholder="Business or company name"
+          placeholder="Company name"
         />
 
         <Field
@@ -130,10 +131,10 @@ function ContactForm({
         </div>
       </div>
 
-      <div className="mt-3.5 md:mt-4">
+      <div className="mt-3">
         <label
           htmlFor="message"
-          className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-[#a77b32] md:text-xs"
+          className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-[#a77b32]"
         >
           Message
         </label>
@@ -141,16 +142,16 @@ function ContactForm({
         <textarea
           id="message"
           name="message"
-          rows={5}
+          rows={4}
           placeholder="Tell us what you are trying to build, improve, or understand."
           required
-          className="min-h-[120px] w-full resize-none rounded-2xl border border-[#d8b25e]/14 bg-black/35 px-4 py-3 text-sm text-[#f8f4ea] outline-none transition placeholder:text-[#7d7568] focus:border-[#f1d99b]/45 md:min-h-[140px]"
+          className="min-h-[105px] w-full resize-none rounded-2xl border border-[#d8b25e]/14 bg-black/35 px-4 py-3 text-sm text-[#f8f4ea] outline-none transition placeholder:text-[#7d7568] focus:border-[#f1d99b]/45"
         />
       </div>
 
       <button
         type="submit"
-        className="gold-button group mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold transition md:mt-6 md:w-auto md:py-3.5"
+        className="gold-button group mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold transition"
       >
         Submit Enquiry
         <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
@@ -161,12 +162,12 @@ function ContactForm({
 
 function SuccessMessage({ onReset }: { onReset: () => void }) {
   return (
-    <div className="rounded-[1.6rem] border border-[#d8b25e]/14 bg-[#080705]/80 p-6 text-center md:rounded-[2rem] md:p-8">
-      <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-[#d8b25e]/20 bg-[#d8b25e]/10 text-[#f1d99b] md:h-12 md:w-12">
-        <CheckCircle2 className="h-5 w-5 md:h-6 md:w-6" />
+    <div className="rounded-[1.5rem] border border-[#d8b25e]/14 bg-[#080705]/85 p-6 text-center md:rounded-[1.75rem]">
+      <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-[#d8b25e]/20 bg-[#d8b25e]/10 text-[#f1d99b]">
+        <CheckCircle2 className="h-5 w-5" />
       </div>
 
-      <h2 className="font-display mt-5 text-3xl font-semibold tracking-[-0.04em] text-[#f8f4ea] md:mt-6 md:text-4xl">
+      <h2 className="font-display mt-5 text-3xl font-semibold tracking-[-0.04em] text-[#f8f4ea]">
         Enquiry received.
       </h2>
 
@@ -203,7 +204,7 @@ function Field({
     <div>
       <label
         htmlFor={name}
-        className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-[#a77b32] md:text-xs"
+        className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-[#a77b32]"
       >
         {label}
       </label>
@@ -214,7 +215,7 @@ function Field({
         type={type}
         placeholder={placeholder}
         required={required}
-        className="h-11 w-full rounded-2xl border border-[#d8b25e]/14 bg-black/35 px-4 text-sm text-[#f8f4ea] outline-none transition placeholder:text-[#7d7568] focus:border-[#f1d99b]/45 md:h-12"
+        className="h-10 w-full rounded-2xl border border-[#d8b25e]/14 bg-black/35 px-4 text-sm text-[#f8f4ea] outline-none transition placeholder:text-[#7d7568] focus:border-[#f1d99b]/45 md:h-11"
       />
     </div>
   );
@@ -241,7 +242,7 @@ function CustomSelect({
     <div className="relative">
       <label
         htmlFor={name}
-        className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-[#a77b32] md:text-xs"
+        className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-[#a77b32]"
       >
         {label}
       </label>
@@ -252,7 +253,7 @@ function CustomSelect({
         id={name}
         type="button"
         onClick={onToggle}
-        className="flex h-11 w-full items-center justify-between rounded-2xl border border-[#d8b25e]/14 bg-black/35 px-4 text-left text-sm text-[#f8f4ea] outline-none transition hover:border-[#f1d99b]/35 focus:border-[#f1d99b]/45 md:h-12"
+        className="flex h-10 w-full items-center justify-between rounded-2xl border border-[#d8b25e]/14 bg-black/35 px-4 text-left text-sm text-[#f8f4ea] outline-none transition hover:border-[#f1d99b]/35 focus:border-[#f1d99b]/45 md:h-11"
       >
         <span className={value ? 'text-[#f8f4ea]' : 'text-[#7d7568]'}>
           {value || 'Select an option'}

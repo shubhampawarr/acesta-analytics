@@ -2,16 +2,28 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { BarChart3, Menu, X } from 'lucide-react';
 
-const navLinks = [
-  { label: 'Services', href: '/services' },
+const innerPageLinks = [
+  { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
+  { label: 'Services', href: '/services' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const homePageLinks = [
+  { label: 'About', href: '/about' },
+  { label: 'Services', href: '/services' },
   { label: 'Contact', href: '/contact' },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isHomePage = pathname === '/';
+  const navLinks = isHomePage ? homePageLinks : innerPageLinks;
 
   return (
     <header className="fixed left-0 right-0 top-0 z-50 border-b border-[#d8b25e]/10 bg-black/75 backdrop-blur-2xl">
@@ -35,7 +47,7 @@ export default function Navbar() {
           </div>
         </Link>
 
-        <nav className="hidden items-center gap-9 md:flex">
+        <nav className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.label}
