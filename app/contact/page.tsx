@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { ArrowRight, CheckCircle2, ChevronDown } from 'lucide-react';
+import { ArrowRight, CheckCircle2, ChevronDown, Loader2 } from 'lucide-react';
 
 const serviceOptions = [
   'Executive Data Intelligence',
@@ -12,16 +12,29 @@ const serviceOptions = [
   'Not Sure Yet',
 ];
 
+type FormState = {
+  name: string;
+  company: string;
+  email: string;
+  phone: string;
+  service: string;
+  message: string;
+};
+
+const initialFormState: FormState = {
+  name: '',
+  company: '',
+  email: '',
+  phone: '',
+  service: '',
+  message: '',
+};
+
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setSubmitted(true);
-  }
-
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#030303]">
+    <main className="relative min-h-screen overflow-x-hidden bg-[#030303]">
       <div className="grid-bg pointer-events-none fixed inset-0 opacity-30" />
 
       <Navbar />
@@ -65,7 +78,7 @@ export default function ContactPage() {
                 {submitted ? (
                   <SuccessMessage onReset={() => setSubmitted(false)} />
                 ) : (
-                  <ContactForm onSubmit={handleSubmit} />
+                  <ContactForm onSuccess={() => setSubmitted(true)} />
                 )}
               </div>
             </div>
@@ -78,29 +91,83 @@ export default function ContactPage() {
   );
 }
 
-function ContactForm({
-  onSubmit,
-}: {
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-}) {
-  const [selectedService, setSelectedService] = useState('');
+function ContactForm({ onSuccess }: { onSuccess: () => void }) {
+  const [form, setForm] = useState<FormState>(initialFormState);
   const [isOpen, setIsOpen] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'sending' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  function updateField(field: keyof FormState, value: string) {
+    setForm((current) => ({
+      ...current,
+      [field]: value,
+    }));
+  }
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    setStatus('sending');
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || 'Email could not be sent.');
+      }
+
+      setForm(initialFormState);
+      setStatus('idle');
+      onSuccess();
+    } catch (error) {
+      setStatus('error');
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : 'Something went wrong. Please try again.'
+      );
+    }
+  }
 
   return (
     <form
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
       className="rounded-[1.35rem] border border-[#d8b25e]/14 bg-[#080705]/85 p-4 md:rounded-[1.75rem] md:p-5"
     >
       <div className="grid gap-3 md:grid-cols-2">
-        <Field label="Name" name="name" placeholder="Your name" required />
+        <Field
+          label="Name"
+          name="name"
+          placeholder="Your name"
+          value={form.name}
+          onChange={(value) => updateField('name', value)}
+          required
+        />
 
-        <Field label="Company" name="company" placeholder="Company name" />
+        <Field
+          label="Company"
+          name="company"
+          placeholder="Company name"
+          value={form.company}
+          onChange={(value) => updateField('company', value)}
+        />
 
         <Field
           label="Email"
           name="email"
           type="email"
           placeholder="you@example.com"
+          value={form.email}
+          onChange={(value) => updateField('email', value)}
           required
         />
 
@@ -109,6 +176,8 @@ function ContactForm({
           name="phone"
           type="tel"
           placeholder="+91 98765 43210"
+          value={form.phone}
+          onChange={(value) => updateField('phone', value)}
         />
 
         <div className="md:col-span-2">
@@ -116,11 +185,11 @@ function ContactForm({
             label="Service Needed"
             name="service"
             options={serviceOptions}
-            value={selectedService}
+            value={form.service}
             isOpen={isOpen}
             onToggle={() => setIsOpen((current) => !current)}
             onChange={(value) => {
-              setSelectedService(value);
+              updateField('service', value);
               setIsOpen(false);
             }}
           />
@@ -139,18 +208,36 @@ function ContactForm({
           id="message"
           name="message"
           rows={4}
+          value={form.message}
+          onChange={(event) => updateField('message', event.target.value)}
           placeholder="Tell us what you are trying to build, improve, or understand."
           required
           className="min-h-[95px] w-full resize-none rounded-2xl border border-[#d8b25e]/14 bg-black/35 px-4 py-3 text-sm text-[#f8f4ea] outline-none transition placeholder:text-[#7d7568] focus:border-[#f1d99b]/45 md:min-h-[105px]"
         />
       </div>
 
+      {status === 'error' && (
+        <p className="mt-3 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-xs leading-5 text-red-200">
+          {errorMessage}
+        </p>
+      )}
+
       <button
         type="submit"
-        className="gold-button group mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold transition md:mt-5"
+        disabled={status === 'sending'}
+        className="gold-button group mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold transition disabled:cursor-not-allowed disabled:opacity-70 md:mt-5"
       >
-        Submit Enquiry
-        <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+        {status === 'sending' ? (
+          <>
+            Sending
+            <Loader2 className="h-4 w-4 animate-spin" />
+          </>
+        ) : (
+          <>
+            Submit Enquiry
+            <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+          </>
+        )}
       </button>
     </form>
   );
@@ -168,8 +255,8 @@ function SuccessMessage({ onReset }: { onReset: () => void }) {
       </h2>
 
       <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-[#a7a197]">
-        Thank you for reaching out. This form is ready visually. Next, we will
-        connect it to email delivery so enquiries land directly in your inbox.
+        Thank you for reaching out. Your enquiry has been sent successfully.
+        We’ll get back to you soon.
       </p>
 
       <button
@@ -188,12 +275,16 @@ function Field({
   name,
   type = 'text',
   placeholder,
+  value,
+  onChange,
   required = false,
 }: {
   label: string;
   name: string;
   type?: string;
   placeholder: string;
+  value: string;
+  onChange: (value: string) => void;
   required?: boolean;
 }) {
   return (
@@ -210,6 +301,8 @@ function Field({
         name={name}
         type={type}
         placeholder={placeholder}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
         required={required}
         className="h-10 w-full rounded-2xl border border-[#d8b25e]/14 bg-black/35 px-4 text-sm text-[#f8f4ea] outline-none transition placeholder:text-[#7d7568] focus:border-[#f1d99b]/45 md:h-11"
       />
