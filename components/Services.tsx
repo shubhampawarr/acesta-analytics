@@ -1,5 +1,11 @@
 import Link from 'next/link';
-import { ArrowRight, BarChart3, Globe2, SearchCheck } from 'lucide-react';
+import {
+  ArrowRight,
+  BarChart3,
+  Globe2,
+  SearchCheck,
+  Workflow,
+} from 'lucide-react';
 import { Reveal, Stagger, StaggerItem } from '@/components/Reveal';
 
 const services = [
@@ -18,11 +24,18 @@ const services = [
     icon: Globe2,
   },
   {
-    title: 'Search & Growth Architecture',
-    label: 'SEO & Growth',
-    description: 'SEO structure and growth foundations for better discovery.',
-    outcome: 'Stronger visibility, organic reach, and growth flow.',
+    title: 'Search Visibility Foundation',
+    label: 'SEO Foundation',
+    description: 'Metadata, page structure, and technical SEO foundations.',
+    outcome: 'Cleaner search presence and stronger organic discovery.',
     icon: SearchCheck,
+  },
+  {
+    title: 'Growth Systems Architecture',
+    label: 'Growth Systems',
+    description: 'Lead flow, conversion paths, and growth structure.',
+    outcome: 'Better enquiry flow and clearer next-step business systems.',
+    icon: Workflow,
   },
 ];
 
@@ -40,7 +53,7 @@ export default function Services() {
             </p>
 
             <h2 className="font-display mx-auto mt-2 max-w-sm text-3xl font-semibold leading-[0.88] tracking-[-0.05em] text-[#f8f4ea] md:mt-4 md:max-w-xl md:text-6xl lg:mx-0">
-              Three disciplines.
+              Four disciplines.
               <br />
               One premium growth system.
             </h2>
@@ -48,8 +61,8 @@ export default function Services() {
             <div className="mx-auto mt-3 h-px w-full max-w-xs gold-line opacity-60 md:mt-5 md:max-w-md lg:mx-0" />
 
             <p className="mx-auto mt-3 max-w-xs text-[11px] leading-4 text-[#a7a197] md:mt-5 md:max-w-sm md:text-sm md:leading-6 lg:mx-0">
-              Data clarity, premium web presence, and search-led growth — built
-              together as one refined digital system.
+              Data clarity, premium web presence, search visibility, and growth
+              structure — built together as one refined digital system.
             </p>
 
             <Link
@@ -61,43 +74,40 @@ export default function Services() {
             </Link>
           </Reveal>
 
-          <Stagger className="mx-auto grid w-full max-w-[480px] grid-cols-2 gap-2.5 lg:max-w-none lg:grid-cols-1 lg:gap-3">
-            {services.map((service, index) => {
+          <Stagger className="mx-auto grid w-full max-w-[540px] grid-cols-2 gap-2.5 lg:max-w-none lg:grid-cols-2 lg:gap-3">
+            {services.map((service) => {
               const Icon = service.icon;
 
               return (
-                <StaggerItem
-                  key={service.title}
-                  className={`${
-                    index === 2
-                      ? 'col-span-2 mx-auto w-[52%] lg:col-span-1 lg:w-full'
-                      : ''
-                  }`}
-                >
-                  <article className="group rounded-[1rem] border border-[#d8b25e]/14 bg-[#080705]/80 transition duration-500 hover:border-[#f1d99b]/35 hover:bg-[#0c0a07] lg:rounded-[1.25rem]">
-                    <div className="p-3 text-center lg:grid lg:items-start lg:gap-4 lg:p-4 lg:text-left md:lg:grid-cols-[1fr_38px]">
-                      <div>
+                <StaggerItem key={service.title}>
+                  <article className="group h-full rounded-[1rem] border border-[#d8b25e]/14 bg-[#080705]/80 transition duration-500 hover:border-[#f1d99b]/35 hover:bg-[#0c0a07] lg:rounded-[1.25rem]">
+                    <div className="flex h-full flex-col p-3 text-center lg:min-h-[210px] lg:p-4 lg:text-left">
+                      <div className="flex items-start justify-between gap-3">
                         <p className="text-[7px] font-semibold uppercase tracking-[0.18em] text-[#a77b32] md:text-[9px]">
                           {service.label}
                         </p>
 
-                        <h3 className="font-display mt-1 text-lg font-semibold leading-none tracking-[-0.035em] text-[#f8f4ea] md:text-2xl lg:text-[2rem]">
-                          {service.title}
-                        </h3>
-
-                        <p className="mx-auto mt-1.5 max-w-[135px] text-[10px] leading-4 text-[#a7a197] md:text-xs lg:mx-0 lg:mt-2.5 lg:max-w-xl lg:text-sm lg:leading-5">
-                          {service.description}
-                        </p>
-
-                        <p className="mx-auto mt-1.5 max-w-[135px] text-[9px] leading-4 text-[#d8c9a4] md:text-xs lg:mx-0 lg:mt-3 lg:max-w-xl lg:leading-5">
-                          <span className="text-[#a77b32]">Outcome — </span>
-                          {service.outcome}
-                        </p>
+                        <div className="hidden h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#d8b25e]/18 bg-[#d8b25e]/8 text-[#f1d99b] transition duration-500 group-hover:scale-110 group-hover:border-[#f1d99b]/45 lg:flex">
+                          <Icon className="h-3.5 w-3.5" />
+                        </div>
                       </div>
 
-                      <div className="mx-auto mt-2 flex h-7 w-7 items-center justify-center rounded-full border border-[#d8b25e]/18 bg-[#d8b25e]/8 text-[#f1d99b] transition duration-500 group-hover:scale-110 group-hover:border-[#f1d99b]/45 lg:mt-0 lg:h-9 lg:w-9">
-                        <Icon className="h-3 w-3 lg:h-4 lg:w-4" />
+                      <div className="mx-auto mt-2 flex h-7 w-7 items-center justify-center rounded-full border border-[#d8b25e]/18 bg-[#d8b25e]/8 text-[#f1d99b] transition duration-500 group-hover:scale-110 group-hover:border-[#f1d99b]/45 lg:hidden">
+                        <Icon className="h-3 w-3" />
                       </div>
+
+                      <h3 className="font-display mt-2 text-lg font-semibold leading-none tracking-[-0.035em] text-[#f8f4ea] md:text-2xl lg:mt-3 lg:text-[1.9rem]">
+                        {service.title}
+                      </h3>
+
+                      <p className="mx-auto mt-1.5 max-w-[145px] text-[10px] leading-4 text-[#a7a197] md:text-xs lg:mx-0 lg:mt-2.5 lg:max-w-xl lg:text-sm lg:leading-5">
+                        {service.description}
+                      </p>
+
+                      <p className="mx-auto mt-1.5 max-w-[145px] text-[9px] leading-4 text-[#d8c9a4] md:text-xs lg:mx-0 lg:mt-3 lg:max-w-xl lg:leading-5">
+                        <span className="text-[#a77b32]">Outcome — </span>
+                        {service.outcome}
+                      </p>
                     </div>
                   </article>
                 </StaggerItem>

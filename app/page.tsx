@@ -29,7 +29,7 @@ export default function Home() {
         <Process />
       </section>
 
-      <section className="flex flex-col justify-between md:min-h-[100dvh] md:snap-start md:snap-always">
+      <section className="flex min-h-[100dvh] flex-col justify-between pt-20 md:snap-start md:snap-always">
         <FinalCTA />
         <Footer />
       </section>

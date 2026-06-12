@@ -8,12 +8,13 @@ import {
   CheckCircle2,
   Globe2,
   SearchCheck,
+  Workflow,
 } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Services',
   description:
-    'Explore Acesta Analytics services including executive data intelligence, premium web experiences, and search-led growth architecture.',
+    'Explore Acesta Analytics services including executive data intelligence, premium web experiences, search visibility foundation, and growth systems architecture.',
 };
 
 const services = [
@@ -58,23 +59,43 @@ const services = [
     ],
   },
   {
-    eyebrow: 'SEO & Growth Optimization',
-    title: 'Search & Growth Architecture',
+    eyebrow: 'SEO Foundation',
+    title: 'Search Visibility Foundation',
     description:
-      'Website structure, metadata, content flow, and growth foundations designed to help the right audience discover you.',
+      'Technical SEO, metadata, page structure, and search foundations designed to help the right audience discover your business.',
     icon: SearchCheck,
     deliverables: [
       'Technical SEO foundation',
       'Metadata and page structure',
       'Search-friendly service pages',
       'Content hierarchy',
-      'Growth recommendations',
+      'Indexing and visibility basics',
     ],
     outcomes: [
       'Improve organic visibility',
       'Build a cleaner search presence',
       'Attract more relevant visitors',
-      'Turn traffic into opportunities',
+      'Strengthen long-term discovery',
+    ],
+  },
+  {
+    eyebrow: 'Growth Systems',
+    title: 'Growth Systems Architecture',
+    description:
+      'Lead flow, conversion paths, content structure, and business systems that turn digital attention into clearer opportunities.',
+    icon: Workflow,
+    deliverables: [
+      'Lead flow planning',
+      'Conversion path structure',
+      'Content and offer hierarchy',
+      'Enquiry journey improvement',
+      'Growth system recommendations',
+    ],
+    outcomes: [
+      'Improve enquiry quality',
+      'Create clearer customer journeys',
+      'Reduce scattered digital efforts',
+      'Turn attention into business flow',
     ],
   },
 ];
@@ -123,26 +144,22 @@ export default function ServicesPage() {
 
               <p className="mx-auto mt-4 max-w-2xl text-xs leading-6 text-[#b8b0a3] md:mt-6 md:text-base md:leading-8">
                 Acesta brings together data intelligence, premium web
-                experiences, and search-led growth architecture for businesses
-                that want to look sharper, operate smarter, and convert with
-                confidence.
+                experiences, search visibility, and growth systems for
+                businesses that want to look sharper, operate smarter, and
+                convert with confidence.
               </p>
 
               <div className="mx-auto mt-5 h-px w-full max-w-2xl gold-line opacity-60 md:mt-7" />
             </div>
 
-            <div className="mt-6 grid grid-cols-2 gap-3 md:mt-10 lg:grid-cols-3 lg:gap-4">
-              {services.map((service, index) => {
+            <div className="mt-6 grid grid-cols-2 gap-3 md:mt-10 md:gap-4">
+              {services.map((service) => {
                 const Icon = service.icon;
 
                 return (
                   <article
                     key={service.title}
-                    className={`group flex h-full flex-col rounded-[1.15rem] border border-[#d8b25e]/14 bg-[#080705]/85 p-3 transition duration-500 hover:-translate-y-1 hover:border-[#f1d99b]/32 hover:bg-[#0c0a07] md:rounded-[1.5rem] md:p-6 ${
-                      index === 2
-                        ? 'col-span-2 mx-auto w-[52%] lg:col-span-1 lg:w-full'
-                        : ''
-                    }`}
+                    className="group flex h-full flex-col rounded-[1.15rem] border border-[#d8b25e]/14 bg-[#080705]/85 p-3 transition duration-500 hover:-translate-y-1 hover:border-[#f1d99b]/32 hover:bg-[#0c0a07] md:rounded-[1.5rem] md:p-6"
                   >
                     <div className="flex items-start justify-between gap-3 md:gap-5">
                       <p className="max-w-[150px] text-[8px] font-semibold uppercase leading-4 tracking-[0.16em] text-[#a77b32] md:max-w-[230px] md:text-[10px] md:leading-5 md:tracking-[0.22em]">
@@ -154,7 +171,7 @@ export default function ServicesPage() {
                       </div>
                     </div>
 
-                    <h2 className="font-display mt-4 text-xl font-semibold leading-[0.95] tracking-[-0.045em] text-[#f8f4ea] md:mt-5 md:text-[2.45rem]">
+                    <h2 className="font-display mt-4 text-xl font-semibold leading-[0.95] tracking-[-0.045em] text-[#f8f4ea] md:mt-5 md:text-[2.35rem]">
                       {service.title}
                     </h2>
 
@@ -162,7 +179,7 @@ export default function ServicesPage() {
                       {service.description}
                     </p>
 
-                    <div className="mt-5 hidden gap-5 md:grid">
+                    <div className="mt-5 hidden gap-5 md:grid md:grid-cols-2">
                       <ServiceList
                         title="What we build"
                         items={service.deliverables}
@@ -236,8 +253,8 @@ export default function ServicesPage() {
 
               <p className="mx-auto mt-4 max-w-2xl text-xs leading-6 text-[#b8b0a3] md:mt-5 md:text-sm md:leading-7">
                 Tell us where you are now. We’ll help identify whether your next
-                move should be data intelligence, a premium web experience, or
-                growth architecture.
+                move should be data intelligence, a premium web experience,
+                search visibility, or growth systems.
               </p>
 
               <div className="mt-5 md:mt-6">
