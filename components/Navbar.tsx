@@ -15,6 +15,10 @@ const navItems = [
     href: '/services',
   },
   {
+    label: 'Work',
+    href: '/work',
+  },
+  {
     label: 'Contact',
     href: '/contact',
   },
@@ -70,7 +74,7 @@ export default function Navbar() {
             </div>
           </Link>
 
-          <nav className="hidden items-center gap-8 md:flex">
+          <nav className="hidden items-center gap-7 md:flex">
             {visibleNavItems.map((item) => {
               const active = isActive(item.href);
 

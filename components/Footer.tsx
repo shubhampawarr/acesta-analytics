@@ -11,6 +11,10 @@ const footerLinks = [
     href: '/services',
   },
   {
+    label: 'Work',
+    href: '/work',
+  },
+  {
     label: 'Contact',
     href: '/contact',
   },
@@ -27,8 +31,8 @@ const footerLinks = [
 const services = [
   'Data Intelligence',
   'Premium Websites',
-  'Search & Growth',
-  'Business Dashboards',
+  'SEO Foundation',
+  'Growth Systems',
 ];
 
 export default function Footer() {
@@ -60,9 +64,9 @@ export default function Footer() {
               </Link>
 
               <p className="mt-4 max-w-md text-xs leading-6 text-[#a7a197] md:mt-5 md:text-sm md:leading-7">
-                Premium data intelligence, website development, and search-led
-                growth systems for businesses that want clarity, presence, and
-                structure.
+                Premium data intelligence, website development, SEO foundation,
+                and growth systems for businesses that want clarity, presence,
+                and structure.
               </p>
 
               <div className="mt-4 grid gap-2.5 text-xs text-[#b8b0a3] md:mt-5 md:gap-3 md:text-sm">
