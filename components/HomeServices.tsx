@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import {
+  ArrowRight,
   BarChart3,
   Globe2,
   SearchCheck,
@@ -9,51 +11,64 @@ import { Reveal, Stagger, StaggerItem } from '@/components/Reveal';
 const services = [
   {
     title: 'Data Intelligence',
-    description: 'Dashboards, reports, and business clarity.',
+    description: 'Dashboards and clarity.',
     icon: BarChart3,
   },
   {
     title: 'Web Experiences',
-    description: 'Premium websites built for trust and conversion.',
+    description: 'Premium websites.',
     icon: Globe2,
   },
   {
     title: 'SEO Foundation',
-    description: 'Metadata, structure, and visibility foundations.',
+    description: 'Search-ready structure.',
     icon: SearchCheck,
   },
   {
     title: 'Growth Systems',
-    description: 'Lead flow, conversion paths, and growth structure.',
+    description: 'Better enquiry flow.',
     icon: Workflow,
   },
 ];
 
 export default function HomeServices() {
   return (
-    <section className="relative flex min-h-screen items-center py-10 md:py-12">
+    <section className="relative flex min-h-screen items-center overflow-hidden py-10 md:py-12">
+      <div className="pointer-events-none absolute left-1/2 top-24 h-px w-[72%] -translate-x-1/2 gold-line opacity-50" />
+      <div className="pointer-events-none absolute bottom-24 left-1/2 h-px w-[72%] -translate-x-1/2 gold-line opacity-35" />
+
+      <div className="pointer-events-none absolute left-6 top-1/2 hidden h-[42%] w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-[#d8b25e]/30 to-transparent md:block" />
+      <div className="pointer-events-none absolute right-6 top-1/2 hidden h-[42%] w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-[#d8b25e]/30 to-transparent md:block" />
+
       <div className="premium-container">
         <div className="mx-auto max-w-6xl">
           <Reveal y={16}>
             <div className="text-center">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.38em] text-[#d8b25e] md:text-[11px]">
-                Services
-              </p>
+              <div className="mx-auto mb-4 flex items-center justify-center gap-3">
+                <span className="h-px w-10 bg-[#d8b25e]/45" />
+                <p className="text-[10px] font-semibold uppercase tracking-[0.38em] text-[#d8b25e] md:text-[11px]">
+                  Services
+                </p>
+                <span className="h-px w-10 bg-[#d8b25e]/45" />
+              </div>
 
-              <h2 className="font-display mx-auto mt-3 max-w-xl text-3xl font-semibold leading-[0.95] tracking-[-0.045em] text-[#f8f4ea] md:text-5xl">
-                Four ways we build business clarity.
+              <h2 className="font-display mx-auto max-w-2xl text-4xl font-semibold leading-[0.92] tracking-[-0.05em] text-[#f8f4ea] md:text-6xl">
+                Four focused ways to build sharper digital presence.
               </h2>
             </div>
           </Reveal>
 
-          <Stagger className="mx-auto mt-7 grid max-w-[560px] grid-cols-2 gap-3 md:mt-8 md:max-w-none md:grid-cols-4">
+          <Stagger className="mx-auto mt-8 grid max-w-[560px] grid-cols-2 gap-3 md:mt-10 md:max-w-none md:grid-cols-4 md:gap-4">
             {services.map((service) => {
               const Icon = service.icon;
 
               return (
                 <StaggerItem key={service.title}>
-                  <article className="group h-full rounded-[1.15rem] border border-[#d8b25e]/14 bg-[#080705]/75 px-3 py-4 text-center transition duration-500 hover:-translate-y-1 hover:border-[#f1d99b]/35 hover:bg-[#0c0a07] md:rounded-[1.25rem] md:px-4 md:py-5 lg:px-5">
-                    <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-full border border-[#d8b25e]/18 bg-[#d8b25e]/8 text-[#f1d99b] transition duration-500 group-hover:scale-110 group-hover:border-[#f1d99b]/45 md:h-9 md:w-9">
+                  <article className="group relative h-full overflow-hidden rounded-[1.15rem] border border-[#d8b25e]/14 bg-[#080705]/72 px-3 py-4 text-center transition duration-500 hover:-translate-y-1 hover:border-[#f1d99b]/35 hover:bg-[#0c0a07] md:rounded-[1.35rem] md:px-4 md:py-6">
+                    <div className="pointer-events-none absolute left-4 right-4 top-0 h-px bg-gradient-to-r from-transparent via-[#d8b25e]/45 to-transparent opacity-70" />
+                    <div className="pointer-events-none absolute bottom-0 left-4 right-4 h-px bg-gradient-to-r from-transparent via-[#d8b25e]/20 to-transparent" />
+
+                    <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-full border border-[#d8b25e]/18 bg-[#d8b25e]/8 text-[#f1d99b] transition duration-500 group-hover:scale-110 group-hover:border-[#f1d99b]/45 md:h-10 md:w-10">
                       <Icon className="h-3.5 w-3.5 md:h-4 md:w-4" />
                     </div>
 
@@ -61,7 +76,7 @@ export default function HomeServices() {
                       {service.title}
                     </h3>
 
-                    <p className="mx-auto mt-2 max-w-[150px] text-[11px] leading-4 text-[#a7a197] md:mt-3 md:max-w-xs md:text-xs md:leading-5 lg:text-sm">
+                    <p className="mx-auto mt-2 max-w-[130px] text-[11px] leading-4 text-[#a7a197] md:mt-3 md:text-xs md:leading-5">
                       {service.description}
                     </p>
                   </article>
@@ -70,20 +85,17 @@ export default function HomeServices() {
             })}
           </Stagger>
 
-          <Reveal delay={0.18} y={18}>
-            <div className="mx-auto mt-7 max-w-4xl rounded-[1.4rem] border border-[#d8b25e]/14 bg-[#080705]/70 px-5 py-5 text-center md:mt-8 md:rounded-[1.75rem] md:px-6 md:py-6">
-              <p className="font-display mx-auto max-w-3xl text-2xl font-semibold leading-[0.95] tracking-[-0.04em] text-[#f8f4ea] md:text-4xl">
-                This is not just design. Not just data. Not just traffic.
-              </p>
+          <Reveal delay={0.16} y={14}>
+            <div className="mt-8 flex flex-col items-center justify-center gap-4 md:mt-10">
+              <div className="h-px w-full max-w-md gold-line opacity-50" />
 
-              <div className="mx-auto mt-3 h-px w-full max-w-xs gold-line opacity-60 md:mt-4 md:max-w-md" />
-
-              <p className="mx-auto mt-3 max-w-2xl text-xs leading-5 text-[#b8b0a3] md:mt-4 md:text-sm md:leading-6">
-                It is a connected digital system: the numbers that reveal what
-                is happening, the website that creates trust, the search
-                foundation that improves discovery, and the growth structure
-                that turns attention into opportunities.
-              </p>
+              <Link
+                href="/services"
+                className="gold-button group inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold transition md:px-7 md:py-3.5"
+              >
+                Explore Services
+                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+              </Link>
             </div>
           </Reveal>
         </div>

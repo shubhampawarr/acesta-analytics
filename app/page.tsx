@@ -1,7 +1,6 @@
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import HomeServices from '@/components/HomeServices';
-import Services from '@/components/Services';
 import Process from '@/components/Process';
 import FinalCTA from '@/components/FinalCTA';
 import Footer from '@/components/Footer';
@@ -19,10 +18,6 @@ export default function Home() {
 
       <section className="min-h-[100dvh] md:snap-start md:snap-always">
         <HomeServices />
-      </section>
-
-      <section className="min-h-[100dvh] md:snap-start md:snap-always">
-        <Services />
       </section>
 
       <section className="min-h-[100dvh] md:snap-start md:snap-always">

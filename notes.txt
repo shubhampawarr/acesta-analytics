@@ -1,0 +1,6 @@
+Domain provider: GoDaddy
+Hosting/deployment: Vercel
+Email provider: GoDaddy
+Contact form sender: Resend
+Main website: https://www.acestaanalytics.com
+Business email: shubham@acestaanalytics.com
