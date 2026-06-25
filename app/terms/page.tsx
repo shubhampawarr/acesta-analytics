@@ -108,12 +108,12 @@ export default function TermsPage() {
                 </p>
               </div>
 
-              <div className="mt-10 rounded-[1.35rem] border border-[#d8b25e]/14 bg-black/25 p-5">
+              {/* <div className="mt-10 rounded-[1.35rem] border border-[#d8b25e]/14 bg-black/25 p-5">
                 <p className="text-xs leading-6 text-[#7d7568]">
                   This page is provided as a general website terms template and
                   should not be considered legal advice.
                 </p>
-              </div>
+              </div> */}
 
               <div className="mt-10">
                 <BackButton />
