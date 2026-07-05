@@ -69,8 +69,9 @@ export const metadata: Metadata = {
     images: ['/opengraph-image'],
   },
   icons: {
-    icon: '/icon',
-    apple: '/apple-icon',
+    icon: '/logos/acesta-logo-icon-light.png',
+    shortcut: '/logos/acesta-logo-icon-light.png',
+    apple: '/logos/acesta-logo-icon-light.png',
   },
 };
 
