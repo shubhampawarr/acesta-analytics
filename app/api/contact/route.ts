@@ -97,6 +97,20 @@ export async function POST(request: Request) {
       );
     }
 
+    // ---- NEW: fire n8n webhook for AI qualification + auto-reply to the lead ----
+    if (process.env.N8N_WEBHOOK_URL) {
+      try {
+        await fetch(process.env.N8N_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, phone, message, company, service }),
+        });
+      } catch (webhookError) {
+        console.error('n8n webhook failed:', webhookError);
+      }
+    }
+    // ---- END NEW ----
+
     return NextResponse.json({
       success: true,
       data,
