@@ -3,6 +3,7 @@ import { ViewTransition } from 'react';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { SmoothScroll } from '@/components/providers/SmoothScroll';
+import { Resolve } from '@/components/resolve/Resolve';
 import { SiteNav } from '@/components/shell/SiteNav';
 import { SiteFooter } from '@/components/shell/SiteFooter';
 import { geistMono, switzer } from './fonts';
@@ -65,6 +66,10 @@ export default function RootLayout({
     <html lang="en" className={`${switzer.variable} ${geistMono.variable}`}>
       <body>
         <SmoothScroll />
+
+        {/* The Resolve (§7) — mounted once here, never per section, so the
+            field travels between formations instead of resetting. */}
+        <Resolve />
 
         {/* Shell lives in the layout so the nav never remounts across routes —
             the void wipe anchors on it, and Phase 3 mounts the particle

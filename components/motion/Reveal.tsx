@@ -1,8 +1,28 @@
 'use client';
 
-import { useEffect, useRef, type ElementType, type ReactNode } from 'react';
+import {
+  useEffect,
+  useRef,
+  type ElementType,
+  type HTMLAttributes,
+  type ReactNode,
+  type Ref,
+} from 'react';
 
 import { useReducedMotion } from '@/lib/useReducedMotion';
+
+/**
+ * A polymorphic `as` typed as bare `ElementType` collapses its props to
+ * `never`. Narrowing to "some host element that takes HTML attributes and a
+ * ref" is enough for every call site here and keeps the JSX checked.
+ */
+type PolymorphicTag = React.ComponentType<
+  HTMLAttributes<HTMLElement> & {
+    ref?: Ref<HTMLElement>;
+    'data-reveal'?: string;
+    'data-stagger-group'?: string;
+  }
+>;
 
 /**
  * ACESTA-DESIGN.md §8. The trigger point is expressed as a bottom root-margin:
@@ -80,6 +100,7 @@ export function Reveal({
 }: RevealProps) {
   const ref = useRef<HTMLElement>(null);
   const reducedMotion = useReducedMotion();
+  const Component = Tag as PolymorphicTag;
 
   useRevealOnce(ref, !immediate && !reducedMotion, (element) => {
     element.style.transitionDelay = delay ? `${delay * 1000}ms` : '';
@@ -87,9 +108,13 @@ export function Reveal({
   });
 
   return (
-    <Tag ref={ref} className={className} data-reveal={immediate ? undefined : ''}>
+    <Component
+      ref={ref}
+      className={className}
+      data-reveal={immediate ? undefined : ''}
+    >
       {children}
-    </Tag>
+    </Component>
   );
 }
 
@@ -112,6 +137,7 @@ export function StaggerGroup({
 }: StaggerGroupProps) {
   const ref = useRef<HTMLElement>(null);
   const reducedMotion = useReducedMotion();
+  const Component = Tag as PolymorphicTag;
 
   useRevealOnce(ref, !reducedMotion, (element) => {
     const base = delay * 1000;
@@ -125,8 +151,8 @@ export function StaggerGroup({
   });
 
   return (
-    <Tag ref={ref} className={className} data-stagger-group="">
+    <Component ref={ref} className={className} data-stagger-group="">
       {children}
-    </Tag>
+    </Component>
   );
 }
