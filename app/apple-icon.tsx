@@ -1,4 +1,6 @@
 import { ImageResponse } from 'next/og';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 
 export const size = {
   width: 180,
@@ -7,43 +9,35 @@ export const size = {
 
 export const contentType = 'image/png';
 
-export default function AppleIcon() {
+export default async function AppleIcon() {
+  const switzer = await readFile(
+    join(process.cwd(), 'assets/fonts/Switzer-Regular.ttf')
+  );
+
   return new ImageResponse(
     (
       <div
         style={{
           width: '100%',
           height: '100%',
-          background:
-            'radial-gradient(circle at 30% 20%, #1a1308 0%, #030303 58%, #000000 100%)',
+          background: '#000000',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          border: '8px solid #d8b25e',
+          color: '#C9A961',
+          fontSize: 112,
+          letterSpacing: -7,
+          fontFamily: 'Switzer',
         }}
       >
-        <div
-          style={{
-            width: 116,
-            height: 116,
-            borderRadius: '50%',
-            border: '2px solid rgba(241,217,155,0.75)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#f1d99b',
-            fontSize: 48,
-            fontWeight: 700,
-            letterSpacing: '-5px',
-            fontFamily: 'Georgia, serif',
-          }}
-        >
-          AA
-        </div>
+        A
       </div>
     ),
     {
       ...size,
+      fonts: [
+        { name: 'Switzer', data: switzer, style: 'normal', weight: 400 },
+      ],
     }
   );
 }

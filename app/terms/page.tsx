@@ -1,6 +1,4 @@
 import type { Metadata } from 'next';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import BackButton from '@/components/BackButton';
 
 export const metadata: Metadata = {
@@ -13,7 +11,6 @@ export default function TermsPage() {
   return (
     <main className="relative min-h-screen overflow-hidden">
 
-      <Navbar />
 
       <section className="relative z-10 px-0 pb-16 pt-28 md:pb-20 md:pt-32">
         <div className="premium-container">
@@ -122,7 +119,6 @@ export default function TermsPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

@@ -1,7 +1,5 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import {
   ArrowRight,
   BarChart3,
@@ -127,7 +125,6 @@ export default function ServicesPage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-void">
 
-      <Navbar />
 
       <section className="relative z-10 px-0 pb-10 pt-24 md:pb-20 md:pt-32">
         <div className="premium-container">
@@ -270,7 +267,6 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }

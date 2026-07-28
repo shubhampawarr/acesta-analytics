@@ -1,7 +1,10 @@
 import type { Metadata, Viewport } from 'next';
+import { ViewTransition } from 'react';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { SmoothScroll } from '@/components/providers/SmoothScroll';
+import { SiteNav } from '@/components/shell/SiteNav';
+import { SiteFooter } from '@/components/shell/SiteFooter';
 import { geistMono, switzer } from './fonts';
 import './globals.css';
 
@@ -33,14 +36,6 @@ export const metadata: Metadata = {
       'Premium data, web, and search systems for businesses that want clarity, authority, and growth structure.',
     url: 'https://www.acestaanalytics.com',
     siteName: 'Acesta Analytics',
-    images: [
-      {
-        url: '/opengraph-image',
-        width: 1200,
-        height: 630,
-        alt: 'Acesta Analytics',
-      },
-    ],
     locale: 'en_IN',
     type: 'website',
   },
@@ -49,13 +44,10 @@ export const metadata: Metadata = {
     title: 'Acesta Analytics | Premium Data Intelligence Consulting',
     description:
       'Premium data, web, and search systems for businesses that want clarity, authority, and growth structure.',
-    images: ['/opengraph-image'],
   },
-  icons: {
-    icon: '/logos/acesta-logo-icon-light.png',
-    shortcut: '/logos/acesta-logo-icon-light.png',
-    apple: '/logos/acesta-logo-icon-light.png',
-  },
+  // No `icons` override: the icon.tsx / apple-icon.tsx / opengraph-image.tsx
+  // file conventions supply these, and an override here would pin the old
+  // pre-Decision-C artwork back over the re-cut versions.
 };
 
 export const viewport: Viewport = {
@@ -73,7 +65,19 @@ export default function RootLayout({
     <html lang="en" className={`${switzer.variable} ${geistMono.variable}`}>
       <body>
         <SmoothScroll />
-        {children}
+
+        {/* Shell lives in the layout so the nav never remounts across routes —
+            the void wipe anchors on it, and Phase 3 mounts the particle
+            system once against the same guarantee. */}
+        <SiteNav />
+
+        <ViewTransition>
+          <div>
+            {children}
+            <SiteFooter />
+          </div>
+        </ViewTransition>
+
         <Analytics />
         <SpeedInsights />
       </body>

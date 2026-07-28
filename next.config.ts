@@ -1,7 +1,10 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: {
+    // Powers the 400ms void wipe between routes (see globals.css).
+    viewTransition: true,
+  },
 };
 
 export default nextConfig;

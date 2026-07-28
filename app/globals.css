@@ -74,8 +74,18 @@
   --tracking-heading: -0.035em;
   --tracking-mono: 0.08em;
 
+  /* Spacing — NAMED keys only (§11). A numeric key such as --spacing-6 would
+     redefine Tailwind v4's built-in scale and silently rewrite every existing
+     p-6 / gap-8 / mt-10. These yield px-gutter, gap-section, p-vitrine. */
+  --spacing-gutter: 60px;
+  --spacing-gutter-sm: 24px;
+  --spacing-section: 180px;
+  --spacing-section-sm: 96px;
+  --spacing-vitrine: 36px;
+
   /* Shape — §4. Nothing else has a radius. Nothing has a shadow. */
   --radius-3xl: 24px;
+  --radius-full: 9999px;
 
   /* Motion — §8 */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -92,10 +102,8 @@
   --weight-display: 400;
   --weight-mono: 500;
 
-  /* Spacing ladder — §4, base unit 6px.
-     Deliberately NOT named --spacing-*: in Tailwind v4 that namespace
-     redefines the built-in numeric scale, which would silently rewrite every
-     p-6 / gap-8 / mt-10 already in the codebase. Same values, safe names. */
+  /* Fine 6px ladder — §10. Lives in :root, not @theme, so it can never
+     collide with Tailwind's numeric scale. Use via arbitrary values. */
   --space-6: 6px;
   --space-12: 12px;
   --space-18: 18px;
@@ -107,14 +115,14 @@
   --space-120: 120px;
   --space-180: 180px;
 
-  /* Layout — §4 */
+  /* Layout — §4. Responsive aliases over the @theme spacing keys, so the
+     container and the section rhythm read from one source. */
   --page-max-width: 1280px;
-  --gutter: var(--space-60);
-  --section-gap: var(--space-180);
+  --gutter: var(--spacing-gutter);
+  --section-gap: var(--spacing-section);
 
   /* Shape */
   --radius: var(--radius-3xl);
-  --radius-full: 9999px;
 
   /* Motion — §8 */
   --dur-micro: 200ms;
@@ -125,77 +133,80 @@
 
 @media (max-width: 768px) {
   :root {
-    --gutter: var(--space-24);
-    --section-gap: var(--space-96);
+    --gutter: var(--spacing-gutter-sm);
+    --section-gap: var(--spacing-section-sm);
   }
 }
 
 /* ---------------------------------------------------------------------------
-   Global defaults
+   Global defaults — in @layer base so component classes and utilities
+   always outrank element selectors like `a { color: inherit }`.
 --------------------------------------------------------------------------- */
 
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
+@layer base {
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
 
-html {
-  min-height: 100%;
-  background-color: var(--color-void);
-}
+  html {
+    min-height: 100%;
+    background-color: var(--color-void);
+  }
 
-body {
-  min-height: 100%;
-  margin: 0;
-  overflow-x: clip;
+  body {
+    min-height: 100%;
+    margin: 0;
+    overflow-x: clip;
 
-  /* §9: keep #000000 as every section background. The void is the design. */
-  background-color: var(--color-void);
-  color: var(--color-bone);
+    /* §9: keep #000000 as every section background. The void is the design. */
+    background-color: var(--color-void);
+    color: var(--color-bone);
 
-  font-family: var(--font-display);
-  font-weight: var(--weight-body);
-  font-size: var(--text-body);
-  line-height: 1.55;
-  font-feature-settings: 'ss01' 1;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
+    font-family: var(--font-display);
+    font-weight: var(--weight-body);
+    font-size: var(--text-body);
+    line-height: 1.55;
+    font-feature-settings: 'ss01' 1;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
 
-/* §3: hierarchy comes from scale and tracking, never from bold. */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: var(--weight-display);
-  letter-spacing: var(--tracking-display);
-}
+  /* §3: hierarchy comes from scale and tracking, never from bold. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: var(--weight-display);
+    letter-spacing: var(--tracking-display);
+  }
 
-/* §3: the instrument voice. Tabular, slashed zero, alternate glyphs. */
-.font-mono,
-code,
-kbd,
-samp,
-pre {
-  font-feature-settings: 'ss01' 1, 'cv01' 1, 'tnum' 1;
-  font-variant-numeric: tabular-nums;
-}
+  /* §3: the instrument voice. Tabular, slashed zero, alternate glyphs. */
+  .font-mono,
+  code,
+  kbd,
+  samp,
+  pre {
+    font-feature-settings: 'ss01' 1, 'cv01' 1, 'tnum' 1;
+    font-variant-numeric: tabular-nums;
+  }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 
-::selection {
-  background: rgba(201, 169, 97, 0.28);
-  color: var(--color-bone);
-}
+  ::selection {
+    background: rgba(201, 169, 97, 0.28);
+    color: var(--color-bone);
+  }
 
-:focus-visible {
-  outline: 2px solid var(--color-gold);
-  outline-offset: 3px;
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+  }
 }
 
 /* ---------------------------------------------------------------------------
@@ -236,7 +247,69 @@ html.lenis body {
   border-radius: var(--radius);
 }
 
-/* §5 Primary Action — Gold Pill. Flat fill, no gradient, no shadow. */
+/* §5 components. Declared in the components layer so Tailwind utilities at
+   call sites (e.g. `hidden md:inline-flex`) win conflicts, as they should. */
+@layer components {
+  /* §5 Primary Action — Gold Pill. One per viewport. */
+  .gold-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 24px;
+    border-radius: var(--radius);
+
+    background: var(--color-gold);
+    color: var(--color-void);
+
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: var(--weight-mono);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-mono);
+
+    transition:
+      background-color var(--dur-micro) var(--ease-out-expo),
+      box-shadow 300ms var(--ease-out-expo);
+  }
+
+  .gold-pill:hover {
+    background: var(--color-gold-bright);
+    box-shadow: var(--glow-gold);
+  }
+
+  /* §5 Ghost Link — no background, no border. Gold underline wipes in on hover. */
+  .ghost-link {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 2px;
+    font-size: 0.875rem;
+    color: var(--color-ash);
+    transition: color var(--dur-micro) var(--ease-out-expo);
+  }
+
+  .ghost-link::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--color-gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-micro) var(--ease-out-expo);
+  }
+
+  .ghost-link:hover {
+    color: var(--color-bone);
+  }
+
+  .ghost-link:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+/* Transitional. Remaining call sites are replaced in Phases 4–6. */
 .gold-button {
   background: var(--color-gold);
   color: var(--color-void);
@@ -282,6 +355,52 @@ html.lenis body {
 }
 
 /* ---------------------------------------------------------------------------
+   Page transitions — 400ms void wipe (Phase 2.3)
+
+   Native View Transitions, no animation library. The outgoing route falls to
+   the void over 160ms, the void holds, then the incoming route rises out of it.
+   On a pure black site the crossfade gap *is* the wipe.
+--------------------------------------------------------------------------- */
+
+::view-transition-old(root) {
+  animation: void-wipe-out 160ms var(--ease-out-expo) both;
+}
+
+::view-transition-new(root) {
+  animation: void-wipe-in 240ms var(--ease-out-expo) 160ms both;
+}
+
+@keyframes void-wipe-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes void-wipe-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* The nav is the fixed reference point; it must not wipe with the content. */
+[data-site-nav] {
+  view-transition-name: site-nav;
+}
+
+::view-transition-group(site-nav) {
+  animation: none;
+  z-index: 100;
+}
+
+::view-transition-old(site-nav) {
+  display: none;
+}
+
+::view-transition-new(site-nav) {
+  animation: none;
+}
+
+/* ---------------------------------------------------------------------------
    Reduced motion — §8. Hard requirement, not a nice-to-have.
 --------------------------------------------------------------------------- */
 
@@ -301,5 +420,12 @@ html.lenis body {
   [data-stagger-group] > * {
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
   }
 }

@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import { ArrowRight, BarChart3, Globe2, SearchCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -33,7 +31,6 @@ export default function AboutPage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-void">
 
-      <Navbar />
 
       <section className="relative z-10 px-0 pb-8 pt-[5.5rem] md:pb-16 md:pt-28">
         <div className="premium-container">
@@ -154,7 +151,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
   );
 }
