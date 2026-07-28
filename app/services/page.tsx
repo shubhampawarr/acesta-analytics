@@ -125,24 +125,23 @@ const engagementSteps = [
 
 export default function ServicesPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#030303]">
-      <div className="grid-bg pointer-events-none fixed inset-0 opacity-30" />
+    <main className="relative min-h-screen overflow-hidden bg-void">
 
       <Navbar />
 
       <section className="relative z-10 px-0 pb-10 pt-24 md:pb-20 md:pt-32">
         <div className="premium-container">
-          <div className="mx-auto max-w-7xl rounded-[1.5rem] border border-[#d8b25e]/12 bg-[#050403]/70 p-4 shadow-2xl shadow-black/30 md:rounded-[2.25rem] md:p-8 lg:p-10">
+          <div className="mx-auto max-w-7xl rounded-[1.5rem] border border-gold/12 bg-vitrine/70 p-4 shadow-2xl shadow-black/30 md:rounded-[2.25rem] md:p-8 lg:p-10">
             <div className="mx-auto max-w-5xl text-center">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#d8b25e] md:text-xs">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold md:text-xs">
                 Services
               </p>
 
-              <h1 className="font-display mx-auto mt-3 max-w-4xl text-4xl font-semibold leading-[0.9] tracking-[-0.055em] text-[#f8f4ea] md:mt-4 md:text-7xl">
+              <h1 className="font-display mx-auto mt-3 max-w-4xl text-4xl font-normal leading-[0.9] tracking-[-0.055em] text-bone md:mt-4 md:text-7xl">
                 Premium systems for clarity, presence, and growth.
               </h1>
 
-              <p className="mx-auto mt-4 max-w-2xl text-xs leading-6 text-[#b8b0a3] md:mt-6 md:text-base md:leading-8">
+              <p className="mx-auto mt-4 max-w-2xl text-xs leading-6 text-mist md:mt-6 md:text-base md:leading-8">
                 Acesta brings together data intelligence, premium web
                 experiences, search visibility, and growth systems for
                 businesses that want to look sharper, operate smarter, and
@@ -159,23 +158,23 @@ export default function ServicesPage() {
                 return (
                   <article
                     key={service.title}
-                    className="group flex h-full flex-col rounded-[1.15rem] border border-[#d8b25e]/14 bg-[#080705]/85 p-3 transition duration-500 hover:-translate-y-1 hover:border-[#f1d99b]/32 hover:bg-[#0c0a07] md:rounded-[1.5rem] md:p-6"
+                    className="group flex h-full flex-col rounded-[1.15rem] border border-gold/14 bg-vitrine/85 p-3 transition duration-500 hover:-translate-y-1 hover:border-gold-bright/32 hover:bg-vitrine md:rounded-[1.5rem] md:p-6"
                   >
                     <div className="flex items-start justify-between gap-3 md:gap-5">
-                      <p className="max-w-[150px] text-[8px] font-semibold uppercase leading-4 tracking-[0.16em] text-[#a77b32] md:max-w-[230px] md:text-[10px] md:leading-5 md:tracking-[0.22em]">
+                      <p className="max-w-[150px] text-[8px] font-semibold uppercase leading-4 tracking-[0.16em] text-gold-deep md:max-w-[230px] md:text-[10px] md:leading-5 md:tracking-[0.22em]">
                         {service.eyebrow}
                       </p>
 
-                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#d8b25e]/18 bg-[#d8b25e]/8 text-[#f1d99b] transition duration-500 group-hover:scale-110 group-hover:border-[#f1d99b]/45 md:h-9 md:w-9">
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-gold/18 bg-gold/8 text-gold-bright transition duration-500 group-hover:scale-110 group-hover:border-gold-bright/45 md:h-9 md:w-9">
                         <Icon className="h-3 w-3 md:h-4 md:w-4" />
                       </div>
                     </div>
 
-                    <h2 className="font-display mt-4 text-xl font-semibold leading-[0.95] tracking-[-0.045em] text-[#f8f4ea] md:mt-5 md:text-[2.35rem]">
+                    <h2 className="font-display mt-4 text-xl font-normal leading-[0.95] tracking-[-0.045em] text-bone md:mt-5 md:text-[2.35rem]">
                       {service.title}
                     </h2>
 
-                    <p className="mt-3 text-[10px] leading-4 text-[#a7a197] md:mt-4 md:text-sm md:leading-6">
+                    <p className="mt-3 text-[10px] leading-4 text-ash md:mt-4 md:text-sm md:leading-6">
                       {service.description}
                     </p>
 
@@ -194,7 +193,7 @@ export default function ServicesPage() {
                     <div className="mt-auto pt-5 md:pt-7">
                       <Link
                         href="/contact"
-                        className="group/link inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-[#d8b25e]/22 bg-[#d8b25e]/8 px-3 py-2.5 text-[10px] font-semibold text-[#f1d99b] transition hover:border-[#f1d99b]/45 hover:bg-[#d8b25e]/12 md:gap-2 md:px-5 md:py-3 md:text-sm"
+                        className="group/link inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-gold/22 bg-gold/8 px-3 py-2.5 text-[10px] font-semibold text-gold-bright transition hover:border-gold-bright/45 hover:bg-gold/12 md:gap-2 md:px-5 md:py-3 md:text-sm"
                       >
                         Discuss
                         <span className="hidden md:inline">this service</span>
@@ -206,18 +205,18 @@ export default function ServicesPage() {
               })}
             </div>
 
-            <div className="mt-4 rounded-[1.35rem] border border-[#d8b25e]/14 bg-[#080705]/75 p-4 md:mt-6 md:rounded-[1.5rem] md:p-7">
+            <div className="mt-4 rounded-[1.35rem] border border-gold/14 bg-vitrine/75 p-4 md:mt-6 md:rounded-[1.5rem] md:p-7">
               <div className="grid gap-5 lg:grid-cols-[0.7fr_1.3fr] lg:gap-7">
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#d8b25e] md:text-xs">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold md:text-xs">
                     Engagement
                   </p>
 
-                  <h2 className="font-display mt-3 max-w-xl text-3xl font-semibold leading-[0.92] tracking-[-0.05em] text-[#f8f4ea] md:text-5xl">
+                  <h2 className="font-display mt-3 max-w-xl text-3xl font-normal leading-[0.92] tracking-[-0.05em] text-bone md:text-5xl">
                     Simple outside. Structured underneath.
                   </h2>
 
-                  <p className="mt-3 max-w-md text-xs leading-5 text-[#a7a197] md:mt-4 md:text-sm md:leading-6">
+                  <p className="mt-3 max-w-md text-xs leading-5 text-ash md:mt-4 md:text-sm md:leading-6">
                     Every engagement is designed to be clear, practical, and
                     easy to understand before work begins.
                   </p>
@@ -227,13 +226,13 @@ export default function ServicesPage() {
                   {engagementSteps.map((step) => (
                     <article
                       key={step.title}
-                      className="rounded-[1rem] border border-[#d8b25e]/12 bg-black/20 p-3 md:rounded-[1.2rem] md:p-4"
+                      className="rounded-[1rem] border border-gold/12 bg-black/20 p-3 md:rounded-[1.2rem] md:p-4"
                     >
-                      <h3 className="font-display text-xl font-semibold tracking-[-0.035em] text-[#f8f4ea] md:text-2xl">
+                      <h3 className="font-display text-xl font-normal tracking-[-0.035em] text-bone md:text-2xl">
                         {step.title}
                       </h3>
 
-                      <p className="mt-2 text-[10px] leading-4 text-[#a7a197] md:text-xs md:leading-5">
+                      <p className="mt-2 text-[10px] leading-4 text-ash md:text-xs md:leading-5">
                         {step.description}
                       </p>
                     </article>
@@ -243,15 +242,15 @@ export default function ServicesPage() {
             </div>
 
             <div className="premium-card mt-4 rounded-[1.35rem] p-5 text-center md:mt-6 md:rounded-[1.75rem] md:p-8">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#d8b25e] md:text-xs">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold md:text-xs">
                 Start
               </p>
 
-              <h2 className="font-display mx-auto mt-3 max-w-3xl text-3xl font-semibold leading-[0.92] tracking-[-0.05em] text-[#f8f4ea] md:mt-4 md:text-5xl">
+              <h2 className="font-display mx-auto mt-3 max-w-3xl text-3xl font-normal leading-[0.92] tracking-[-0.05em] text-bone md:mt-4 md:text-5xl">
                 Need clarity on what your business should build first?
               </h2>
 
-              <p className="mx-auto mt-4 max-w-2xl text-xs leading-6 text-[#b8b0a3] md:mt-5 md:text-sm md:leading-7">
+              <p className="mx-auto mt-4 max-w-2xl text-xs leading-6 text-mist md:mt-5 md:text-sm md:leading-7">
                 Tell us where you are now. We’ll help identify whether your next
                 move should be data intelligence, a premium web experience,
                 search visibility, or growth systems.
@@ -279,15 +278,15 @@ export default function ServicesPage() {
 function ServiceList({ title, items }: { title: string; items: string[] }) {
   return (
     <div>
-      <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#a77b32]">
+      <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-deep">
         {title}
       </p>
 
       <div className="mt-3 grid gap-2">
         {items.map((item) => (
           <div key={item} className="flex gap-2.5">
-            <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#d8b25e]" />
-            <p className="text-sm leading-5 text-[#b8b0a3]">{item}</p>
+            <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold" />
+            <p className="text-sm leading-5 text-mist">{item}</p>
           </div>
         ))}
       </div>

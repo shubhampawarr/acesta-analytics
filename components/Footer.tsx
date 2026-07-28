@@ -37,7 +37,7 @@ const services = [
 
 export default function Footer() {
   return (
-    <footer className="relative z-10 border-t border-[#d8b25e]/10 bg-[#030303]/92">
+    <footer className="relative z-10 border-t border-gold/10 bg-void/92">
       <div className="premium-container">
         <div className="py-6 md:py-10">
           <div className="grid gap-6 md:grid-cols-[1.1fr_0.9fr] md:gap-10">
@@ -54,40 +54,40 @@ export default function Footer() {
                 />
 
                 <div className="leading-none">
-                  <p className="font-display text-xl font-semibold tracking-[-0.045em] text-[#f8f4ea] md:text-2xl">
+                  <p className="font-display text-xl font-normal tracking-[-0.045em] text-bone md:text-2xl">
                     Acesta
                   </p>
-                  <p className="mt-1 text-[8px] font-semibold uppercase tracking-[0.32em] text-[#d8b25e] md:text-[9px]">
+                  <p className="mt-1 text-[8px] font-semibold uppercase tracking-[0.32em] text-gold md:text-[9px]">
                     Analytics
                   </p>
                 </div>
               </Link>
 
-              <p className="mt-4 max-w-md text-xs leading-6 text-[#a7a197] md:mt-5 md:text-sm md:leading-7">
+              <p className="mt-4 max-w-md text-xs leading-6 text-ash md:mt-5 md:text-sm md:leading-7">
                 Premium data intelligence, website development, SEO foundation,
                 and growth systems for businesses that want clarity, presence,
                 and structure.
               </p>
 
-              <div className="mt-4 grid gap-2.5 text-xs text-[#b8b0a3] md:mt-5 md:gap-3 md:text-sm">
+              <div className="mt-4 grid gap-2.5 text-xs text-mist md:mt-5 md:gap-3 md:text-sm">
                 <a
                   href="mailto:shubham@acestaanalytics.com"
-                  className="flex items-center gap-2.5 transition hover:text-[#f1d99b] md:gap-3"
+                  className="flex items-center gap-2.5 transition hover:text-gold-bright md:gap-3"
                 >
-                  <Mail className="h-3.5 w-3.5 shrink-0 text-[#d8b25e] md:h-4 md:w-4" />
+                  <Mail className="h-3.5 w-3.5 shrink-0 text-gold md:h-4 md:w-4" />
                   <span className="break-all">shubham@acestaanalytics.com</span>
                 </a>
 
                 <a
                   href="tel:+919869371603"
-                  className="flex items-center gap-2.5 transition hover:text-[#f1d99b] md:gap-3"
+                  className="flex items-center gap-2.5 transition hover:text-gold-bright md:gap-3"
                 >
-                  <Phone className="h-3.5 w-3.5 shrink-0 text-[#d8b25e] md:h-4 md:w-4" />
+                  <Phone className="h-3.5 w-3.5 shrink-0 text-gold md:h-4 md:w-4" />
                   +91 98693 71603
                 </a>
 
                 <p className="flex items-start gap-2.5 md:gap-3">
-                  <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#d8b25e] md:h-4 md:w-4" />
+                  <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold md:h-4 md:w-4" />
                   Mumbai, Maharashtra
                 </p>
               </div>
@@ -95,7 +95,7 @@ export default function Footer() {
 
             <div className="grid grid-cols-2 gap-4 md:justify-self-end md:gap-8">
               <div>
-                <p className="text-[9px] font-semibold uppercase tracking-[0.24em] text-[#d8b25e] md:text-[10px] md:tracking-[0.28em]">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.24em] text-gold md:text-[10px] md:tracking-[0.28em]">
                   Pages
                 </p>
 
@@ -104,7 +104,7 @@ export default function Footer() {
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="text-xs text-[#a7a197] transition hover:text-[#f1d99b] md:text-sm"
+                      className="text-xs text-ash transition hover:text-gold-bright md:text-sm"
                     >
                       {link.label}
                     </Link>
@@ -113,11 +113,11 @@ export default function Footer() {
               </div>
 
               <div>
-                <p className="text-[9px] font-semibold uppercase tracking-[0.24em] text-[#d8b25e] md:text-[10px] md:tracking-[0.28em]">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.24em] text-gold md:text-[10px] md:tracking-[0.28em]">
                   Work
                 </p>
 
-                <div className="mt-3 grid gap-2.5 text-xs text-[#a7a197] md:mt-4 md:gap-3 md:text-sm">
+                <div className="mt-3 grid gap-2.5 text-xs text-ash md:mt-4 md:gap-3 md:text-sm">
                   {services.map((service) => (
                     <p key={service}>{service}</p>
                   ))}
@@ -126,8 +126,8 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="mt-6 border-t border-[#d8b25e]/10 pt-4 md:mt-8 md:pt-5">
-            <div className="flex flex-col gap-2 text-[10px] leading-5 text-[#7d7568] md:flex-row md:items-center md:justify-between md:text-xs">
+          <div className="mt-6 border-t border-gold/10 pt-4 md:mt-8 md:pt-5">
+            <div className="flex flex-col gap-2 text-[10px] leading-5 text-ash md:flex-row md:items-center md:justify-between md:text-xs">
               <p>
                 © {new Date().getFullYear()} Acesta Analytics. All rights
                 reserved.

@@ -11,8 +11,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-[#030303]">
-      <div className="grid-bg pointer-events-none fixed inset-0 opacity-30" />
+    <main className="relative min-h-screen overflow-x-hidden bg-void">
 
       <Navbar />
       <ContactPageClient />

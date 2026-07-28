@@ -1,16 +1,138 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Acesta Analytics design tokens — ACESTA-DESIGN.md §10 / §11
+   This is the single source of truth. Do not introduce a second colour,
+   type or spacing system anywhere in the codebase.
+--------------------------------------------------------------------------- */
+
+@theme {
+  /* Colour — §2 */
+  --color-void: #000000;
+  --color-vitrine: #0a0a0a;
+  --color-bone: #ffffff;
+  --color-ash: #9a9a9a;
+  --color-mist: #bdbdbd;
+  --color-gold: #c9a961;
+  --color-gold-bright: #f2dfa8;
+  --color-gold-deep: #6e5a28;
+  --color-steel: #5b8fb9;
+
+  /* Type — families. next/font supplies --font-switzer / --font-geist-mono.
+     Swap path (§3): to move to PPNeueMontreal, change --font-display only. */
+  --font-display:
+    var(--font-switzer), ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    Roboto, sans-serif;
+  --font-mono:
+    var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Type — scale, with line-height and tracking bound per §3 */
+  --text-display: clamp(3.5rem, 9vw, 7.0625rem);
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.04em;
+
+  --text-heading-lg: clamp(2.75rem, 6.5vw, 4.875rem);
+  --text-heading-lg--line-height: 1.1;
+  --text-heading-lg--letter-spacing: -0.04em;
+
+  --text-heading: clamp(2rem, 4.5vw, 3rem);
+  --text-heading--line-height: 1.1;
+  --text-heading--letter-spacing: -0.035em;
+
+  --text-heading-sm: clamp(1.75rem, 3.5vw, 2.625rem);
+  --text-heading-sm--line-height: 1.2;
+  --text-heading-sm--letter-spacing: -0.04em;
+
+  --text-subheading: clamp(1.5rem, 2.5vw, 2.25rem);
+  --text-subheading--line-height: 1.2;
+  --text-subheading--letter-spacing: -0.02em;
+
+  --text-heading-xs: 1.6875rem;
+  --text-heading-xs--line-height: 1;
+  --text-heading-xs--letter-spacing: -0.02em;
+
+  --text-heading-2xs: 1.5rem;
+  --text-heading-2xs--line-height: 1.25;
+  --text-heading-2xs--letter-spacing: -0.02em;
+
+  --text-body: clamp(1rem, 1.2vw, 1.125rem);
+  --text-body--line-height: 1.55;
+
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.5;
+
+  --text-mono-label: 0.75rem;
+  --text-mono-label--line-height: 1.2;
+  --text-mono-label--letter-spacing: 0.08em;
+
+  --text-mono-metric: clamp(1.75rem, 3vw, 2.5rem);
+  --text-mono-metric--line-height: 1;
+  --text-mono-metric--letter-spacing: -0.02em;
+
+  /* Type — tracking */
+  --tracking-display: -0.04em;
+  --tracking-heading: -0.035em;
+  --tracking-mono: 0.08em;
+
+  /* Shape — §4. Nothing else has a radius. Nothing has a shadow. */
+  --radius-3xl: 24px;
+
+  /* Motion — §8 */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-morph: cubic-bezier(0.65, 0, 0.35, 1);
+}
 
 :root {
-  --background: #030303;
-  --foreground: #f8f4ea;
-  --muted: #a7a197;
-  --card: #0b0a08;
-  --border: rgba(232, 197, 124, 0.14);
-  --gold: #d8b25e;
-  --gold-soft: #f1d99b;
-  --gold-muted: #a77b32;
-  --cream: #f8f4ea;
+  /* Strokes & glow — §2. The hairline is permitted on vitrine surfaces only. */
+  --stroke-hairline: 1px solid rgba(201, 169, 97, 0.12);
+  --glow-gold: 0 0 60px rgba(201, 169, 97, 0.15);
+
+  /* Type — weights. §3: headlines 400, body 200, mono labels 500. */
+  --weight-body: 200;
+  --weight-display: 400;
+  --weight-mono: 500;
+
+  /* Spacing ladder — §4, base unit 6px.
+     Deliberately NOT named --spacing-*: in Tailwind v4 that namespace
+     redefines the built-in numeric scale, which would silently rewrite every
+     p-6 / gap-8 / mt-10 already in the codebase. Same values, safe names. */
+  --space-6: 6px;
+  --space-12: 12px;
+  --space-18: 18px;
+  --space-24: 24px;
+  --space-30: 30px;
+  --space-36: 36px;
+  --space-60: 60px;
+  --space-96: 96px;
+  --space-120: 120px;
+  --space-180: 180px;
+
+  /* Layout — §4 */
+  --page-max-width: 1280px;
+  --gutter: var(--space-60);
+  --section-gap: var(--space-180);
+
+  /* Shape */
+  --radius: var(--radius-3xl);
+  --radius-full: 9999px;
+
+  /* Motion — §8 */
+  --dur-micro: 200ms;
+  --dur-reveal: 700ms;
+  --dur-morph: 1400ms;
+  --stagger: 60ms;
 }
+
+@media (max-width: 768px) {
+  :root {
+    --gutter: var(--space-24);
+    --section-gap: var(--space-96);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Global defaults
+--------------------------------------------------------------------------- */
 
 * {
   box-sizing: border-box;
@@ -19,28 +141,46 @@
 
 html {
   min-height: 100%;
-  scroll-behavior: smooth;
-  background: #030303;
-  background-color: #030303;
-  overflow-x: hidden;
+  background-color: var(--color-void);
 }
 
 body {
   min-height: 100%;
   margin: 0;
-  overflow-x: hidden;
-  background:
-    radial-gradient(circle at 20% 10%, rgba(216, 178, 94, 0.12), transparent 28%),
-    radial-gradient(circle at 80% 20%, rgba(167, 123, 50, 0.1), transparent 30%),
-    radial-gradient(circle at 50% 100%, rgba(216, 178, 94, 0.08), transparent 34%),
-    linear-gradient(180deg, #030303 0%, #080705 48%, #030303 100%);
-  background-color: #030303;
-  color: var(--foreground);
-  font-family: var(--font-body), Arial, Helvetica, sans-serif;
+  overflow-x: clip;
+
+  /* §9: keep #000000 as every section background. The void is the design. */
+  background-color: var(--color-void);
+  color: var(--color-bone);
+
+  font-family: var(--font-display);
+  font-weight: var(--weight-body);
+  font-size: var(--text-body);
+  line-height: 1.55;
+  font-feature-settings: 'ss01' 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-main {
-  background-color: #030303;
+/* §3: hierarchy comes from scale and tracking, never from bold. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: var(--weight-display);
+  letter-spacing: var(--tracking-display);
+}
+
+/* §3: the instrument voice. Tabular, slashed zero, alternate glyphs. */
+.font-mono,
+code,
+kbd,
+samp,
+pre {
+  font-feature-settings: 'ss01' 1, 'cv01' 1, 'tnum' 1;
+  font-variant-numeric: tabular-nums;
 }
 
 a {
@@ -49,105 +189,117 @@ a {
 }
 
 ::selection {
-  background: rgba(216, 178, 94, 0.28);
-  color: #ffffff;
+  background: rgba(201, 169, 97, 0.28);
+  color: var(--color-bone);
 }
 
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+   Lenis — required host rules (mirrors lenis/dist/lenis.css)
+--------------------------------------------------------------------------- */
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Layout primitives
+--------------------------------------------------------------------------- */
+
 .premium-container {
-  width: min(1180px, calc(100% - 32px));
+  width: min(var(--page-max-width), calc(100% - (2 * var(--gutter))));
   margin: 0 auto;
 }
 
+/* Transitional surface. Phases 4–6 delete the remaining call sites; §5 permits
+   exactly one container (the vitrine) and only for service-proof artifacts. */
 .premium-card {
-  border: 1px solid var(--border);
-  background:
-    linear-gradient(180deg, rgba(232, 197, 124, 0.08), rgba(232, 197, 124, 0.025)),
-    rgba(8, 7, 5, 0.84);
-  box-shadow:
-    0 28px 90px rgba(0, 0, 0, 0.48),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(20px);
+  background: var(--color-vitrine);
+  border: var(--stroke-hairline);
+  border-radius: var(--radius);
 }
 
-.grid-bg {
-  background-image:
-    linear-gradient(rgba(232, 197, 124, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(232, 197, 124, 0.045) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: linear-gradient(to bottom, black, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, black, transparent);
-}
-
-.gradient-text {
-  background: linear-gradient(90deg, #ffffff, #f1d99b, #d8b25e);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.font-display {
-  font-family: var(--font-display), serif;
-}
-
-.gold-line {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(216, 178, 94, 0.8),
-    transparent
-  );
-}
-
+/* §5 Primary Action — Gold Pill. Flat fill, no gradient, no shadow. */
 .gold-button {
-  background: linear-gradient(135deg, #f1d99b 0%, #d8b25e 42%, #9f7229 100%);
-  color: #090806;
-  box-shadow:
-    0 18px 45px rgba(216, 178, 94, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  background: var(--color-gold);
+  color: var(--color-void);
+  font-family: var(--font-mono);
+  font-weight: var(--weight-mono);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono);
+  transition:
+    background-color var(--dur-micro) var(--ease-out-expo),
+    box-shadow var(--dur-reveal) var(--ease-out-expo);
 }
 
 .gold-button:hover {
-  filter: brightness(1.08);
+  background: var(--color-gold-bright);
+  box-shadow: var(--glow-gold);
 }
 
-.luxury-border {
-  border: 1px solid rgba(232, 197, 124, 0.16);
+/* Transitional hairline divider, retained until Phases 4–6 remove call sites. */
+.gold-line {
+  background: var(--color-gold-deep);
 }
 
-.luxury-glow {
-  box-shadow:
-    0 0 80px rgba(216, 178, 94, 0.12),
-    0 0 160px rgba(216, 178, 94, 0.06);
+/* ---------------------------------------------------------------------------
+   Motion primitives — resting states (§8)
+
+   Owned by CSS rather than JS so that the reduced-motion override below is
+   authoritative from the very first paint, with no hydration flash.
+--------------------------------------------------------------------------- */
+
+[data-reveal],
+[data-stagger-group] > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity var(--dur-reveal) var(--ease-out-expo),
+    transform var(--dur-reveal) var(--ease-out-expo);
 }
 
-@keyframes luxuryPulse {
-  0%,
-  100% {
-    opacity: 0.45;
-    transform: scale(1);
+[data-reveal][data-revealed],
+[data-stagger-group] > [data-revealed] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced motion — §8. Hard requirement, not a nice-to-have.
+--------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 
-  50% {
-    opacity: 0.75;
-    transform: scale(1.08);
+  /* All transforms become instant opacity changes: the composition is simply
+     already there. No tween is ever created — see useReducedMotion. */
+  [data-reveal],
+  [data-stagger-group] > * {
+    opacity: 1 !important;
+    transform: none !important;
   }
-}
-
-@keyframes softFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-.luxury-pulse {
-  animation: luxuryPulse 7s ease-in-out infinite;
-}
-
-.soft-float {
-  animation: softFloat 6s ease-in-out infinite;
 }

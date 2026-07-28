@@ -66,24 +66,23 @@ const projects = [
 
 export default function WorkPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#030303]">
-      <div className="grid-bg pointer-events-none fixed inset-0 opacity-30" />
+    <main className="relative min-h-screen overflow-hidden bg-void">
 
       <Navbar />
 
       <section className="relative z-10 px-0 pb-10 pt-24 md:pb-20 md:pt-32">
         <div className="premium-container">
-          <div className="mx-auto max-w-7xl rounded-[1.5rem] border border-[#d8b25e]/12 bg-[#050403]/70 p-4 shadow-2xl shadow-black/30 md:rounded-[2.25rem] md:p-8 lg:p-10">
+          <div className="mx-auto max-w-7xl rounded-[1.5rem] border border-gold/12 bg-vitrine/70 p-4 shadow-2xl shadow-black/30 md:rounded-[2.25rem] md:p-8 lg:p-10">
             <div className="mx-auto max-w-5xl text-center">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#d8b25e] md:text-xs">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold md:text-xs">
                 Selected Work
               </p>
 
-              <h1 className="font-display mx-auto mt-3 max-w-4xl text-4xl font-semibold leading-[0.9] tracking-[-0.055em] text-[#f8f4ea] md:mt-4 md:text-7xl">
+              <h1 className="font-display mx-auto mt-3 max-w-4xl text-4xl font-normal leading-[0.9] tracking-[-0.055em] text-bone md:mt-4 md:text-7xl">
                 Built work that shows clarity, presence, and execution.
               </h1>
 
-              <p className="mx-auto mt-4 max-w-2xl text-xs leading-6 text-[#b8b0a3] md:mt-6 md:text-base md:leading-8">
+              <p className="mx-auto mt-4 max-w-2xl text-xs leading-6 text-mist md:mt-6 md:text-base md:leading-8">
                 A selection of client projects, business concepts, and creative
                 web experiences built to demonstrate strategy, design,
                 development, and digital execution.
@@ -99,37 +98,37 @@ export default function WorkPage() {
                 return (
                   <article
                     key={project.title}
-                    className="group flex h-full flex-col rounded-[1.25rem] border border-[#d8b25e]/14 bg-[#080705]/85 p-4 transition duration-500 hover:-translate-y-1 hover:border-[#f1d99b]/32 hover:bg-[#0c0a07] md:rounded-[1.5rem] md:p-6"
+                    className="group flex h-full flex-col rounded-[1.25rem] border border-gold/14 bg-vitrine/85 p-4 transition duration-500 hover:-translate-y-1 hover:border-gold-bright/32 hover:bg-vitrine md:rounded-[1.5rem] md:p-6"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[#a77b32] md:text-[10px]">
+                        <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-gold-deep md:text-[10px]">
                           {project.category}
                         </p>
 
-                        <h2 className="font-display mt-3 text-3xl font-semibold leading-[0.95] tracking-[-0.045em] text-[#f8f4ea] md:text-4xl">
+                        <h2 className="font-display mt-3 text-3xl font-normal leading-[0.95] tracking-[-0.045em] text-bone md:text-4xl">
                           {project.title}
                         </h2>
                       </div>
 
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#d8b25e]/18 bg-[#d8b25e]/8 text-[#f1d99b] transition duration-500 group-hover:scale-110 group-hover:border-[#f1d99b]/45">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gold/18 bg-gold/8 text-gold-bright transition duration-500 group-hover:scale-110 group-hover:border-gold-bright/45">
                         <Icon className="h-4 w-4" />
                       </div>
                     </div>
 
-                    <div className="mt-4 inline-flex w-fit rounded-full border border-[#d8b25e]/16 bg-[#d8b25e]/8 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#f1d99b]">
+                    <div className="mt-4 inline-flex w-fit rounded-full border border-gold/16 bg-gold/8 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-gold-bright">
                       {project.status}
                     </div>
 
-                    <p className="mt-4 text-xs leading-6 text-[#a7a197] md:text-sm md:leading-7">
+                    <p className="mt-4 text-xs leading-6 text-ash md:text-sm md:leading-7">
                       {project.description}
                     </p>
 
                     <div className="mt-5 grid gap-2">
                       {project.highlights.map((item) => (
                         <div key={item} className="flex items-center gap-2.5">
-                          <span className="h-1.5 w-1.5 rounded-full bg-[#d8b25e]" />
-                          <p className="text-xs text-[#b8b0a3] md:text-sm">
+                          <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+                          <p className="text-xs text-mist md:text-sm">
                             {item}
                           </p>
                         </div>
@@ -141,7 +140,7 @@ export default function WorkPage() {
                         href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group/link inline-flex w-full items-center justify-center gap-2 rounded-full border border-[#d8b25e]/22 bg-[#d8b25e]/8 px-5 py-3 text-sm font-semibold text-[#f1d99b] transition hover:border-[#f1d99b]/45 hover:bg-[#d8b25e]/12"
+                        className="group/link inline-flex w-full items-center justify-center gap-2 rounded-full border border-gold/22 bg-gold/8 px-5 py-3 text-sm font-semibold text-gold-bright transition hover:border-gold-bright/45 hover:bg-gold/12"
                       >
                         View Live Project
                         <ExternalLink className="h-4 w-4 transition group-hover/link:translate-x-1" />
@@ -153,15 +152,15 @@ export default function WorkPage() {
             </div>
 
             <div className="premium-card mt-5 rounded-[1.35rem] p-5 text-center md:mt-7 md:rounded-[1.75rem] md:p-8">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#d8b25e] md:text-xs">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold md:text-xs">
                 Build With Us
               </p>
 
-              <h2 className="font-display mx-auto mt-3 max-w-3xl text-3xl font-semibold leading-[0.92] tracking-[-0.05em] text-[#f8f4ea] md:text-5xl">
+              <h2 className="font-display mx-auto mt-3 max-w-3xl text-3xl font-normal leading-[0.92] tracking-[-0.05em] text-bone md:text-5xl">
                 Want your business to look this sharp online?
               </h2>
 
-              <p className="mx-auto mt-4 max-w-2xl text-xs leading-6 text-[#b8b0a3] md:text-sm md:leading-7">
+              <p className="mx-auto mt-4 max-w-2xl text-xs leading-6 text-mist md:text-sm md:leading-7">
                 Acesta Analytics can help you build a premium website, clearer
                 digital structure, and a stronger enquiry flow.
               </p>

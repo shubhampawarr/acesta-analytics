@@ -1,26 +1,9 @@
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, IBM_Plex_Mono, Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { SmoothScroll } from '@/components/providers/SmoothScroll';
+import { geistMono, switzer } from './fonts';
 import './globals.css';
-
-const display = Cormorant_Garamond({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-display',
-});
-
-const body = Inter({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-body',
-});
-
-const mono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-mono',
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.acestaanalytics.com'),
@@ -76,7 +59,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#030303',
+  themeColor: '#000000',
   width: 'device-width',
   initialScale: 1,
 };
@@ -87,11 +70,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${display.variable} ${body.variable} ${mono.variable}`}
-    >
+    <html lang="en" className={`${switzer.variable} ${geistMono.variable}`}>
       <body>
+        <SmoothScroll />
         {children}
         <Analytics />
         <SpeedInsights />

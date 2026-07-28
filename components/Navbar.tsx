@@ -49,7 +49,7 @@ export default function Navbar() {
   }
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-50 border-b border-[#d8b25e]/10 bg-[#030303]/82 backdrop-blur-2xl">
+    <header className="fixed left-0 right-0 top-0 z-50 border-b border-gold/10 bg-void/82 backdrop-blur-2xl">
       <div className="premium-container">
         <div className="flex h-20 items-center justify-between">
           <Link
@@ -65,10 +65,10 @@ export default function Navbar() {
             />
 
             <div className="leading-none">
-              <p className="font-display text-xl font-semibold tracking-[-0.045em] text-[#f8f4ea] md:text-2xl">
+              <p className="font-display text-xl font-normal tracking-[-0.045em] text-bone md:text-2xl">
                 Acesta
               </p>
-              <p className="mt-1 text-[8px] font-semibold uppercase tracking-[0.32em] text-[#d8b25e] md:text-[9px]">
+              <p className="mt-1 text-[8px] font-semibold uppercase tracking-[0.32em] text-gold md:text-[9px]">
                 Analytics
               </p>
             </div>
@@ -84,14 +84,14 @@ export default function Navbar() {
                   href={item.href}
                   className={`relative text-sm font-medium transition ${
                     active
-                      ? 'text-[#f1d99b]'
-                      : 'text-[#b8b0a3] hover:text-[#f8f4ea]'
+                      ? 'text-gold-bright'
+                      : 'text-mist hover:text-bone'
                   }`}
                 >
                   {item.label}
 
                   {active && (
-                    <span className="absolute -bottom-2 left-0 h-px w-full bg-[#d8b25e]" />
+                    <span className="absolute -bottom-2 left-0 h-px w-full bg-gold" />
                   )}
                 </Link>
               );
@@ -104,7 +104,7 @@ export default function Navbar() {
               className={`rounded-full px-5 py-2.5 text-sm font-semibold transition ${
                 isActive('/contact')
                   ? 'gold-button'
-                  : 'border border-[#d8b25e]/18 bg-white/[0.025] text-[#f8f4ea] hover:border-[#f1d99b]/40 hover:bg-[#d8b25e]/8'
+                  : 'border border-gold/18 bg-white/[0.025] text-bone hover:border-gold-bright/40 hover:bg-gold/8'
               }`}
             >
               Book a Call
@@ -114,7 +114,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setIsOpen((current) => !current)}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d8b25e]/16 bg-white/[0.025] text-[#f8f4ea] md:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-gold/16 bg-white/[0.025] text-bone md:hidden"
             aria-label="Toggle navigation menu"
           >
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -123,7 +123,7 @@ export default function Navbar() {
       </div>
 
       {isOpen && (
-        <div className="border-t border-[#d8b25e]/10 bg-[#030303]/96 px-4 pb-5 pt-3 backdrop-blur-2xl md:hidden">
+        <div className="border-t border-gold/10 bg-void/96 px-4 pb-5 pt-3 backdrop-blur-2xl md:hidden">
           <div className="grid gap-2">
             {visibleNavItems.map((item) => {
               const active = isActive(item.href);
@@ -135,8 +135,8 @@ export default function Navbar() {
                   onClick={() => setIsOpen(false)}
                   className={`rounded-2xl px-4 py-3 text-sm font-semibold transition ${
                     active
-                      ? 'border border-[#d8b25e]/24 bg-[#d8b25e]/10 text-[#f1d99b]'
-                      : 'border border-transparent text-[#b8b0a3] hover:border-[#d8b25e]/16 hover:bg-[#d8b25e]/8 hover:text-[#f8f4ea]'
+                      ? 'border border-gold/24 bg-gold/10 text-gold-bright'
+                      : 'border border-transparent text-mist hover:border-gold/16 hover:bg-gold/8 hover:text-bone'
                   }`}
                 >
                   {item.label}
@@ -150,7 +150,7 @@ export default function Navbar() {
               className={`mt-2 rounded-full px-5 py-3 text-center text-sm font-bold transition ${
                 isActive('/contact')
                   ? 'gold-button'
-                  : 'border border-[#d8b25e]/18 bg-white/[0.025] text-[#f8f4ea] hover:border-[#f1d99b]/40 hover:bg-[#d8b25e]/8'
+                  : 'border border-gold/18 bg-white/[0.025] text-bone hover:border-gold-bright/40 hover:bg-gold/8'
               }`}
             >
               Book a Call
