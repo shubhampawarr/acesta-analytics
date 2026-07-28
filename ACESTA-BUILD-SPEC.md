@@ -62,6 +62,19 @@ Re-cut `app/icon.tsx`, `app/apple-icon.tsx` and `app/opengraph-image.tsx` to the
 
 ---
 
+## Decisions log — resolved after Phase 2
+
+**I. Uninstall framer-motion.** Zero call sites remain and none are planned; CSS covered the overlay, stagger, wipe and nav fade. The bundle impact is nil either way — unimported packages don't ship — so this is dependency hygiene, not performance. Remove it so it isn't reached for out of habit in later phases. If Phase 5 genuinely needs it, reinstalling is trivial.
+
+**J. Keep the View Transitions approach, with conditions.** The technique is correct and same-document transitions are now Baseline (Chrome 111+, Safari 18+, Firefox 144+). But `experimental.viewTransition` is marked "not recommended for production" in the Next.js 16 docs, and React's `<ViewTransition>` ships only in Canary/Experimental channels. Therefore:
+- Verify the wipe against a **production build** (`next build && next start`), not `next dev`. There is a known failure mode where view transitions work in dev and silently stop after build.
+- Add to Phase 7: confirm graceful degradation in a browser without support — navigation must remain correct, just un-animated.
+- If it proves unreliable, fall back to calling `document.startViewTransition` directly. That is the stable browser API and needs no experimental flag.
+
+**K. Do the Next.js upgrade before Phase 5, not after.** The `next` advisory from the Phase 1 audit is still open, and an experimental React API (per J) is precisely what a framework bump breaks. Land the upgrade as its own isolated commit, re-run the full Lighthouse set, and re-verify the page wipe on a production build. Do it while the diff is small.
+
+---
+
 ## Dependencies to install
 
 ```bash
@@ -152,7 +165,26 @@ Implement formations as target position buffers and lerp between them. Do not de
 - `prefers-reduced-motion`: render a single **static** resolved formation, no animation loop.
 - Must hold 60fps on desktop and not drop below 30fps on a mid-range Android.
 
-**Acceptance:** the morph between formations is legible and smooth; the system is clearly one continuous object across the page; mobile does not stutter.
+**Hard gates — Phase 3 does not close until all four pass:**
+
+Phase 2 closed at mobile perf 96 / LCP 2.80s / TBT 22ms. That headroom exists specifically to absorb this phase, and it is not a licence to spend all of it.
+
+| Metric | Ceiling |
+|---|---|
+| `/` mobile performance | ≥ 90 (median of 3) |
+| `/` mobile LCP | ≤ 3.2s |
+| `/` mobile TBT | ≤ 200ms |
+| Desktop performance | ≥ 98 |
+
+- The canvas must never be in the LCP path. Dynamic import with `ssr: false`, and do not mount until after first paint. If LCP rises at all, the canvas is mounting too early.
+- **Test on a real mid-range Android device, not only Lighthouse's emulated throttling.** Emulation does not model actual GPU limits, and most prospects will open this site on a mid-range Android on an Indian mobile network. If no device is available, say so explicitly rather than reporting emulated numbers as if they were device numbers.
+- If a gate fails, reduce particle count before reducing visual quality elsewhere. 4,000 is a target, not a requirement — 2,500 particles that hold frame rate beat 4,000 that stutter.
+
+**Review deliverables:**
+- A dev-only formation switcher (query param or keyboard shortcut) that jumps directly to any of the five formations without scrolling the page. This is for human review and can ship behind a `NODE_ENV` check.
+- A still screenshot of each of the five formations, plus one mid-morph frame, at both breakpoints.
+
+**Acceptance:** the morph between formations is legible — a viewer should be able to *read* each formation as grid, chart, radial, flow — and the transition must feel like travel, not a cut. The system is clearly one continuous object across the page. Mobile does not stutter on a real device.
 
 ---
 
