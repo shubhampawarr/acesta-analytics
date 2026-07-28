@@ -35,6 +35,33 @@ The current site is competent but reads as a conventional 2019-era business site
 
 ---
 
+## Decisions log — resolved after Phase 0
+
+These are settled. Do not re-open them.
+
+**A. Scroll-snap is removed.** In Phase 1, delete `md:h-[100dvh] md:overflow-y-auto md:snap-y md:snap-mandatory` from `<main>` in `app/page.tsx` and return to normal document scroll. **Also remove `min-h-[100dvh]` from all four homepage sections** — sections size to their content and are separated by the 180px / 96px rhythm instead. Stripping the snap container while leaving the sections at full viewport height would leave large dead gaps; both changes go together.
+
+No content is removed. Hero, HomeServices, Process and FinalCTA all stay.
+
+Two reasons this is settled: Lenis and ScrollTrigger both target the window, and — more importantly — the particle formation morph needs continuous scroll progress to interpolate against. Mandatory snap gives discrete jumps, which would make The Resolve teleport between formations rather than travel, killing the signature effect. Full-viewport snap sections are also the specific thing that makes the current site feel dated; the zigzag rhythm replaces them.
+
+**B. The serif goes.** Cormorant Garamond → Switzer is a full re-set, not a variable swap: every `font-display` element also drops from `font-semibold` (600) to weight 400. Touch all 12 page/component files in Phase 1. This is the single largest lever on the brief — a gold-on-black serif at weight 600 *is* the "old premium website" look being replaced.
+
+**C. Gold moves to `#C9A961`, and the brand routes are re-cut.** The existing `#d8b25e` is a perfectly good gold (10.5:1 on black vs 9.3:1 for the new value) and the difference is subtle — but every one of the ~150 hardcoded instances is being converted to a token regardless, so the swap costs nothing extra. `#C9A961` is the more restrained champagne register, which suits an accent that should read as precious rather than loud.
+Re-cut `app/icon.tsx`, `app/apple-icon.tsx` and `app/opengraph-image.tsx` to the new palette and typeface in **Phase 2**. The OG image is the first thing a prospect sees when the site is shared on WhatsApp or LinkedIn; leaving it on the old gold and Georgia while the site is Switzer is a visible inconsistency at the worst possible moment.
+
+**D. `/services` is a rewrite, not a refactor.** Confirmed. Build the four anchored sections fresh.
+
+**E. Steel is strokes and fills only.** At ~4.0:1 on the vitrine it clears the 3:1 bar for non-text graphical objects but fails the 4.5:1 text bar. Chart marks in steel, legend and axis text in ash. As proposed.
+
+**F. Delete the dead code.** `components/Services.tsx` and `components/Tools.tsx` are imported by nothing. Remove both in Phase 1.
+
+**G. Mobile LCP is a gate, not a Phase 7 concern.** The `/` mobile baseline is already 87 with a 4.1s LCP on the `<h1>`, before any WebGL lands. Measure `/` mobile at the **end of Phases 1, 3 and 4** and report the number each time. If LCP regresses past 4.1s at any gate, stop and fix before continuing. Specifically: self-host Switzer via `next/font/local` with `display: "swap"` and preload the display weight; dynamically import the three.js canvas with `ssr: false` and do not mount it until after first paint. A consultancy selling ₹50,000 projects to prospects opening the site on Indian mobile networks cannot ship a four-second headline.
+
+**H. Accessibility fixes carried into Phase 2.** Convert the raw `<img>` logos in `Navbar.tsx:61` and `Footer.tsx:50` to `next/image` with explicit dimensions and WebP. Fix the `label-content-name-mismatch` on the logo link so the `aria-label` matches its visible text.
+
+---
+
 ## Dependencies to install
 
 ```bash
@@ -74,7 +101,7 @@ Before touching anything, read the repository and report back:
 ## Phase 1 — Foundation
 
 1. Install dependencies above.
-2. Load Switzer and Geist Mono via `next/font/local` / `next/font`.
+2. Load Switzer and Geist Mono via `next/font/local` / `next/font`. Remove Cormorant Garamond, Inter and IBM Plex Mono from `app/layout.tsx` — IBM Plex Mono is currently loaded and never consumed, so this is a straight payload win.
 3. Port the full token block from `ACESTA-DESIGN.md` §10/§11 into the Tailwind theme and global CSS. Delete conflicting legacy tokens — don't leave two systems fighting.
 4. Set global defaults: `background: var(--color-void)`, body text at weight 200, headings at weight 400. Enable `ss01` and `tnum`.
 5. Wire Lenis smooth scroll at the app shell level, with a `prefers-reduced-motion` bypass.
@@ -90,12 +117,16 @@ Before touching anything, read the repository and report back:
 
 ## Phase 2 — Shell
 
+**Attempt this phase without framer-motion.** It is currently imported by nothing, and the two jobs assigned to it here — a mobile nav overlay and a 400ms page wipe — are both achievable with CSS transitions plus a small amount of state. Mobile LCP is the binding constraint on this build, so a ~40KB animation library earning its keep on two effects is not a given. Build it in CSS first, measure, and only reach for framer-motion if CSS genuinely cannot deliver the result. If CSS wins, uninstall the package. Apply the same measure-then-decide discipline used for the reveal implementation in Phase 1.
+
 1. **Nav** — rebuild per §5. Transparent at top; backdrop blur + `rgba(0,0,0,0.6)` fades in after 80px scroll. Mono uppercase links, ash → bone on hover. One gold pill CTA at the right edge. Mobile: full-screen void overlay, links stagger in at 60ms.
 2. **Footer** — spacious, typographic, no icon grid. Large wordmark, mono column labels, ghost links.
 3. **Page transitions** — 400ms void wipe between routes.
-4. Delete the old nav/footer once parity is confirmed.
+4. **Brand routes** — re-cut `app/icon.tsx`, `app/apple-icon.tsx` and `app/opengraph-image.tsx` to `#C9A961` and Switzer per Decision C.
+5. **Accessibility** — per Decision H: convert the raw `<img>` logos in `Navbar.tsx` and `Footer.tsx` to `next/image` with explicit dimensions and WebP output, and fix the `label-content-name-mismatch` on the logo link.
+6. Delete the old nav/footer once parity is confirmed.
 
-**Acceptance:** nav and footer match §5 exactly on both breakpoints. Keyboard focus is visible everywhere.
+**Acceptance:** nav and footer match §5 exactly on both breakpoints. Keyboard focus is visible everywhere. Report `/` mobile Lighthouse as a median of three runs — single runs are not acceptable evidence.
 
 ---
 

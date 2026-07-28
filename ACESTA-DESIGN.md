@@ -322,14 +322,23 @@ The particles never reset to zero between sections; they *morph* from one format
   --text-mono-label: 0.75rem;
   --text-mono-metric: clamp(1.75rem, 3vw, 2.5rem);
 
-  --spacing-6: 6px;   --spacing-12: 12px;  --spacing-18: 18px;
-  --spacing-24: 24px; --spacing-30: 30px;  --spacing-36: 36px;
-  --spacing-60: 60px; --spacing-96: 96px;  --spacing-120: 120px;
-  --spacing-180: 180px;
+  /* Spacing — NAMED keys only.
+     Do NOT declare numeric keys such as --spacing-6 or --spacing-24 here.
+     In Tailwind v4 the --spacing-* namespace IS the built-in spacing scale,
+     so a numeric key silently redefines every existing p-6 / gap-8 / mt-10
+     in the codebase. Named keys add new utilities without collision. */
+  --spacing-gutter: 60px;
+  --spacing-gutter-sm: 24px;
+  --spacing-section: 180px;
+  --spacing-section-sm: 96px;
+  --spacing-vitrine: 36px;
 
   --radius-3xl: 24px;
   --radius-full: 9999px;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-morph: cubic-bezier(0.65, 0, 0.35, 1);
 }
 ```
+
+This yields `px-gutter`, `gap-section`, `p-vitrine` and `ease-out-expo` as real utilities. For the finer 6px ladder, use the `--space-*` custom properties from §10 via arbitrary values — those live in `:root`, not `@theme`, and cannot collide.
