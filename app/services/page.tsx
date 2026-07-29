@@ -114,7 +114,7 @@ export default function ServicesPage() {
   const [web, data, search, growth] = services;
 
   return (
-    <main className="relative overflow-x-clip">
+    <main data-page="services" className="relative overflow-x-clip">
       <ResolveWaypoint formation="lattice">
         <section className="premium-container flex min-h-[70svh] items-center pt-32 md:min-h-[80svh] md:pt-20">
           <div>

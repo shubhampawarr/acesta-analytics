@@ -8,17 +8,28 @@ import {
 import { Artifact, PanelLabel } from './Artifact';
 import { linePath, niceMax, scales } from './chart';
 
+/**
+ * Taller than it is wide compared with the first cut (was 520×150), because a
+ * wide short plot flattens any trend. Slope earned by aspect ratio, not by
+ * touching a number.
+ */
 const BOX = {
-  width: 520,
-  height: 150,
-  padTop: 12,
-  padRight: 6,
-  padBottom: 22,
-  padLeft: 26,
+  width: 440,
+  height: 280,
+  padTop: 16,
+  padRight: 8,
+  padBottom: 26,
+  padLeft: 30,
 };
 
 function VisibilityTrend() {
-  const max = niceMax(visibilityScore, 10);
+  /**
+   * Zero-based, deliberately. On the section selling SEO, a truncated axis is
+   * the exact move a data-literate prospect reads as a tell. The ceiling is
+   * tightened to just above the maximum instead — 35 for data topping at 31.2
+   * rather than 40, which recovers the slope without touching the floor.
+   */
+  const max = niceMax(visibilityScore, 5);
   const { x, y, innerW } = scales(BOX, visibilityScore.length, max);
 
   return (
@@ -26,9 +37,9 @@ function VisibilityTrend() {
       viewBox={`0 0 ${BOX.width} ${BOX.height}`}
       className="w-full"
       role="img"
-      aria-label={`Visibility index rising from ${visibilityScore[0]} to ${visibilityScore[visibilityScore.length - 1]} over twelve months.`}
+      aria-label={`Visibility index rising from ${visibilityScore[0]} to ${visibilityScore[visibilityScore.length - 1]} over twelve months, on a zero-based axis.`}
     >
-      {[0, max].map((t) => (
+      {[0, max / 2, max].map((t) => (
         <g key={t}>
           <line
             x1={BOX.padLeft}
@@ -86,6 +97,9 @@ function VisibilityTrend() {
 }
 
 export function SeoPanel() {
+  const first = visibilityScore[0];
+  const last = visibilityScore[visibilityScore.length - 1];
+
   return (
     <Artifact label="Search visibility panel, illustrative sample">
       <PanelLabel>Keyword positions</PanelLabel>
@@ -120,6 +134,19 @@ export function SeoPanel() {
       <div className="mt-12 md:grid md:grid-cols-2 md:gap-12">
         <div>
           <PanelLabel>Visibility index</PanelLabel>
+
+          {/* Stated plainly, so the reader can check the claim against the
+              axis rather than having to trust the shape of the line. */}
+          <p className="mt-5 flex items-baseline gap-3 font-mono">
+            <span className="text-subheading text-bone">
+              {first} → {last}
+            </span>
+            <span className="text-caption text-gold">
+              +{Math.round(((last - first) / first) * 100)}%
+            </span>
+            <span className="text-caption text-ash">12 months</span>
+          </p>
+
           <div className="mt-6">
             <VisibilityTrend />
           </div>

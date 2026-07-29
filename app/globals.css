@@ -405,6 +405,26 @@ html.lenis body {
 }
 
 /* ---------------------------------------------------------------------------
+   The Resolve — per-route weighting
+
+   On the homepage the particle field IS the payload for each service, and it
+   sits behind display type that carries it well. On /services the vitrines are
+   the payload and the field is ambience — and there the sections are
+   top-aligned and run long, so on a single mobile column the field lands
+   squarely behind 20px weight-200 copy and competes with it.
+
+   Note this is invisible to the contrast audit, which compares text colour
+   against the CSS background; the canvas sits at -z-10 and is never sampled.
+   Caught by looking, not by measuring.
+--------------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+  html:has(main[data-page='services']) [data-resolve-host] {
+    opacity: 0.45;
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Growth flow diagram — travelling pulse along each edge (§5.3)
 
    A short dash chased along the path by stroke-dashoffset. No JS and no SMIL,

@@ -145,6 +145,18 @@ Variable-font instancing at three weights (200 / 300 / 400) is not a performance
 
 **Homepage is closed.** Do not revisit it during Phase 5 except where `/services` anchors require it.
 
+### Phase 5b — chart axis integrity
+
+**The visibility index axis stays zero-based. Do not truncate it.** On a page whose entire argument is credibility, and in a section selling SEO specifically, a truncated axis is the exact move agencies use to inflate modest gains. A data-literate prospect reads it as a tell, and the cost of being caught at it is far higher than the benefit of a steeper line.
+
+But a chart that reads flat undersells real work, and three honest fixes are available. Apply all three:
+
+1. **Tighten the ceiling, keep the floor.** The axis runs 0→40 for data topping out at 31.2, so roughly a fifth of the plot is empty headroom. Take the ceiling to just above the maximum. Still zero-based, still fully honest, and the same data gains meaningful slope for free.
+2. **Increase the plot's height relative to its width.** A wide, short chart flattens any trend. Aspect ratio changes slope without touching a single number.
+3. **State the change explicitly.** A mono delta readout beside the chart — start value, end value, percentage. A 70% rise stated plainly is more persuasive than a steep line, because the reader can verify it against the axis.
+
+Standing rule for every chart on this site: bar charts always zero-based; line charts zero-based by choice rather than convention, because the subject matter makes the convention look like a trick.
+
 ### Phase 5 — split into two runs
 
 Phase 5 is the heaviest in the build. Execute it as two separately committed halves with a report between them:
