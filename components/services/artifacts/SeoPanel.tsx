@@ -6,6 +6,7 @@ import {
   visibilityScore,
 } from '@/components/services/data/scenario';
 import { Artifact, PanelLabel } from './Artifact';
+import { cn } from '@/lib/cn';
 import { linePath, niceMax, scales } from './chart';
 
 /**
@@ -13,16 +14,31 @@ import { linePath, niceMax, scales } from './chart';
  * wide short plot flattens any trend. Slope earned by aspect ratio, not by
  * touching a number.
  */
-const BOX = {
+const BOX_DESKTOP = {
   width: 440,
   height: 280,
   padTop: 16,
-  padRight: 8,
+  padRight: 14,
   padBottom: 26,
-  padLeft: 30,
+  padLeft: 46,
+  axisFont: 14,
+  midTick: true,
 };
 
-function VisibilityTrend() {
+/** Narrower viewBox at mobile so the scale stays near 1 and labels clear 12px. */
+const BOX_MOBILE = {
+  width: 300,
+  height: 240,
+  padTop: 14,
+  padRight: 6,
+  padBottom: 24,
+  padLeft: 26,
+  axisFont: 13,
+  /* 17.5 overruns the axis gutter at 390px; endpoints only. */
+  midTick: false,
+};
+
+function VisibilityTrend({ box }: { box: typeof BOX_DESKTOP }) {
   /**
    * Zero-based, deliberately. On the section selling SEO, a truncated axis is
    * the exact move a data-literate prospect reads as a tell. The ceiling is
@@ -30,31 +46,31 @@ function VisibilityTrend() {
    * rather than 40, which recovers the slope without touching the floor.
    */
   const max = niceMax(visibilityScore, 5);
-  const { x, y, innerW } = scales(BOX, visibilityScore.length, max);
+  const { x, y, innerW } = scales(box, visibilityScore.length, max);
 
   return (
     <svg
-      viewBox={`0 0 ${BOX.width} ${BOX.height}`}
+      viewBox={`0 0 ${box.width} ${box.height}`}
       className="w-full"
       role="img"
       aria-label={`Visibility index rising from ${visibilityScore[0]} to ${visibilityScore[visibilityScore.length - 1]} over twelve months, on a zero-based axis.`}
     >
-      {[0, max / 2, max].map((t) => (
+      {(box.midTick ? [0, max / 2, max] : [0, max]).map((t) => (
         <g key={t}>
           <line
-            x1={BOX.padLeft}
-            x2={BOX.padLeft + innerW}
+            x1={box.padLeft}
+            x2={box.padLeft + innerW}
             y1={y(t)}
             y2={y(t)}
             stroke="#FFFFFF"
             strokeOpacity={0.08}
           />
           <text
-            x={BOX.padLeft - 8}
+            x={box.padLeft - 8}
             y={y(t) + 4}
             textAnchor="end"
             className="font-mono"
-            fontSize={9}
+            fontSize={box.axisFont}
             fill="var(--color-ash)"
           >
             {t}
@@ -82,10 +98,10 @@ function VisibilityTrend() {
           <text
             key={m}
             x={x(i)}
-            y={BOX.height - 6}
+            y={box.height - 6}
             textAnchor="middle"
             className="font-mono"
-            fontSize={9}
+            fontSize={box.axisFont}
             fill="var(--color-ash)"
           >
             {m}
@@ -106,25 +122,34 @@ export function SeoPanel() {
 
       <table className="mt-6 w-full border-collapse text-left">
         <thead>
+          {/* §8.2: two columns at 390px — query and the change that matters.
+              Before/Now return at md. A table that needs horizontal scroll
+              has failed. */}
           <tr className="font-mono text-mono-label uppercase tracking-mono text-ash">
             <th scope="col" className="pb-3 font-medium">Query</th>
-            <th scope="col" className="pb-3 text-right font-medium">Before</th>
-            <th scope="col" className="pb-3 text-right font-medium">Now</th>
+            <th scope="col" className="hidden pb-3 text-right font-medium md:table-cell">Before</th>
+            <th scope="col" className="hidden pb-3 text-right font-medium md:table-cell">Now</th>
             <th scope="col" className="pb-3 text-right font-medium">Change</th>
           </tr>
         </thead>
         <tbody>
-          {keywords.map((k) => (
-            <tr key={k.term} className="border-t border-gold/12">
+          {keywords.map((k, index) => (
+            <tr
+              key={k.term}
+              className={cn(
+                'border-t border-gold/12',
+                index >= 4 && 'hidden md:table-row'
+              )}
+            >
               <td className="py-3 pr-4 text-caption text-mist">{k.term}</td>
-              <td className="py-3 text-right font-mono text-caption text-ash">
+              <td className="hidden py-3 text-right font-mono text-caption text-ash md:table-cell">
                 {k.before}
               </td>
-              <td className="py-3 text-right font-mono text-caption text-bone">
+              <td className="hidden py-3 text-right font-mono text-caption text-bone md:table-cell">
                 {k.after}
               </td>
               <td className="py-3 text-right font-mono text-caption text-gold">
-                +{k.before - k.after}
+                {k.before} → {k.after}
               </td>
             </tr>
           ))}
@@ -148,7 +173,12 @@ export function SeoPanel() {
           </p>
 
           <div className="mt-6">
-            <VisibilityTrend />
+            <div className="md:hidden">
+              <VisibilityTrend box={BOX_MOBILE} />
+            </div>
+            <div className="hidden md:block">
+              <VisibilityTrend box={BOX_DESKTOP} />
+            </div>
           </div>
         </div>
 

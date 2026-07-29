@@ -18,11 +18,25 @@ type Project = {
   year: string;
   status: string;
   href: string;
-  /** Optional — see scripts/capture-work.mjs for why one project has none. */
+  /**
+   * Optional. A capture ships only if it clears the measured tonal-spread
+   * gate in scripts/capture-work.mjs; the artist portfolio does not, so that
+   * row stays typographic (§8.1).
+   */
   image?: string;
 };
 
 const projects: Project[] = [
+  {
+    name: 'CareRadar',
+    outcome:
+      'International nurse recruitment, presented to a German market that had to trust it on sight.',
+    discipline: 'Web Development · Search Visibility',
+    year: '2025',
+    status: 'Client project',
+    href: 'https://careradar.de/',
+    image: '/work/careradar.webp',
+  },
   {
     name: 'Axira Media',
     outcome:
@@ -32,6 +46,16 @@ const projects: Project[] = [
     status: 'Client project',
     href: 'https://axiramedia.vercel.app/',
     image: '/work/axira-media.webp',
+  },
+  {
+    name: 'Balaji Arts',
+    outcome:
+      'Printing, packaging and label manufacturing, given a presence that matches the plant.',
+    discipline: 'Web Development',
+    year: '2025',
+    status: 'Client project',
+    href: 'https://balajiarts.vercel.app/',
+    image: '/work/balaji-arts.webp',
   },
   {
     name: 'Protein Cartel',

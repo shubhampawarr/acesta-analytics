@@ -13,92 +13,145 @@ import { Artifact, PanelLabel, type ArtifactComposition } from './Artifact';
  * no JS, no SMIL, and it degrades to a static hairline under reduced motion.
  */
 
-const COLUMN_X = [80, 330, 580, 830];
-const COLUMN_Y = [
-  [80, 180, 280],
-  [130, 230],
-  [130, 230],
-  [180],
-];
-
-/** Keep the edge clear of the label sitting on each node. */
 const PORT = 62;
 
-function edgePath(x0: number, y0: number, x1: number, y1: number) {
-  const sx = x0 + PORT;
-  const ex = x1 - PORT;
-  const mx = (sx + ex) / 2;
-  const my = (y0 + y1) / 2 + 18;
+type Point = { x: number; y: number };
 
-  return `M${sx} ${y0} Q${mx} ${my} ${ex} ${y1}`;
+type Layout = {
+  viewBox: string;
+  stageAt: (column: number) => Point;
+  nodeAt: (column: number, index: number) => Point;
+  vertical: boolean;
+  labelFont: number;
+  valueFont: number;
+  /** Stage captions are dropped at mobile — see V_LAYOUT. */
+  showStages: boolean;
+};
+
+/** Desktop: four columns left to right. */
+const H_LAYOUT: Layout = {
+  viewBox: '0 0 900 330',
+  stageAt: (c: number) => ({ x: [80, 330, 580, 830][c], y: 26 }),
+  nodeAt: (c: number, i: number) => ({
+    x: [80, 330, 580, 830][c],
+    y: [[80, 180, 280], [130, 230], [130, 230], [180]][c][i],
+  }),
+  vertical: false,
+  labelFont: 11,
+  valueFont: 14,
+  showStages: true,
+};
+
+/**
+ * Mobile: the same graph rotated to run top to bottom (§8.2). A wide directed
+ * graph compressed to 390px is unreadable, so this is a different layout of
+ * the same data rather than the desktop one scaled down.
+ */
+const V_LAYOUT: Layout = {
+  viewBox: '0 0 380 760',
+  stageAt: (c: number) => ({ x: 190, y: [30, 220, 430, 640][c] }),
+  nodeAt: (c: number, i: number) => ({
+    x: [[60, 190, 320], [120, 260], [120, 260], [190]][c][i],
+    y: [90, 285, 495, 700][c],
+  }),
+  vertical: true,
+  // Rendered near 0.9 scale at 390px, so these lift the effective size past
+  // the 12px floor that the desktop values miss there.
+  labelFont: 14,
+  valueFont: 17,
+  /**
+   * No stage captions. Vertically the four stages sit in the middle of the
+   * edge bundle travelling between rows, and there is no clear corridor at
+   * 380 units to move them into. The top-to-bottom order already reads as a
+   * sequence and the node labels carry the content, so this is one fewer
+   * element rather than the same one made smaller.
+   */
+  showStages: false,
+};
+
+function edgePath(a: Point, b: Point, vertical: boolean) {
+  if (vertical) {
+    const sy = a.y + 34;
+    const ey = b.y - 46;
+    const my = (sy + ey) / 2;
+
+    return `M${a.x} ${sy} Q${(a.x + b.x) / 2 + 14} ${my} ${b.x} ${ey}`;
+  }
+
+  const sx = a.x + PORT;
+  const ex = b.x - PORT;
+  const mx = (sx + ex) / 2;
+  const my = (a.y + b.y) / 2 + 18;
+
+  return `M${sx} ${a.y} Q${mx} ${my} ${ex} ${b.y}`;
 }
 
-export function GrowthFlow(props: ArtifactComposition) {
+function Graph({ layout }: { layout: Layout }) {
   const edges: { d: string; key: string }[] = [];
 
-  for (let c = 0; c < COLUMN_X.length - 1; c++) {
-    COLUMN_Y[c].forEach((y0, a) => {
-      COLUMN_Y[c + 1].forEach((y1, b) => {
+  for (let c = 0; c < flowStages.length - 1; c++) {
+    flowStages[c].nodes.forEach((_, a) => {
+      flowStages[c + 1].nodes.forEach((__, b) => {
         edges.push({
           key: `${c}-${a}-${b}`,
-          d: edgePath(COLUMN_X[c], y0, COLUMN_X[c + 1], y1),
+          d: edgePath(layout.nodeAt(c, a), layout.nodeAt(c + 1, b), layout.vertical),
         });
       });
     });
   }
 
   return (
-    <Artifact {...props} label="Growth systems flow diagram, illustrative sample">
-      <PanelLabel>Enquiry flow · March</PanelLabel>
+    <svg
+      viewBox={layout.viewBox}
+      className="mt-8 w-full"
+      role="img"
+      aria-label="Directed flow from three traffic sources through qualification and automation to 1,470 orders in March."
+    >
+      {edges.map((edge, index) => (
+        <g key={edge.key}>
+          <path
+            d={edge.d}
+            fill="none"
+            stroke="var(--color-gold)"
+            strokeOpacity={0.25}
+            strokeWidth={1}
+          />
+          {/* pathLength normalises every edge to 1 unit, so one pulse
+              traverses each edge continuously whatever its real length. */}
+          <path
+            className="flow-pulse"
+            d={edge.d}
+            pathLength={1}
+            style={{ '--pulse-index': index } as React.CSSProperties}
+            fill="none"
+            stroke="var(--color-gold-bright)"
+            strokeWidth={1.5}
+            strokeLinecap="round"
+          />
+        </g>
+      ))}
 
-      <svg
-        viewBox="0 0 900 330"
-        className="mt-8 w-full"
-        role="img"
-        aria-label="Directed flow from three traffic sources through qualification and automation to 1,470 orders in March."
-      >
-        {edges.map((edge, index) => (
-          <g key={edge.key}>
-            <path
-              d={edge.d}
-              fill="none"
-              stroke="var(--color-gold)"
-              strokeOpacity={0.25}
-              strokeWidth={1}
-            />
-            {/* pathLength normalises every edge to 1 unit, so one pulse
-                traverses each edge continuously whatever its real length —
-                without it a fixed dash cycle leaves short edges empty. */}
-            <path
-              className="flow-pulse"
-              d={edge.d}
-              pathLength={1}
-              style={{ '--pulse-index': index } as React.CSSProperties}
-              fill="none"
-              stroke="var(--color-gold-bright)"
-              strokeWidth={1.5}
-              strokeLinecap="round"
-            />
-          </g>
-        ))}
+      {flowStages.map((stage, c) => {
+        const stageAt = layout.stageAt(c);
 
-        {flowStages.map((stage, c) => (
+        return (
           <g key={stage.label}>
+            {layout.showStages ? (
             <text
-              x={COLUMN_X[c]}
-              y={26}
+              x={stageAt.x}
+              y={stageAt.y}
               textAnchor="middle"
               className="font-mono"
-              fontSize={11}
+              fontSize={layout.labelFont}
               letterSpacing="0.08em"
               fill="var(--color-ash)"
             >
               {stage.label.toUpperCase()}
             </text>
+            ) : null}
 
             {stage.nodes.map((node, i) => {
-              const x = COLUMN_X[c];
-              const y = COLUMN_Y[c][i];
+              const { x, y } = layout.nodeAt(c, i);
 
               return (
                 <g key={node.label}>
@@ -108,7 +161,7 @@ export function GrowthFlow(props: ArtifactComposition) {
                     y={y - 16}
                     textAnchor="middle"
                     className="font-mono"
-                    fontSize={11}
+                    fontSize={layout.labelFont}
                     fill="var(--color-mist)"
                   >
                     {node.label}
@@ -118,7 +171,7 @@ export function GrowthFlow(props: ArtifactComposition) {
                     y={y + 26}
                     textAnchor="middle"
                     className="font-mono"
-                    fontSize={14}
+                    fontSize={layout.valueFont}
                     fill="var(--color-bone)"
                   >
                     {node.value}
@@ -127,8 +180,23 @@ export function GrowthFlow(props: ArtifactComposition) {
               );
             })}
           </g>
-        ))}
-      </svg>
+        );
+      })}
+    </svg>
+  );
+}
+
+export function GrowthFlow(props: ArtifactComposition) {
+  return (
+    <Artifact {...props} label="Growth systems flow diagram, illustrative sample">
+      <PanelLabel>Enquiry flow · March</PanelLabel>
+
+      <div className="md:hidden">
+        <Graph layout={V_LAYOUT} />
+      </div>
+      <div className="hidden md:block">
+        <Graph layout={H_LAYOUT} />
+      </div>
     </Artifact>
   );
 }

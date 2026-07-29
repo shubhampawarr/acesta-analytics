@@ -36,7 +36,7 @@ export function Artifact({
   return (
     <figure className={cn('m-0', className)}>
       <div
-        className={cn('vitrine p-6 md:p-vitrine', surfaceClassName)}
+        className={cn('vitrine p-(--space-24) md:p-vitrine', surfaceClassName)}
         role="group"
         aria-label={label}
       >

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "audit:contrast": "node scripts/audit-contrast.mjs",
-    "capture:work": "node scripts/capture-work.mjs"
+    "capture:work": "node scripts/capture-work.mjs",
+    "process:portrait": "node scripts/process-portrait.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

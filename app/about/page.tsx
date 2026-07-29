@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { Reveal, StaggerGroup } from '@/components/motion/Reveal';
@@ -62,7 +63,7 @@ export default function AboutPage() {
       </ResolveWaypoint>
 
       <section className="premium-container pt-(--section-gap)">
-        <div className="md:grid md:grid-cols-12">
+        <div className="md:grid md:grid-cols-12 md:gap-16">
           <div className="md:col-span-6">
             <Reveal>
               <p className="text-lead font-extralight text-mist">
@@ -82,6 +83,21 @@ export default function AboutPage() {
               </p>
             </Reveal>
           </div>
+
+          {/* §6.1: one large rounded crop, gold duotone, floating on void.
+              No frame, no card. The source was cut from a white background,
+              so its edge was decontaminated before the duotone — see
+              scripts/process-portrait.mjs. */}
+          <Reveal className="mt-20 md:col-span-5 md:col-start-8 md:mt-0" delay={0.12}>
+            <Image
+              src="/founder-duotone.webp"
+              alt="Shubham Pawar, founder of Acesta Analytics"
+              width={1100}
+              height={1653}
+              sizes="(max-width: 768px) 100vw, 40vw"
+              className="w-full rounded-3xl"
+            />
+          </Reveal>
         </div>
       </section>
 
