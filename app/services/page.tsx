@@ -158,7 +158,7 @@ export default function ServicesPage() {
                     className="group flex h-full flex-col rounded-[1.15rem] border border-gold/14 bg-vitrine/85 p-3 transition duration-500 hover:-translate-y-1 hover:border-gold-bright/32 hover:bg-vitrine md:rounded-[1.5rem] md:p-6"
                   >
                     <div className="flex items-start justify-between gap-3 md:gap-5">
-                      <p className="max-w-[150px] text-[8px] font-semibold uppercase leading-4 tracking-[0.16em] text-gold-deep md:max-w-[230px] md:text-[10px] md:leading-5 md:tracking-[0.22em]">
+                      <p className="max-w-[150px] text-[8px] font-semibold uppercase leading-4 tracking-[0.16em] text-gold md:max-w-[230px] md:text-[10px] md:leading-5 md:tracking-[0.22em]">
                         {service.eyebrow}
                       </p>
 
@@ -274,7 +274,7 @@ export default function ServicesPage() {
 function ServiceList({ title, items }: { title: string; items: string[] }) {
   return (
     <div>
-      <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-deep">
+      <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold">
         {title}
       </p>
 

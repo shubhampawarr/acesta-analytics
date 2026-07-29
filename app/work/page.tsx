@@ -99,7 +99,7 @@ export default function WorkPage() {
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-gold-deep md:text-[10px]">
+                        <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-gold md:text-[10px]">
                           {project.category}
                         </p>
 

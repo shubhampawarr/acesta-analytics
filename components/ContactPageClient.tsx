@@ -61,7 +61,7 @@ export default function ContactPageClient() {
               </p>
 
               <div className="mt-5 max-w-md rounded-[1.25rem] border border-gold/14 bg-black/25 p-4 md:mt-8 md:rounded-[1.35rem] md:p-5">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-deep md:text-xs">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold md:text-xs">
                   Direct enquiry
                 </p>
 
@@ -210,7 +210,7 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
       <div className="mt-3">
         <label
           htmlFor="message"
-          className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-deep"
+          className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-gold"
         >
           Message
         </label>
@@ -302,7 +302,7 @@ function Field({
     <div>
       <label
         htmlFor={name}
-        className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-deep"
+        className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-gold"
       >
         {label}
       </label>
@@ -342,7 +342,7 @@ function CustomSelect({
     <div className="relative">
       <label
         htmlFor={name}
-        className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-deep"
+        className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-gold"
       >
         {label}
       </label>
