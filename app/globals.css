@@ -272,12 +272,29 @@ html.lenis body {
 
     transition:
       background-color var(--dur-micro) var(--ease-out-expo),
+      color var(--dur-micro) var(--ease-out-expo),
       box-shadow 300ms var(--ease-out-expo);
   }
 
   .gold-pill:hover {
     background: var(--color-gold-bright);
     box-shadow: var(--glow-gold);
+  }
+
+  /* Unfilled nav CTA (Decision N). Deliberately keeps the pill's geometry and
+     mono type rather than becoming a literal §5 ghost link: the state flips at
+     the 80px scroll sentinel, and swapping typeface and box width mid-scroll
+     would read as a glitch. Same box — the fill simply isn't there yet, so the
+     change is a fade rather than a jump. */
+  .gold-pill--ghost {
+    background: transparent;
+    color: var(--color-ash);
+  }
+
+  .gold-pill--ghost:hover {
+    background: transparent;
+    color: var(--color-bone);
+    box-shadow: none;
   }
 
   /* §5 Ghost Link — no background, no border. Gold underline wipes in on hover. */

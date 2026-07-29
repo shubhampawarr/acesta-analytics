@@ -35,7 +35,7 @@ export default function Hero() {
           </Reveal>
 
           <Reveal immediate>
-            <Link href="/services" className="gold-pill mt-10">
+            <Link href="/services" data-hero-cta className="gold-pill mt-10">
               See the work
             </Link>
           </Reveal>

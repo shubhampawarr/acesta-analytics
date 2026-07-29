@@ -22,6 +22,7 @@ export function SiteNav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [heroCtaVisible, setHeroCtaVisible] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
   // A sentinel at the 80px mark rather than a scroll listener: the browser
@@ -45,6 +46,46 @@ export function SiteNav() {
 
   useEffect(() => {
     setMenuOpen(false);
+  }, [pathname]);
+
+  /**
+   * Decision N, keyed to the thing it is actually about: the nav CTA drops its
+   * fill only while a page's own gold pill is on screen.
+   *
+   * N specified the 80px scroll sentinel as the trigger, on the assumption
+   * that the hero pill is gone by then. Measured, it is not — the hero pill
+   * sits at document y 848, so the sentinel would put two gold fills on screen
+   * from scrollY 81 to 848. §9 forbids exactly that, and the design system
+   * wins, so this watches the pill itself. Any route can opt in by marking its
+   * primary action with `data-hero-cta`; routes that do not are filled from
+   * the top, as N requires.
+   */
+  useEffect(() => {
+    let observer: IntersectionObserver | undefined;
+
+    // The incoming route's markup is not committed yet on a client
+    // navigation, so look for it after the next frame.
+    const raf = requestAnimationFrame(() => {
+      const target = document.querySelector('[data-hero-cta]');
+
+      if (!target) {
+        setHeroCtaVisible(false);
+
+        return;
+      }
+
+      observer = new IntersectionObserver(
+        ([entry]) => setHeroCtaVisible(entry.isIntersecting),
+        { threshold: 0 }
+      );
+
+      observer.observe(target);
+    });
+
+    return () => {
+      cancelAnimationFrame(raf);
+      observer?.disconnect();
+    };
   }, [pathname]);
 
   useEffect(() => {
@@ -109,12 +150,17 @@ export function SiteNav() {
               ))}
             </nav>
 
-            {/* Ghost, not a gold pill. §5 permits one filled gold button per
-                viewport and §9 forbids two in proximity — the hero's CTA owns
-                that slot, so persistent chrome yields to it. The mobile
-                overlay below keeps its pill: it is a full-screen takeover,
-                so no second gold fill is ever on screen with it. */}
-            <Link href="/contact" className="ghost-link hidden md:inline-block">
+            {/* Decision N: the CTA yields its fill only where the collision
+                actually happens — the homepage above the fold, where the hero
+                pill is in view. Past the same 80px sentinel that drives the
+                nav ground, and on every other route, it is a gold pill. */}
+            <Link
+              href="/contact"
+              className={cn(
+                'gold-pill hidden md:inline-flex',
+                heroCtaVisible && 'gold-pill--ghost'
+              )}
+            >
               Book a Call
             </Link>
 
