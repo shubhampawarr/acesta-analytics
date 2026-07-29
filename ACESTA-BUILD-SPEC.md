@@ -75,6 +75,20 @@ Re-cut `app/icon.tsx`, `app/apple-icon.tsx` and `app/opengraph-image.tsx` to the
 
 ---
 
+## Decisions log — resolved after Phase 3
+
+**L. Phase 3 passes. Do not build hand-written WebGL.** PageSpeed Insights against the deployed build returns mobile performance **97**, LCP **2.4s**, FCP **0.9s**, accessibility 100, best practices 100, SEO 100. Local headless emulation reported 88 with TBT 336ms — a nine-point gap that confirms the SwiftShader caveat was correct and the local figure was measuring software rasterisation more than the site. Option 4 is cancelled; three.js stays.
+
+The visual review also passes: all five formations read as distinct, and the mid-morph frame is a field in transit rather than a crossfade.
+
+Two items carried to Phase 7, neither blocking:
+- PageSpeed reports 2.7s total main-thread work and four long tasks. The idle-mount defers most of this past the TBT window, which is legitimate optimisation rather than metric-gaming, but the user still pays it. Worth one look at whether the three.js chunk can be split further.
+- Open diagnostics: unused JavaScript ~80 KiB, render-blocking requests ~130ms, legacy JavaScript ~14 KiB.
+
+**M. Less content, more motion — across every page.** Direction from the client after reviewing the live build: the site is still reading as "box, information, box, information." The design system already bans containers (§9), but these phases hadn't executed yet. Reinforcing it as a standing instruction: on every page from here, **cut copy first and let motion and whitespace carry the page.** If a section can lose a third of its words without losing meaning, it must.
+
+---
+
 ## Dependencies to install
 
 ```bash
@@ -190,15 +204,17 @@ Phase 2 closed at mobile perf 96 / LCP 2.80s / TBT 22ms. That headroom exists sp
 
 ## Phase 4 — Homepage
 
+**0. Compact the footer first.** The Phase 2 footer is too tall. Reduce the wordmark from `--text-heading-lg` to `--text-heading-xs` or smaller, tighten vertical padding, and collapse the three columns into a single row on desktop with the legal line inline. The footer should read as a quiet closing signature, not a second page. It is global, so this lands before the homepage work.
+
 1. **Hero** — full-bleed void. Two-column asymmetric. Left: mono eyebrow in gold, headline at `--text-display` weight 400 white with `-0.04em` tracking, body at weight 200 in mist (max-width 520px), one gold pill CTA. Right: The Resolve in its `lattice` formation at large scale. No stock photography anywhere in this region.
 2. **Section rhythm** — build the zigzag: visual-left/text-right, then text-left/visual-right, alternating down the page. Section gap 180px desktop / 96px mobile.
 3. **Service snippets** — a four-part sequence, one per service. Each carries: mono eyebrow, service name at `--text-heading-lg`, a single-sentence proposition at weight 200, a reduced visual moment, and a ghost link reading "See the work" that deep-links to that service's section on `/services`.
    - As each snippet enters view, The Resolve morphs to that service's formation (`grid` → `chart` → `radial` → `flow`). On the homepage this is the *entire* visual payload for each service — no vitrine, no dashboard, no data tables. The particle formation alone carries it.
-   - Resist the pull to explain the service here. One sentence. The detail lives on `/services`.
+   - **One sentence. Not two.** The detail lives on `/services`. Per Decision M, the homepage's job is to establish register and create pull, not to inform.
 4. Remove every legacy card container, bordered box, and background panel. Content floats on void with whitespace alone.
 5. Remove decorative icons per §6. Icons survive only where they label a real interactive control.
 
-**Acceptance:** one or two elements per viewport. Nothing boxed. The four snippets read as a single continuous sequence because the particle system never resets between them. The page reads as a composition, not a template.
+**Acceptance:** one or two elements per viewport. Nothing boxed. A reader should be able to scroll the whole homepage in well under a minute and come away knowing what Acesta does and wanting to see more. The four snippets read as a single continuous sequence because the particle system never resets between them.
 
 ---
 
@@ -231,15 +247,49 @@ An animated directed graph: source nodes → qualification → automation → ou
 ### 5.4 Premium Web Development
 No vitrine needed. The proof is the site. Use this section for the strongest typographic moment on the page and a link to work.
 
+### The four-boxes hazard
+
+Four service sections each containing a rectangular vitrine will read as four boxes stacked down a page — which is the exact failure the client has already named. The vitrine exists so proof artifacts read as exhibits, not as a licence to rebuild the card grid in darker paint. Defend against it:
+
+- **Scale them up.** Vitrines should be large and close to full-bleed, not card-sized. A card is something you scan past; an exhibit is something you stop at.
+- **Break the rhythm.** Web Development has no vitrine at all, so the sequence is already exhibit / exhibit / typographic / exhibit rather than four in a row. Vary composition further — one artifact bleeding off the right edge, one centred, one offset.
+- **Let them breathe.** 180px between sections is a floor here, not a target.
+- **Cut the surrounding copy hard.** Per Decision M, if the artifact demonstrates the point, the paragraph explaining it is redundant. Scope and deliverables should be mono labels and short lines, never prose blocks beside a box.
+
+If a screenshot of the finished page at 25% zoom reads as a stack of rectangles, the phase has failed regardless of how good each artifact is on its own.
+
 **Acceptance:** each artifact looks like a real deliverable, not a decoration. If it wouldn't survive being screenshotted into a proposal, it isn't done.
 
 ---
 
 ## Phase 6 — Remaining pages
 
-Bring every other route up to the same standard: work/case studies, about, contact. Same tokens, same rhythm, same restraint. The contact page keeps its existing form logic — restyle only.
+Same tokens, same rhythm, same restraint. Decision M applies throughout: cut copy, let motion and whitespace carry the page. The current versions of all three routes are the worst offenders for the box problem — `/about` is one giant bordered card containing three more cards, a photo card and a quote box.
 
-Also verify here: every homepage snippet deep-links correctly into its `/services` anchor, scroll position lands cleanly below the nav, and the particle system doesn't remount or flash during the route transition.
+### 6.1 `/about`
+Premium content, zero containers. Narrative-led rather than modular.
+
+- Open with a single oversized statement of position at `--text-display` — what Acesta believes, not what it offers.
+- Founder portrait as one large rounded crop with the §6 gold-duotone treatment, floating on void, no frame and no card.
+- Credentials and background as mono labels in a sparse row, not as three capability cards.
+- The pull-quote becomes typography — large, weight 200, generous leading, set on void with no box, no border, no quotation-mark graphic.
+- The Resolve holds a slow `lattice` here. This page should feel still.
+
+### 6.2 `/contact` — the simplest page on the site
+This page carries the most visual weight per element precisely because it has the fewest.
+
+- Single column, centred, enormous vertical space. One headline, one line of support copy, the form. Nothing else above the footer.
+- **Underlined inputs, not boxed ones.** Bottom hairline only, transparent background, label as a mono eyebrow above each field. Boxed form inputs are the single biggest source of the "boxes everywhere" feeling and are trivially avoidable.
+- Focus state: the bottom hairline animates from ash to gold, left to right, 200ms.
+- One gold pill submit. Success and error states as typography on void — no alert boxes, no coloured panels.
+- The Resolve sits behind at low opacity, drifting slowly. This is the one page where it may run unresolved, as ambient texture rather than a formation.
+- Form logic is untouched: state machine, field `name` attributes, `serviceOptions` strings and the `fetch('/api/contact')` call all stay byte-identical per the Phase 0 audit. Restyle the shell only.
+
+### 6.3 `/work`
+Project entries as large typographic rows, not cards. Client name at `--text-heading`, a single-line outcome in mist, mono labels for discipline and year, and one large duotone image per project revealed on hover or scroll. No bordered project cards.
+
+### 6.4 Verification
+Every homepage snippet deep-links correctly into its `/services` anchor, scroll position lands cleanly below the nav, and the particle system doesn't remount or flash during the route transition.
 
 ---
 

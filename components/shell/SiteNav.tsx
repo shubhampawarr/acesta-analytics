@@ -98,7 +98,7 @@ export function SiteNav() {
                   href={item.href}
                   aria-current={isActive(item.href) ? 'page' : undefined}
                   className={cn(
-                    'font-mono text-[0.875rem] uppercase tracking-mono transition-colors duration-(--dur-micro) ease-out-expo',
+                    'font-mono text-[0.875rem] uppercase tracking-mono transition-[color] duration-(--dur-micro) ease-out-expo',
                     isActive(item.href)
                       ? 'text-bone'
                       : 'text-ash hover:text-bone'
@@ -109,7 +109,12 @@ export function SiteNav() {
               ))}
             </nav>
 
-            <Link href="/contact" className="gold-pill hidden md:inline-flex">
+            {/* Ghost, not a gold pill. §5 permits one filled gold button per
+                viewport and §9 forbids two in proximity — the hero's CTA owns
+                that slot, so persistent chrome yields to it. The mobile
+                overlay below keeps its pill: it is a full-screen takeover,
+                so no second gold fill is ever on screen with it. */}
+            <Link href="/contact" className="ghost-link hidden md:inline-block">
               Book a Call
             </Link>
 

@@ -17,6 +17,7 @@ import {
   FORMATIONS,
   generators,
   offsets,
+  offsetsYMobile,
   type FormationName,
 } from './formations';
 import { easeMorph, resolveController } from './controller';
@@ -48,6 +49,7 @@ const VERTEX = /* glsl */ `
   uniform float uActivity;
   uniform float uScale;
   uniform float uOffsetX;
+  uniform float uOffsetY;
   uniform float uDpr;
 
   varying float vSeed;
@@ -80,6 +82,7 @@ const VERTEX = /* glsl */ `
 
     p *= uScale;
     p.x += uOffsetX * uScale;
+    p.y += uOffsetY * uScale;
 
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     gl_Position = projectionMatrix * mv;
@@ -221,8 +224,11 @@ export default function ResolveCanvas({
         // rather than a flat, perfectly symmetrical starburst.
         uRot: { value: 0.6 },
         uActivity: { value: 0 },
-        uScale: { value: mobile ? 0.5 : 1 },
+        // Desktop pulls in slightly from 1.0 so an offset formation clears the
+        // copy column and still keeps its outer edge on screen at 1280px.
+        uScale: { value: mobile ? 0.5 : 0.92 },
         uOffsetX: { value: 0 },
+        uOffsetY: { value: 0 },
         uDpr: { value: dpr },
         uGoldDeep: { value: new Color('#6E5A28') },
         uGold: { value: new Color('#C9A961') },
@@ -244,6 +250,9 @@ export default function ResolveCanvas({
       offsetFrom: 0,
       offsetTo: 0,
       offset: 0,
+      offsetYFrom: 0,
+      offsetYTo: 0,
+      offsetY: 0,
       t: 1,
       start: 0,
       active: false,
@@ -264,16 +273,20 @@ export default function ResolveCanvas({
         state.target = index;
         state.offsetFrom = state.offset;
         state.offsetTo = mobile ? 0 : offsets[formation];
+        state.offsetYFrom = state.offsetY;
+        state.offsetYTo = mobile ? offsetsYMobile[formation] : 0;
 
         if (options?.instant || reducedMotion) {
           state.weights.fill(0);
           state.weights[index] = 1;
           state.offset = state.offsetTo;
+          state.offsetY = state.offsetYTo;
           state.t = 1;
           state.active = false;
 
           (u.uW.value as Float32Array).set(state.weights);
           u.uOffsetX.value = state.offset;
+          u.uOffsetY.value = state.offsetY;
           u.uActivity.value = 0;
           draw();
 
@@ -317,6 +330,8 @@ export default function ResolveCanvas({
 
         state.offset =
           state.offsetFrom + (state.offsetTo - state.offsetFrom) * e;
+        state.offsetY =
+          state.offsetYFrom + (state.offsetYTo - state.offsetYFrom) * e;
 
         // Swarm hardest mid-flight; settle to stillness at both ends.
         u.uActivity.value = Math.sin(Math.PI * state.t);
@@ -328,6 +343,7 @@ export default function ResolveCanvas({
 
         (u.uW.value as Float32Array).set(state.weights);
         u.uOffsetX.value = state.offset;
+        u.uOffsetY.value = state.offsetY;
       }
 
       if (!mobile) {

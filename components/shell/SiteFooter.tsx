@@ -12,89 +12,60 @@ const legal = [
   { label: 'Terms', href: '/terms' },
 ];
 
-const disciplines = [
-  'Executive Data Intelligence',
-  'Premium Web Development',
-  'Search Visibility Foundation',
-  'Growth Systems Architecture',
-];
-
-function ColumnLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="font-mono text-mono-label uppercase tracking-mono text-gold">
-      {children}
-    </p>
-  );
-}
-
+/**
+ * A closing signature, not a second page. One row on desktop, legal inline
+ * beneath it — the disciplines column is gone because /services already
+ * carries that list and repeating it here only added height.
+ */
 export function SiteFooter() {
   return (
-    <footer className="premium-container pb-24 pt-(--section-gap)">
-      {/* Large typographic wordmark — no icon grid, no bordered panels. */}
-      <p className="text-heading-lg text-bone">Acesta</p>
+    <footer className="premium-container pb-16 pt-32 md:pb-20 md:pt-40">
+      <div className="flex flex-col gap-10 md:flex-row md:items-baseline md:justify-between md:gap-16">
+        <Link href="/" className="text-heading-xs text-bone">
+          Acesta
+        </Link>
 
-      <div className="mt-24 grid gap-16 md:grid-cols-[1.2fr_0.9fr_0.9fr] md:gap-12">
-        <div>
-          <ColumnLabel>Contact</ColumnLabel>
-
-          <div className="mt-6 flex flex-col items-start gap-3">
-            <a
-              href="mailto:shubham@acestaanalytics.com"
-              className="ghost-link break-all"
-            >
-              shubham@acestaanalytics.com
-            </a>
-
-            <a href="tel:+919869371603" className="ghost-link">
-              +91 98693 71603
-            </a>
-
-            <p className="text-[0.875rem] text-mist">Mumbai, Maharashtra</p>
-          </div>
-        </div>
-
-        <div>
-          <ColumnLabel>Pages</ColumnLabel>
-
-          <div className="mt-6 flex flex-col items-start gap-3">
-            {pages.map((page) => (
-              <Link key={page.href} href={page.href} className="ghost-link">
-                {page.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <ColumnLabel>Disciplines</ColumnLabel>
-
-          <div className="mt-6 flex flex-col gap-3">
-            {disciplines.map((discipline) => (
-              <p key={discipline} className="text-[0.875rem] text-mist">
-                {discipline}
-              </p>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-24 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <p className="font-mono text-mono-label uppercase tracking-mono text-ash">
-          © {new Date().getFullYear()} Acesta Analytics
-        </p>
-
-        <div className="flex items-center gap-6">
-          {legal.map((item) => (
-            <Link key={item.href} href={item.href} className="ghost-link">
-              {item.label}
+        <nav
+          aria-label="Footer"
+          className="flex flex-wrap items-baseline gap-x-8 gap-y-3"
+        >
+          {pages.map((page) => (
+            <Link key={page.href} href={page.href} className="ghost-link">
+              {page.label}
             </Link>
           ))}
+        </nav>
+
+        <div className="flex flex-wrap items-baseline gap-x-8 gap-y-3">
+          <a href="mailto:shubham@acestaanalytics.com" className="ghost-link">
+            shubham@acestaanalytics.com
+          </a>
+
+          <a href="tel:+919869371603" className="ghost-link">
+            +91 98693 71603
+          </a>
         </div>
       </div>
 
-      <p className="mt-8 text-caption text-ash">
-        GST not charged as supplier is not registered under GST.
-      </p>
+      <div className="mt-14 flex flex-wrap items-baseline gap-x-6 gap-y-2 font-mono text-mono-label uppercase tracking-mono text-ash">
+        <span>© {new Date().getFullYear()} Acesta Analytics</span>
+        <span aria-hidden>·</span>
+        <span>Mumbai</span>
+
+        {legal.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="transition-[color] duration-(--dur-micro) ease-out-expo hover:text-bone"
+          >
+            {item.label}
+          </Link>
+        ))}
+
+        <span className="basis-full normal-case tracking-normal">
+          GST not charged as supplier is not registered under GST.
+        </span>
+      </div>
     </footer>
   );
 }

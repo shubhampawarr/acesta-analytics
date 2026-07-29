@@ -318,15 +318,34 @@ export const generators: Record<FormationName, (n: number) => Float32Array> = {
 };
 
 /**
- * Horizontal offset per formation, in world units. The hero lattice sits
- * right of the headline; the provisional Phase 3 wiring alternates the rest
- * in the zigzag rhythm Phase 4 will formalise. Mobile centres everything.
+ * Horizontal offset per formation, in world units — the §4 zigzag.
+ *
+ * Sized so each formation clears the copy column rather than sitting behind
+ * it. The widest formation is ~3.0 units half-width, so an offset of 2.7 puts
+ * its inner edge just past the viewport centreline while its outer edge stays
+ * on screen down to 1280px. Verified at 1280×720, 1440×900 and 1920×1080.
+ * Mobile centres everything and the copy stacks below.
  */
 export const offsets: Record<FormationName, number> = {
   chaos: 0,
-  lattice: 1.7,
-  grid: -1.5,
-  chart: 1.5,
-  radial: -1.5,
-  flow: 1.5,
+  lattice: 2.9,
+  grid: -2.7,
+  chart: 2.7,
+  radial: -2.7,
+  flow: 2.7,
+};
+
+/**
+ * Mobile has one column, so the formations lift instead of sliding sideways:
+ * field above, copy below. The lattice is the exception and stays centred —
+ * it is sparse enough to sit behind the hero headline as texture, which is
+ * the one place that overlap reads as deliberate rather than as interference.
+ */
+export const offsetsYMobile: Record<FormationName, number> = {
+  chaos: 0,
+  lattice: 0,
+  grid: 2.4,
+  chart: 2.4,
+  radial: 2.4,
+  flow: 2.4,
 };
