@@ -7,27 +7,27 @@ const pages = [
   { label: 'Contact', href: '/contact' },
 ];
 
-const legal = [
-  { label: 'Privacy', href: '/privacy' },
-  { label: 'Terms', href: '/terms' },
-];
-
 /**
- * A closing signature, not a second page. One row on desktop, legal inline
- * beneath it — the disciplines column is gone because /services already
- * carries that list and repeating it here only added height.
+ * A closing signature, not a second page (§5 Footer).
+ *
+ * Mobile is a single column on a consistent --space-24 rhythm, with email and
+ * phone stacked rather than sharing a line. The legal block is Switzer in
+ * sentence case, not mono uppercase: uppercase mono is a label treatment, and
+ * applying it to three lines of statutory text turns them into noise.
  */
 export function SiteFooter() {
   return (
-    <footer className="premium-container pb-16 pt-32 md:pb-20 md:pt-40">
-      <div className="flex flex-col gap-10 md:flex-row md:items-baseline md:justify-between md:gap-16">
+    <footer className="premium-container pb-(--space-36) pt-(--space-36) md:pb-(--space-60) md:pt-(--section-gap)">
+      <div className="flex flex-col gap-(--space-24) md:flex-row md:items-baseline md:justify-between md:gap-(--space-60)">
         <Link href="/" className="text-heading-xs text-bone">
           Acesta
         </Link>
 
+        {/* Two columns at 390px: four links stacked one per row was the
+            single biggest contributor to footer height. */}
         <nav
           aria-label="Footer"
-          className="flex flex-wrap items-baseline gap-x-8 gap-y-3"
+          className="grid grid-cols-2 gap-(--space-12) md:flex md:gap-(--space-36)"
         >
           {pages.map((page) => (
             <Link key={page.href} href={page.href} className="ghost-link">
@@ -36,7 +36,9 @@ export function SiteFooter() {
           ))}
         </nav>
 
-        <div className="flex flex-wrap items-baseline gap-x-8 gap-y-3">
+        {/* Stacked: an email address and a phone number sharing one line at
+            390px is cramped. */}
+        <div className="flex flex-col gap-(--space-12) md:gap-(--space-18)">
           <a href="mailto:shubham@acestaanalytics.com" className="ghost-link">
             shubham@acestaanalytics.com
           </a>
@@ -47,24 +49,28 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="mt-14 flex flex-wrap items-baseline gap-x-6 gap-y-2 font-mono text-mono-label uppercase tracking-mono text-ash">
-        <span>© {new Date().getFullYear()} Acesta Analytics</span>
-        <span aria-hidden>·</span>
-        <span>Mumbai</span>
-
-        {legal.map((item) => (
+      <div className="mt-(--space-24) flex flex-col gap-(--space-6) text-caption text-ash md:mt-(--space-60) md:gap-(--space-12)">
+        <p>
+          © {new Date().getFullYear()} Acesta Analytics · Mumbai ·{' '}
           <Link
-            key={item.href}
-            href={item.href}
+            href="/privacy"
             className="transition-[color] duration-(--dur-micro) ease-out-expo hover:text-bone"
           >
-            {item.label}
+            Privacy
+          </Link>{' '}
+          ·{' '}
+          <Link
+            href="/terms"
+            className="transition-[color] duration-(--dur-micro) ease-out-expo hover:text-bone"
+          >
+            Terms
           </Link>
-        ))}
+        </p>
 
-        <span className="basis-full normal-case tracking-normal">
+        {/* Statutory, and the quietest thing on the page. */}
+        <p className="text-balance">
           GST not charged as supplier is not registered under GST.
-        </span>
+        </p>
       </div>
     </footer>
   );

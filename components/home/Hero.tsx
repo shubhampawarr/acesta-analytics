@@ -14,7 +14,7 @@ export default function Hero() {
   return (
     <section className="premium-container flex min-h-[88svh] items-center pt-32 md:min-h-svh md:pt-20">
       <div className="w-full md:grid md:grid-cols-12">
-        <div className="md:col-span-6">
+        <div className="md:col-span-7">
           <Reveal immediate>
             <p className="font-mono text-mono-label uppercase tracking-mono text-gold">
               Digital Intelligence · Mumbai
@@ -22,15 +22,17 @@ export default function Hero() {
           </Reveal>
 
           <Reveal immediate>
-            <h1 className="mt-6 text-display text-bone">
+            <h1 className="mt-6 max-w-[13ch] text-display text-bone">
               Digital intelligence for brands that need clarity.
             </h1>
           </Reveal>
 
+          {/* Lead, not body: weight 200 survives at 20px and above (§3). */}
           <Reveal immediate>
-            <p className="mt-8 max-w-[520px] text-body text-mist">
-              We build the data, web and search systems that turn noise into
-              decisions.
+            <p className="mt-8 max-w-[46ch] text-lead font-extralight text-mist">
+              We build the data systems, websites and search foundations that
+              turn scattered activity into decisions you can defend in a board
+              meeting.
             </p>
           </Reveal>
 

@@ -32,7 +32,7 @@ Layout is a **spacious two-column zigzag**: oversized left-aligned headline pair
 | **Gold** | `#C9A961` | `--color-gold` | **The single accent.** Filled CTAs, logo mark, brand moments, particle core. 9.3:1 on black — passes AA for text *and* for black text sitting on a gold fill. |
 | Gold Bright | `#F2DFA8` | `--color-gold-bright` | Hover states, emphasis text, glow highlights, particle sparks. |
 | Gold Deep | `#6E5A28` | `--color-gold-deep` | Gradient stops, hairline strokes, dimmed particle tails, disabled gold. |
-| Steel | `#5B8FB9` | `--color-steel` | **Data-visualisation only.** The single comparison/benchmark series colour in charts. Never appears in UI chrome, never as a button, never as text. |
+| Steel | `#5B8FB9` | `--color-steel` | **Data-visualisation only.** The single comparison/benchmark series colour in charts. Never in UI chrome, never as a button, never as body copy, never outside a chart. Permitted as text only where the colour carries meaning — a legend label naming the steel series. Axis labels, gridline values and neutral annotations stay in ash. Clears the 4.5:1 text bar on both void and vitrine. |
 
 ### Hairlines
 There are no borders in this system except one: `--stroke-hairline: 1px solid rgba(201, 169, 97, 0.12)`. It is permitted **only** on vitrine surfaces. Nowhere else.
@@ -53,29 +53,33 @@ There are no borders in this system except one: `--stroke-hairline: 1px solid rg
 
 Swap path: if PPNeueMontreal is licensed later, change `--font-display` only. Nothing else moves.
 
-### The weight rule (non-negotiable)
+### The weight rule
 
 - **Headlines: weight 400.** Never 600, never 700. Scale and negative tracking create hierarchy.
-- **Body: weight 200.** Ultra-light is the signature reading experience. Never 400.
+- **Body: weight 300.** Not 200. Light type on pure black suffers halation — strokes bloom into the background on LED and OLED displays — so light-on-dark needs *more* weight than dark-on-light to read equally well, not less. 300 keeps the airy register while staying legible at 16–18px. Never 400 for body.
+- **Lead paragraphs at 20px and above: weight 200 is permitted.** At that size the strokes are thick enough to survive. This is where the ultra-light signature lives.
 - **Mono labels: weight 500, uppercase, `0.08em` tracking.**
 
 ### Fluid type scale
 
-Desktop values match the reference; mobile floors are set so nothing breaks below 380px.
+Mobile floors are set so nothing breaks below 380px. **Desktop ceilings are deliberately restrained.** An earlier revision capped display at 113px, which forced a seven-word headline onto five lines and consumed an entire viewport before any body copy appeared. Oversized type is the signature, but a headline that fills the screen reads as shouting rather than confidence.
 
 | Role | Clamp | Line height | Tracking | Token |
 |------|-------|-------------|----------|-------|
-| display | `clamp(3.5rem, 9vw, 7.0625rem)` | 1.05 | -0.04em | `--text-display` |
-| heading-lg | `clamp(2.75rem, 6.5vw, 4.875rem)` | 1.1 | -0.04em | `--text-heading-lg` |
-| heading | `clamp(2rem, 4.5vw, 3rem)` | 1.1 | -0.035em | `--text-heading` |
-| heading-sm | `clamp(1.75rem, 3.5vw, 2.625rem)` | 1.2 | -0.04em | `--text-heading-sm` |
-| subheading | `clamp(1.5rem, 2.5vw, 2.25rem)` | 1.2 | -0.02em | `--text-subheading` |
-| heading-xs | `1.6875rem` | 1.0 | -0.02em | `--text-heading-xs` |
-| heading-2xs | `1.5rem` | 1.25 | -0.02em | `--text-heading-2xs` |
-| body | `clamp(1rem, 1.2vw, 1.125rem)` | 1.55 | normal | `--text-body` |
-| caption | `0.75rem` | 1.5 | normal | `--text-caption` |
+| display | `clamp(2.75rem, 6.5vw, 5.5rem)` | 1.05 | -0.04em | `--text-display` |
+| heading-lg | `clamp(2.5rem, 5vw, 3.75rem)` | 1.1 | -0.035em | `--text-heading-lg` |
+| heading | `clamp(1.875rem, 4vw, 2.5rem)` | 1.15 | -0.03em | `--text-heading` |
+| heading-sm | `clamp(1.625rem, 3vw, 2.125rem)` | 1.2 | -0.03em | `--text-heading-sm` |
+| subheading | `clamp(1.375rem, 2.25vw, 1.75rem)` | 1.25 | -0.02em | `--text-subheading` |
+| heading-xs | `1.5rem` | 1.15 | -0.02em | `--text-heading-xs` |
+| heading-2xs | `1.25rem` | 1.3 | -0.01em | `--text-heading-2xs` |
+| lead | `clamp(1.25rem, 1.6vw, 1.5rem)` | 1.45 | normal | `--text-lead` |
+| body | `clamp(1rem, 1.2vw, 1.125rem)` | 1.6 | normal | `--text-body` |
+| caption | `0.8125rem` | 1.5 | normal | `--text-caption` |
 | mono-label | `0.75rem` | 1.2 | 0.08em | `--text-mono-label` |
 | mono-metric | `clamp(1.75rem, 3vw, 2.5rem)` | 1.0 | -0.02em | `--text-mono-metric` |
+
+**Headline length constraint.** Display type must never exceed three lines at any desktop width. If a headline breaks to four, either widen its column or the headline is too long for display size — reduce it, don't shrink the type below the scale.
 
 OpenType: enable `"ss01"`, `"cv01"`, and `"tnum"` on all mono numerals.
 
@@ -123,6 +127,17 @@ Two-column asymmetric. Left: eyebrow → headline at `--text-heading-lg` weight 
 
 ### Nav
 Transparent, sits directly on void. No backdrop blur at top of page; blur + `rgba(0,0,0,0.6)` fades in after 80px scroll. Logo left. Links centre-right, mono 14px uppercase, `--color-ash` → `--color-bone`. Gold pill CTA anchors right. Mobile: full-screen overlay, links stagger in at 60ms intervals.
+
+### Footer
+Typographic and quiet — a closing signature, not a second page.
+
+**Desktop:** wordmark at `--text-heading-xs`, page links and contact on a single row, legal beneath.
+
+**Mobile:** single column with consistent `--space-24` rhythm between groups. Contact details **stack** rather than sitting side by side — an email address and a phone number sharing one line at 390px is cramped.
+
+**Legal block — set in Switzer, not mono, and in sentence case, not uppercase.** Mono uppercase at small sizes reads as noise when applied to sentences; it is a label treatment, not a text treatment. Use `--text-caption` in `--color-ash`, with a mid-dot separating Privacy and Terms. The GST notice is statutory and stays, but it is the quietest element on the page: last line, tight leading, no wrapping mid-phrase where avoidable.
+
+Total footer height on mobile should not exceed roughly 40% of viewport height.
 
 ### Metric Readout
 Geist Mono. Value at `--text-mono-metric` in `--color-bone`. Label below at `--text-mono-label` in `--color-ash`. Delta indicator in `--color-gold` (positive) or `--color-ash` (negative — we don't use red; this is a consultancy, not a trading terminal). Numbers count up on scroll-into-view.
@@ -235,15 +250,16 @@ The particles never reset to zero between sections; they *morph* from one format
   --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Type — scale */
-  --text-display: clamp(3.5rem, 9vw, 7.0625rem);
-  --text-heading-lg: clamp(2.75rem, 6.5vw, 4.875rem);
-  --text-heading: clamp(2rem, 4.5vw, 3rem);
-  --text-heading-sm: clamp(1.75rem, 3.5vw, 2.625rem);
-  --text-subheading: clamp(1.5rem, 2.5vw, 2.25rem);
-  --text-heading-xs: 1.6875rem;
-  --text-heading-2xs: 1.5rem;
+  --text-display: clamp(2.75rem, 6.5vw, 5.5rem);
+  --text-heading-lg: clamp(2.5rem, 5vw, 3.75rem);
+  --text-heading: clamp(1.875rem, 4vw, 2.5rem);
+  --text-heading-sm: clamp(1.625rem, 3vw, 2.125rem);
+  --text-subheading: clamp(1.375rem, 2.25vw, 1.75rem);
+  --text-heading-xs: 1.5rem;
+  --text-heading-2xs: 1.25rem;
+  --text-lead: clamp(1.25rem, 1.6vw, 1.5rem);
   --text-body: clamp(1rem, 1.2vw, 1.125rem);
-  --text-caption: 0.75rem;
+  --text-caption: 0.8125rem;
   --text-mono-label: 0.75rem;
   --text-mono-metric: clamp(1.75rem, 3vw, 2.5rem);
 
@@ -253,7 +269,8 @@ The particles never reset to zero between sections; they *morph* from one format
   --tracking-mono: 0.08em;
 
   /* Type — weights */
-  --weight-body: 200;
+  --weight-body: 300;
+  --weight-lead: 200;
   --weight-display: 400;
   --weight-mono: 500;
 
@@ -313,11 +330,12 @@ The particles never reset to zero between sections; they *morph* from one format
   --font-display: 'Switzer', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, monospace;
 
-  --text-display: clamp(3.5rem, 9vw, 7.0625rem);
-  --text-heading-lg: clamp(2.75rem, 6.5vw, 4.875rem);
-  --text-heading: clamp(2rem, 4.5vw, 3rem);
-  --text-heading-sm: clamp(1.75rem, 3.5vw, 2.625rem);
-  --text-subheading: clamp(1.5rem, 2.5vw, 2.25rem);
+  --text-display: clamp(2.75rem, 6.5vw, 5.5rem);
+  --text-heading-lg: clamp(2.5rem, 5vw, 3.75rem);
+  --text-heading: clamp(1.875rem, 4vw, 2.5rem);
+  --text-heading-sm: clamp(1.625rem, 3vw, 2.125rem);
+  --text-subheading: clamp(1.375rem, 2.25vw, 1.75rem);
+  --text-lead: clamp(1.25rem, 1.6vw, 1.5rem);
   --text-body: clamp(1rem, 1.2vw, 1.125rem);
   --text-mono-label: 0.75rem;
   --text-mono-metric: clamp(1.75rem, 3vw, 2.5rem);

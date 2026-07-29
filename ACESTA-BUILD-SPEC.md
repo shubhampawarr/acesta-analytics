@@ -52,7 +52,9 @@ Re-cut `app/icon.tsx`, `app/apple-icon.tsx` and `app/opengraph-image.tsx` to the
 
 **D. `/services` is a rewrite, not a refactor.** Confirmed. Build the four anchored sections fresh.
 
-**E. Steel is strokes and fills only.** At ~4.0:1 on the vitrine it clears the 3:1 bar for non-text graphical objects but fails the 4.5:1 text bar. Chart marks in steel, legend and axis text in ash. As proposed.
+**E. Steel is restricted, but not for accessibility reasons.** *Corrected after Phase 4.* The original figure of ~4.0:1 on vitrine was wrong — steel computes closer to 6:1, which clears the 4.5:1 text bar. The accessibility justification does not hold.
+
+The design restriction stands on its own terms: steel never appears in UI chrome, never as a button, never as body copy, and never outside a chart. Within a chart it may carry text where the colour is doing semantic work — **a legend label for the steel series should be steel**, since forcing it to ash severs the link between the legend and the series it names. Axis labels, gridline values and neutral annotations stay in ash.
 
 **F. Delete the dead code.** `components/Services.tsx` and `components/Tools.tsx` are imported by nothing. Remove both in Phase 1.
 
@@ -86,6 +88,52 @@ Two items carried to Phase 7, neither blocking:
 - Open diagnostics: unused JavaScript ~80 KiB, render-blocking requests ~130ms, legacy JavaScript ~14 KiB.
 
 **M. Less content, more motion — across every page.** Direction from the client after reviewing the live build: the site is still reading as "box, information, box, information." The design system already bans containers (§9), but these phases hadn't executed yet. Reinforcing it as a standing instruction: on every page from here, **cut copy first and let motion and whitespace carry the page.** If a section can lose a third of its words without losing meaning, it must.
+
+---
+
+## Decisions log — resolved after Phase 4
+
+**N. Nav CTA fill is driven by hero-pill visibility.** *Corrected during implementation.* The original decision tied the fill to the existing 80px scroll sentinel. That was wrong: the hero pill sits at document y 848 and stays in view until scrollY exceeds 890, so the sentinel would have produced two gold fills on screen across a 767px scroll window — the exact condition the decision exists to prevent.
+
+The intent stands ("hero out of view"); the trigger is corrected. The nav CTA observes the hero pill directly via IntersectionObserver. Routes opt in by marking their primary action `data-hero-cta`; any route without one renders the nav CTA filled from the top.
+
+The unfilled state retains the pill's geometry and mono type rather than becoming a literal §5 ghost link. The state flips mid-scroll, and changing typeface and box width at that moment reads as a glitch. Width holds constant across both states, so it is a fill fade with no layout shift. This is a deliberate, approved departure from §5.
+
+**O. Fix the `--color-gold-deep` text call sites now, not in Phases 5–6.** Eight call sites across `/services`, `/work` and `ContactPageClient` render text in `#6E5A28` at 3.15:1, below the 4.5:1 AA floor. Phase discipline normally argues for leaving files outside the current phase alone — but the site is deployed to production, so these are live accessibility defects on the website of a company that sells web development. Swap them to `--color-gold` or `--color-ash` as a single isolated commit before Phase 5 begins. It is a token substitution, not a redesign, and it will be overwritten harmlessly when those files are rewritten.
+
+§2 restricts `--color-gold-deep` to gradient stops, hairline strokes and dimmed particle tails. It is never a text colour. Treat any future use of it on type as a bug.
+
+---
+
+## Phase 4.1 — Revision pass
+
+Client review of the deployed homepage. Four corrections, three of which are spec errors rather than build errors — the phase built what was written.
+
+**1. Type scale reduced.** §3 of the design system has been revised. Display drops from a 113px ceiling to 88px, and every heading role below it comes down proportionally. Mobile floors are unchanged — the complaint was desktop-specific. Re-derive all type from the updated tokens; do not hand-tune individual components.
+
+The hero headline currently runs five lines and consumes the full viewport, pushing body copy and CTA below the fold. **Acceptance: at 1440×900, the entire hero — eyebrow, headline, body, CTA — fits within one viewport without scrolling, and the headline breaks to no more than three lines.** If three lines can't be achieved at the new scale, widen the hero text column rather than shrinking type below the token.
+
+**2. Body weight 200 → 300.** Light type on pure black suffers halation; the strokes bloom into the background and fight the reader. Weight 200 survives only at 20px and above, which is what the new `--text-lead` role is for. Apply 300 to all body copy site-wide.
+
+**3. Restore a floor of copy.** Decision M was over-applied — 127 words across the whole homepage stripped it to service names with nothing supporting them. The instruction was minimal, not skeletal. Each service snippet gets its one-sentence proposition back, and the hero keeps a two-line lead paragraph. Target 250–350 words on the homepage. Cut anything that repeats what an adjacent element already says; keep anything that tells a prospect something they don't yet know.
+
+**4. Closing CTA section.** Currently reads badly and its spacing to the footer is wrong. Rebuild it as a typographic closing rather than a button in a section: a single large statement at `--text-heading-lg`, one ghost link beneath it, and correct rhythm — `--section-gap` above, and the footer following immediately with no extra dead space.
+
+Do not remove the closing path to contact entirely. Per Decision N the nav CTA becomes a gold pill past 80px scroll, so a pill here would be the second gold fill in view — which is why the closing moment should be typographic. That resolves both the visual complaint and the system constraint at once.
+
+**Acceptance:** re-run the mobile and desktop Lighthouse set and confirm no regression from Phase 4's 98 / 2.13s. Verify the hero fits one viewport at 1440×900, 1280×720 and 1920×1080.
+
+### Phase 4.1 — mobile corrections
+
+Reviewed on a real iPhone. Four further items, all mobile-specific.
+
+**5. Shrink the mobile hero headline.** The display floor drops from `3.5rem` to `2.75rem` in §3. The headline currently covers the lattice almost entirely; the particle field behind display type is the best-looking moment on the mobile page and should be more visible, not less. Verify at 390px that the field reads clearly around and through the headline while the full hero still fits one viewport.
+
+**6. Service snippets need a supporting line.** Structure, heading and title are all correct — the gap is that each service goes straight from title to "See the work" with nothing between. Add one short sentence per service explaining what it is. This is the same correction as item 3 above, confirmed against the mobile build.
+
+**7. Compact the Method section.** Too tall on mobile. Reduce vertical padding between fragments, drop the type a step, and consider a two-column arrangement at 390px rather than four stacked full-width rows.
+
+**8. Rebuild the mobile footer.** Currently messy. §5 now carries a full Footer spec — the key fixes: the legal block moves from mono uppercase to Switzer sentence case (mono uppercase turns three lines of statutory text into visual noise), Privacy and Terms get a mid-dot separator, email and phone stack instead of sharing a line, and vertical rhythm becomes consistent at `--space-24` between groups. Footer height should not exceed roughly 40% of viewport at 390px.
 
 ---
 
@@ -298,6 +346,12 @@ Every homepage snippet deep-links correctly into its `/services` anchor, scroll 
 1. **Performance** — Lighthouse ≥ 90 performance on mobile, ≥ 95 on desktop. All images through `next/image` with correct `sizes`. Lazy-load below-fold. Code-split the three.js bundle so it never blocks first paint.
 2. **Responsive** — verify at 390, 768, 1024, 1440, 1920. Nothing overflows; display type never breaks the viewport.
 3. **Accessibility** — visible keyboard focus on every interactive element, correct heading order, alt text on all imagery, contrast verified against §2, `prefers-reduced-motion` fully honoured.
+
+   **Audit under forced reduced motion.** Lighthouse skips elements at `opacity: 0`, so every scroll-revealed element on this site — which is most of it — has been structurally invisible to every accessibility audit run so far. An `a11y 100` collected normally only proves that the content visible at first paint passed.
+
+   Because reduced motion resolves all reveals on first paint with no tween, running the audit with reduced motion emulated makes every revealed element visible to the checker. Run the full accessibility pass on every route this way, and treat those results as the real numbers. The Phase 4 gold-deep failures at 3.15:1 were caught only by manual inspection; a normal audit reported 100 with them present.
+
+   Also verify contrast manually on any element whose colour is set during or after an animation, since the audit samples one moment in time.
 4. **Cross-browser** — Chrome, Safari, Firefox, iOS Safari. Backdrop-filter and WebGL both need a Safari pass.
 5. **Cleanup** — delete dead components, unused icon imports, orphaned CSS.
 

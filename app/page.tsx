@@ -16,6 +16,8 @@ const services: Service[] = [
     eyebrow: 'Web Development',
     name: 'Premium Web Development',
     proposition: 'The site you are reading is the proof.',
+    support:
+      'Fast, restrained, conversion-focused sites built to make a serious business look serious — and to hold up when a prospect looks closely.',
     anchor: 'web',
     formation: 'grid',
   },
@@ -23,6 +25,8 @@ const services: Service[] = [
     eyebrow: 'Data Intelligence',
     name: 'Executive Data Intelligence',
     proposition: 'Scattered numbers become one board-ready view.',
+    support:
+      'Dashboards and reporting that consolidate revenue, channels and operations into a single picture, so decisions stop waiting on someone rebuilding a spreadsheet.',
     anchor: 'data',
     formation: 'chart',
   },
@@ -30,6 +34,8 @@ const services: Service[] = [
     eyebrow: 'Search Visibility',
     name: 'Search Visibility Foundation',
     proposition: 'Found by the people already looking for you.',
+    support:
+      'Technical foundations, page structure and metadata that make a site legible to search engines — the groundwork that compounds rather than the tricks that expire.',
     anchor: 'search',
     formation: 'radial',
   },
@@ -37,6 +43,8 @@ const services: Service[] = [
     eyebrow: 'Growth Systems',
     name: 'Growth Systems Architecture',
     proposition: 'Attention routed into enquiries, by design.',
+    support:
+      'Lead flow, qualification and follow-up wired into one path, so interest arrives as a usable enquiry instead of scattering across channels.',
     anchor: 'growth',
     formation: 'flow',
   },

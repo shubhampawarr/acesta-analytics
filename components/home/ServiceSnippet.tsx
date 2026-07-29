@@ -8,7 +8,10 @@ import { cn } from '@/lib/cn';
 export type Service = {
   eyebrow: string;
   name: string;
+  /** The claim — one line, the reason to care. */
   proposition: string;
+  /** What it actually is. Restores the floor Decision M over-cut (item 3/6). */
+  support: string;
   anchor: string;
   formation: FormationName;
 };
@@ -51,12 +54,18 @@ export function ServiceSnippet({
             </Reveal>
 
             <Reveal delay={0.12}>
-              <p className="mt-8 max-w-[520px] text-body text-mist">
+              <p className="mt-6 max-w-[34ch] text-lead font-extralight text-bone">
                 {service.proposition}
               </p>
             </Reveal>
 
-            <Reveal delay={0.18}>
+            <Reveal delay={0.16}>
+              <p className="mt-5 max-w-[46ch] text-body text-mist">
+                {service.support}
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.22}>
               <Link
                 href={`/services#${service.anchor}`}
                 className="ghost-link mt-10 inline-block"
