@@ -1,15 +1,18 @@
 /**
- * Captures a desktop screenshot of each live project and bakes in the §6
- * gold-duotone treatment.
+ * Captures a desktop hero screenshot of each live project.
  *
  *   npm run capture:work
  *
- * The duotone is baked rather than applied as a runtime SVG filter: it is a
- * fixed brand treatment, not a variable, and baking avoids both the per-frame
- * filter cost on large images and Safari's patchy record with filtered <img>.
- * The mapping is taken straight from the tokens — luminance 0 lands on
- * --color-gold-deep, luminance 1 on --color-gold-bright — so re-running this
- * after a token change reproduces it exactly.
+ * FULL COLOUR — no duotone (§6, corrected after Phase 8). These are evidence,
+ * not decoration: a studio selling web design has to let a prospect evaluate
+ * the work, and a monochrome wash hides the exact thing being sold. What
+ * integrates them with the void is crop, containment and reduced opacity at
+ * rest, never a colour treatment.
+ *
+ * The measured tonal-spread gate is retained. It was introduced because the
+ * duotone collapsed flat sources to a gold slab, but a near-uniform capture is
+ * a weak portfolio image whatever the treatment — at rest opacity on black it
+ * is simply a grey rectangle.
  */
 
 import { mkdir } from 'node:fs/promises';
@@ -47,22 +50,6 @@ const CHROME =
   process.env.CHROME_PATH ??
   'C:/Program Files/Google/Chrome/Application/chrome.exe';
 
-/** §6 ramp: #6E5A28 shadows → #F2DFA8 highlights. Endpoints exactly as specified. */
-const SHADOW = [0x6e, 0x5a, 0x28];
-const HIGHLIGHT = [0xf2, 0xdf, 0xa8];
-const slope = HIGHLIGHT.map((h, i) => (h - SHADOW[i]) / 255);
-
-/**
- * Tone curve applied to luminance before the ramp.
- *
- * §6's treatment assumes a photograph, which has a spread of tones. A
- * screenshot of a light UI is mostly one bright tone, so a straight mapping
- * lands nearly the whole frame on gold-bright and produces a large flat gold
- * rectangle — which §9 forbids outright. Raising luminance to a power pushes
- * midtones toward the shadow end while leaving both endpoints untouched, so
- * the specified ramp still holds and light sources stop shouting.
- */
-const TONE_CURVE = 2.1;
 
 async function main() {
   await mkdir(OUT, { recursive: true });
@@ -111,23 +98,8 @@ async function main() {
       continue;
     }
 
-    const { data, info } = await sharp(raw)
+    await sharp(raw)
       .resize({ width: 1600 })
-      .removeAlpha()
-      .raw()
-      .toBuffer({ resolveWithObject: true });
-
-    for (let i = 0; i < data.length; i += 3) {
-      const lum =
-        (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]) / 255;
-      const t = Math.pow(lum, TONE_CURVE);
-
-      data[i] = SHADOW[0] + slope[0] * 255 * t;
-      data[i + 1] = SHADOW[1] + slope[1] * 255 * t;
-      data[i + 2] = SHADOW[2] + slope[2] * 255 * t;
-    }
-
-    await sharp(data, { raw: { width: info.width, height: info.height, channels: 3 } })
       .webp({ quality: 82 })
       .toFile(path.join(OUT, `${project.slug}.webp`));
 

@@ -405,6 +405,14 @@ html.lenis body {
   html:has(main[data-page='services']) [data-resolve-host] {
     opacity: 0.45;
   }
+
+  /* §6: the field must not cross a photograph. On desktop /about the portrait
+     sits in the left column and the lattice is offset right, so they never
+     meet. A single mobile column has no such room, so the field is suppressed
+     rather than allowed to run over a face. */
+  html:has(main[data-page='about']) [data-resolve-host] {
+    display: none;
+  }
 }
 
 /* §6.2 — /contact runs the field unresolved and quiet at every width. The

@@ -40,7 +40,7 @@ const practice = [
 
 export default function AboutPage() {
   return (
-    <main className="relative overflow-x-clip">
+    <main data-page="about" className="relative overflow-x-clip">
       {/* §6.1: the field holds a slow lattice throughout. This page is still. */}
       <ResolveWaypoint formation="lattice">
         <section className="premium-container flex min-h-[80svh] items-center pt-32 md:pt-20">
@@ -64,7 +64,33 @@ export default function AboutPage() {
 
       <section className="premium-container pt-(--section-gap)">
         <div className="md:grid md:grid-cols-12 md:gap-16">
-          <div className="md:col-span-6">
+          {/* §6: full colour, no duotone — a duotoned face reads as a graphic
+              rather than a person. Rounded crop at --radius, contained, and
+              capped at 40% of viewport width.
+
+              Placed in the LEFT column deliberately: the lattice sits at world
+              offset +2.9, i.e. the right half, and §6 forbids the particle
+              field crossing a photograph — particles over a face read as dirt
+              on the lens. On mobile there is only one column to work with, so
+              the field is suppressed there instead (see globals.css).
+
+              It also comes FIRST in the DOM: grid auto-placement is sparse, so
+              a later item is never backtracked into an earlier column, and
+              placing it after the copy silently pushed it onto its own row. */}
+          <Reveal
+            className="mb-20 md:col-span-4 md:col-start-1 md:mb-0 md:max-w-[40vw]"
+            delay={0.12}
+          >
+            <Image
+              src="/founder.webp"
+              alt="Shubham Pawar, founder of Acesta Analytics"
+              width={1100}
+              height={1653}
+              sizes="(max-width: 768px) 100vw, 34vw"
+              className="w-full rounded-3xl"
+            />
+          </Reveal>
+          <div className="md:col-span-6 md:col-start-6">
             <Reveal>
               <p className="text-lead font-extralight text-mist">
                 Acesta is a founder-led studio. The person who scopes the work
@@ -84,20 +110,6 @@ export default function AboutPage() {
             </Reveal>
           </div>
 
-          {/* §6.1: one large rounded crop, gold duotone, floating on void.
-              No frame, no card. The source was cut from a white background,
-              so its edge was decontaminated before the duotone — see
-              scripts/process-portrait.mjs. */}
-          <Reveal className="mt-20 md:col-span-5 md:col-start-8 md:mt-0" delay={0.12}>
-            <Image
-              src="/founder-duotone.webp"
-              alt="Shubham Pawar, founder of Acesta Analytics"
-              width={1100}
-              height={1653}
-              sizes="(max-width: 768px) 100vw, 40vw"
-              className="w-full rounded-3xl"
-            />
-          </Reveal>
         </div>
       </section>
 
