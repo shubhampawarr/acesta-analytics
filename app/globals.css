@@ -221,6 +221,27 @@
 }
 
 /* ---------------------------------------------------------------------------
+   Deliberately unlayered, below.
+
+   Rule of the codebase: anything that styles a component belongs in
+   @layer components, so a Tailwind utility at the call site wins. Three silent
+   layout bugs have come from breaking that (.gold-pill, .premium-container,
+   .gold-button) — each looked like a design choice rather than a cascade
+   accident.
+
+   What follows is unlayered on purpose, because each is a *functional
+   contract* rather than styling, and a utility overriding it would be a bug
+   rather than a customisation:
+     - Lenis host rules: scroll-lock and height behaviour the library needs.
+     - [data-reveal] / [data-stagger-group]: the resting state of the motion
+       primitives. If a utility could beat these, a reveal would never hide,
+       and reduced-motion resolution would stop being authoritative.
+     - ::view-transition-*: document pseudo-elements; no utility can target
+       them at all.
+   None of these declare a property that any utility in use also declares.
+--------------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------------
    Lenis — required host rules (mirrors lenis/dist/lenis.css)
 --------------------------------------------------------------------------- */
 
@@ -352,24 +373,6 @@ html.lenis body {
   .ghost-link:hover::after {
     transform: scaleX(1);
   }
-}
-
-/* Transitional. Remaining call sites are replaced in Phases 4–6. */
-.gold-button {
-  background: var(--color-gold);
-  color: var(--color-void);
-  font-family: var(--font-mono);
-  font-weight: var(--weight-mono);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-mono);
-  transition:
-    background-color var(--dur-micro) var(--ease-out-expo),
-    box-shadow var(--dur-reveal) var(--ease-out-expo);
-}
-
-.gold-button:hover {
-  background: var(--color-gold-bright);
-  box-shadow: var(--glow-gold);
 }
 
 /* Transitional hairline divider, retained until Phases 4–6 remove call sites. */

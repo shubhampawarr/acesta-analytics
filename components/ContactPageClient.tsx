@@ -236,7 +236,7 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
       <button
         type="submit"
         disabled={status === 'sending'}
-        className="gold-button group mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold transition disabled:cursor-not-allowed disabled:opacity-70 md:mt-5"
+        className="gold-pill group mt-4 w-full gap-2 disabled:cursor-not-allowed disabled:opacity-70 md:mt-5"
       >
         {status === 'sending' ? (
           <>
