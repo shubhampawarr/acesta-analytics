@@ -407,9 +407,17 @@ Every homepage snippet deep-links correctly into its `/services` anchor, scroll 
 
    **Audit under forced reduced motion.** Lighthouse skips elements at `opacity: 0`, so every scroll-revealed element on this site — which is most of it — has been structurally invisible to every accessibility audit run so far. An `a11y 100` collected normally only proves that the content visible at first paint passed.
 
-   Because reduced motion resolves all reveals on first paint with no tween, running the audit with reduced motion emulated makes every revealed element visible to the checker. Run the full accessibility pass on every route this way, and treat those results as the real numbers. The Phase 4 gold-deep failures at 3.15:1 were caught only by manual inspection; a normal audit reported 100 with them present.
+   Because reduced motion resolves all reveals on first paint with no tween, running the audit with reduced motion emulated makes every revealed element visible to the checker. Run the full accessibility pass on every route this way, and treat those results as the real numbers.
 
-   Also verify contrast manually on any element whose colour is set during or after an animation, since the audit samples one moment in time.
+   **Scope the claim honestly.** The custom contrast auditor compares text colour against resolved CSS backgrounds. It has two known blind spots, both discovered by looking rather than measuring:
+   - Elements at `opacity: 0` — fixed by the reduced-motion run above.
+   - **Text sitting over the WebGL canvas.** The canvas is at `-z-10`, so the auditor resolves those nodes as text on void and passes them. Every paragraph over the particle field has been reported clean without ever being checked.
+
+   A result of "0 contrast failures" therefore means *zero failures against CSS backgrounds*, and must be reported that way rather than as blanket accessibility sign-off.
+
+   **Extend the auditor to enumerate rather than measure.** It cannot compute contrast against a live canvas, but it can identify every text node whose bounding box overlaps the canvas element and emit that list. That converts "check text over the field by eye" from a vague instruction into a finite, auditable checklist — and makes the boundary of the tool explicit rather than invisible. Every node on that list gets a manual pass on a real device at both breakpoints.
+
+   **General principle for sign-off:** an automated check verifies what it was written to verify. The failures it misses are systematically the ones nobody anticipated, and a clean report is precisely when scrutiny drops. Where a tool cannot see, say so in the result rather than letting silence read as a pass.
 4. **Cross-browser** — Chrome, Safari, Firefox, iOS Safari. Backdrop-filter and WebGL both need a Safari pass.
 5. **Cleanup** — delete dead components, unused icon imports, orphaned CSS.
 
