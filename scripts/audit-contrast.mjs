@@ -65,9 +65,19 @@ function collect() {
     return null;
   }
 
+  // A host that is not rendering is not a background. Routes that suppress
+  // the field (§6.5) must drop off the unchecked list, not sit on it forever
+  // as nodes over a canvas that was never painted.
   const host = document.querySelector('[data-resolve-host]');
-  const canvas = host?.querySelector('canvas') ?? null;
-  const canvasOpacity = host ? Number(getComputedStyle(host).opacity) : 0;
+  const hostStyle = host ? getComputedStyle(host) : null;
+  const hostRendering =
+    hostStyle !== null &&
+    hostStyle.display !== 'none' &&
+    hostStyle.visibility !== 'hidden' &&
+    Number(hostStyle.opacity) > 0.02;
+
+  const canvas = hostRendering ? host.querySelector('canvas') : null;
+  const canvasOpacity = hostRendering ? Number(hostStyle.opacity) : 0;
 
   const backed = [];
   const overCanvas = [];

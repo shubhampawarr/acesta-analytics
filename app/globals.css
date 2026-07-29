@@ -413,6 +413,14 @@ html:has(main[data-page='contact']) [data-resolve-host] {
   opacity: 0.35;
 }
 
+/* §6.5 — no ambience behind statutory text. Suppressed rather than dimmed:
+   these nodes were the largest block on the contrast auditor's unchecked
+   list, and hiding the field removes them from it entirely instead of
+   leaving them permanently unverifiable. */
+html:has(main[data-page='legal']) [data-resolve-host] {
+  display: none;
+}
+
 /* ---------------------------------------------------------------------------
    Growth flow diagram — travelling pulse along each edge (§5.3)
 

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { Reveal } from '@/components/motion/Reveal';
@@ -17,6 +18,8 @@ type Project = {
   year: string;
   status: string;
   href: string;
+  /** Optional — see scripts/capture-work.mjs for why one project has none. */
+  image?: string;
 };
 
 const projects: Project[] = [
@@ -28,6 +31,7 @@ const projects: Project[] = [
     year: '2025',
     status: 'Client project',
     href: 'https://axiramedia.vercel.app/',
+    image: '/work/axira-media.webp',
   },
   {
     name: 'Protein Cartel',
@@ -37,6 +41,7 @@ const projects: Project[] = [
     year: '2025',
     status: 'Concept build',
     href: 'https://protein-cartel.vercel.app/',
+    image: '/work/protein-cartel.webp',
   },
   {
     name: 'Artist Portfolio',
@@ -66,6 +71,19 @@ function ProjectRow({ project }: { project: Project }) {
         rel="noopener noreferrer"
         className="group block py-16 md:py-20"
       >
+        {project.image ? (
+          <div className="mb-12 overflow-hidden rounded-3xl md:mb-16">
+            <Image
+              src={project.image}
+              alt=""
+              width={1600}
+              height={1000}
+              sizes="(max-width: 768px) 100vw, 1280px"
+              className="w-full opacity-45 transition-opacity duration-(--dur-reveal) ease-out-expo md:opacity-30 md:group-hover:opacity-100"
+            />
+          </div>
+        ) : null}
+
         <div className="md:grid md:grid-cols-12 md:items-baseline md:gap-8">
           <div className="md:col-span-7">
             <h2 className="text-heading text-bone transition-transform duration-(--dur-reveal) ease-out-expo md:group-hover:translate-x-3">

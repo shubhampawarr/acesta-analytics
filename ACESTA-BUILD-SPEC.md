@@ -397,6 +397,13 @@ Project entries as large typographic rows, not cards. Client name at `--text-hea
 ### 6.4 Verification
 Every homepage snippet deep-links correctly into its `/services` anchor, scroll position lands cleanly below the nav, and the particle system doesn't remount or flash during the route transition.
 
+### 6.5 `/privacy` and `/terms`
+Never scoped in any earlier phase — an omission in this spec, not a skipped instruction. Both still carry the legacy card shell.
+
+- Remove the card. Prose on void, single column, generous measure, same tokens as everywhere else.
+- **Suppress the canvas entirely on both routes.** They carry 26–28 nodes of statutory text over a live particle field, which is both a readability problem and faintly absurd — nobody wants ambience behind a privacy policy. Suppressing it is cleaner than adding a waypoint, and it removes those nodes from the auditor's unchecked list at the same time.
+- These are low-traffic pages and should take very little time. They are also the only remaining routes that look like the old site.
+
 ---
 
 ## Phase 7 — QA and hardening
