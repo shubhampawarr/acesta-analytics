@@ -405,6 +405,31 @@ html.lenis body {
 }
 
 /* ---------------------------------------------------------------------------
+   Growth flow diagram — travelling pulse along each edge (§5.3)
+
+   A short dash chased along the path by stroke-dashoffset. No JS and no SMIL,
+   so the diagram server-renders complete and the animation is purely
+   decorative on top of a hairline that is already legible without it.
+--------------------------------------------------------------------------- */
+
+.flow-pulse {
+  stroke-dasharray: 0.05 0.95;
+  animation: flow-pulse 3.4s linear infinite;
+}
+
+/* Offset each edge so the field reads as continuous traffic rather than
+   twelve pulses marching in lockstep. */
+.flow-pulse {
+  animation-delay: calc(var(--pulse-index, 0) * -0.28s);
+}
+
+@keyframes flow-pulse {
+  to {
+    stroke-dashoffset: -1;
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Page transitions — 400ms void wipe (Phase 2.3)
 
    Native View Transitions, no animation library. The outgoing route falls to
@@ -477,5 +502,11 @@ html.lenis body {
   ::view-transition-group(*) {
     animation-duration: 0s !important;
     animation-delay: 0s !important;
+  }
+
+  /* The pulse is decoration over a hairline that already reads. Freezing it
+     mid-path would leave stray dashes, so remove it outright. */
+  .flow-pulse {
+    display: none;
   }
 }

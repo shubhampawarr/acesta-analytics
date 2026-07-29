@@ -7,7 +7,9 @@ import {
   ServiceSection,
   type ServiceSpec,
 } from '@/components/services/ServiceSection';
-import { VitrinePlaceholder } from '@/components/services/VitrinePlaceholder';
+import { Dashboard } from '@/components/services/artifacts/Dashboard';
+import { SeoPanel } from '@/components/services/artifacts/SeoPanel';
+import { GrowthFlow } from '@/components/services/artifacts/GrowthFlow';
 
 export const metadata: Metadata = {
   title: 'Services',
@@ -171,10 +173,10 @@ export default function ServicesPage() {
         service={data}
         artifact={
           <Reveal className="mt-20 pl-(--gutter) md:mt-24 md:pl-[max(var(--gutter),calc((100vw-var(--page-max-width))/2))]">
-            <VitrinePlaceholder
-              label="Dashboard sample — 5b"
-              aspect="aspect-[4/3] sm:aspect-[16/10]"
-              className="rounded-r-none border-r-0"
+            {/* Bleeds off the right edge: no radius or border on that side. */}
+            <Dashboard
+              surfaceClassName="rounded-r-none border-r-0"
+              captionClassName="pr-(--gutter)"
             />
           </Reveal>
         }
@@ -186,10 +188,7 @@ export default function ServicesPage() {
         artifact={
           <div className="premium-container mt-20 md:mt-24">
             <Reveal className="mx-auto md:max-w-[56rem]">
-              <VitrinePlaceholder
-                label="SEO panel — 5b"
-                aspect="aspect-[4/3] sm:aspect-[16/11]"
-              />
+              <SeoPanel />
             </Reveal>
           </div>
         }
@@ -200,10 +199,10 @@ export default function ServicesPage() {
         service={growth}
         artifact={
           <Reveal className="mt-20 md:mt-24">
-            <VitrinePlaceholder
-              label="Growth flow diagram — 5b"
-              aspect="aspect-[3/4] sm:aspect-[5/2]"
-              className="rounded-none border-x-0"
+            {/* Full-bleed: both vertical edges run off the viewport. */}
+            <GrowthFlow
+              surfaceClassName="rounded-none border-x-0"
+              captionClassName="px-(--gutter)"
             />
           </Reveal>
         }

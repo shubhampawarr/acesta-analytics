@@ -310,7 +310,22 @@ There is no real client data available. Invent it, and invent it *credibly*:
 
 - Use a **fictional but realistic client context** and label it as illustrative — a small line reading "Illustrative sample" in mono ash beneath each artifact. Never imply these are real client results; a prospect who later discovers invented numbers were presented as real is a lost prospect and a legal exposure.
 - Numbers should be **modest and internally consistent**. Revenue that ladders sensibly month to month, conversion rates in the 1–4% band, keyword positions that move 3–8 places rather than 1–90. Fantasy figures read as fake and cost you the credibility the whole site is built to establish.
-- Pick one coherent scenario and hold it across all artifacts — e.g. a mid-size D2C brand — so the dashboard, SEO panel and growth diagram feel like one engagement rather than three unrelated demos.
+- Pick one coherent scenario and hold it across all artifacts so the dashboard, SEO panel and growth diagram feel like one engagement rather than three unrelated demos.
+
+### Scenario — decided
+
+**D2C retail, twelve months, denominated in rupees.** Confirmed for 5b.
+
+- **Do not invent a client name.** Label each artifact `Illustrative sample · D2C retail · 12 months` in mono ash. A fictional brand name invites "which client was this?" and there is no good answer; a sector label is concrete enough to read as real work and sidesteps the question entirely.
+- **Rupees, and Indian-market-plausible ones.** Revenue in lakhs, AOV in the ₹800–2,500 band, order counts that reconcile against both. A dashboard denominated in dollars reads as a downloaded template to the audience actually buying this, and quietly undercuts the whole page.
+- D2C is the right sector because revenue, orders, AOV and conversion rate are the most universally legible metric set — a salon owner or a recruiter can map themselves onto it, where a niche vertical would exclude them. It also matches work already in the portfolio.
+- The three artifacts must reconcile with each other. If the SEO panel shows organic sessions rising, the dashboard's channel breakdown should reflect the same movement over the same twelve months. A prospect who spots the seam stops believing all three.
+
+### Before starting 5b — sweep the legacy CSS layer
+
+Two silent layout bugs so far have had the same root cause: unlayered legacy classes outranking Tailwind utilities. `.gold-pill` in Phase 2, `.premium-container` in Phase 5a. Both looked like plausible design choices in a screenshot.
+
+The Phase 0 audit listed the full set: `.premium-container`, `.premium-card`, `.grid-bg`, `.gradient-text`, `.gold-line`, `.gold-button`, `.luxury-border`, `.luxury-glow`, `.luxury-pulse`, `.soft-float`. Audit every one. Delete the dead ones, move the live ones into `@layer components`, and confirm no unlayered rule can outrank a utility. Do this as its own commit before any 5b work, so a third instance of this bug doesn't surface inside a dashboard component where it will be even harder to see.
 
 ### 5.1 Executive Data Intelligence — dashboard sample
 A boardroom-grade **sales and revenue** panel. 3–4 metric readouts (mono, count-up on scroll-into-view) covering revenue, orders, average order value and conversion rate. One primary time-series chart showing revenue across twelve months. One secondary breakdown — channel or region. One segment filter row that actually filters the rendered data.
