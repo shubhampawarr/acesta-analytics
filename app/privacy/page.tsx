@@ -28,7 +28,6 @@ export default function PrivacyPage() {
                 Last updated: {new Date().getFullYear()}
               </p>
 
-              <div className="mt-8 h-px w-full gold-line opacity-60" />
 
               <div className="mt-8 space-y-5 text-sm leading-7 text-mist md:text-base md:leading-8">
                 <p>

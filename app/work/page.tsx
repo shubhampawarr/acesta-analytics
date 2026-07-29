@@ -1,181 +1,153 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import {
-  ArrowRight,
-  BarChart3,
-  ExternalLink,
-  Globe2,
-  ShoppingBag,
-} from 'lucide-react';
+
+import { Reveal } from '@/components/motion/Reveal';
+import { ResolveWaypoint } from '@/components/resolve/Resolve';
 
 export const metadata: Metadata = {
   title: 'Selected Work',
   description:
-    'Explore selected Acesta Analytics work including agency websites, ecommerce storefronts, and premium creative web experiences.',
+    'Selected work from Acesta Analytics — agency websites, ecommerce storefronts and creative web experiences.',
 };
 
-const projects = [
+type Project = {
+  name: string;
+  outcome: string;
+  discipline: string;
+  year: string;
+  status: string;
+  href: string;
+};
+
+const projects: Project[] = [
   {
-    title: 'Axira Media',
-    category: 'Digital Marketing Agency Website',
-    status: 'Client Project',
-    description:
-      'A premium agency website built for a digital marketing brand, focused on services, credibility, contact conversion, and a polished business presence.',
-    highlights: [
-      'Responsive agency website',
-      'Services and enquiry flow',
-      'SEO metadata structure',
-      'Premium visual direction',
-    ],
-    link: 'https://axiramedia.vercel.app/',
-    icon: BarChart3,
+    name: 'Axira Media',
+    outcome:
+      'A digital marketing agency that needed to look like one before the first call.',
+    discipline: 'Web Development · SEO Foundation',
+    year: '2025',
+    status: 'Client project',
+    href: 'https://axiramedia.vercel.app/',
   },
   {
-    title: 'Protein Cartel',
-    category: 'E-commerce Nutrition Storefront',
-    status: 'Business Concept / Demo Build',
-    description:
-      'A clean ecommerce storefront for a nutrition and supplement brand, built around product browsing, cart experience, and checkout-ready structure.',
-    highlights: [
-      'Product listing experience',
-      'Cart and checkout flow',
-      'Admin-ready structure',
-      'Mobile-first storefront',
-    ],
-    link: 'https://protein-cartel.vercel.app/',
-    icon: ShoppingBag,
+    name: 'Protein Cartel',
+    outcome:
+      'A nutrition storefront built around browsing, cart and a checkout-ready structure.',
+    discipline: 'Web Development · Growth Systems',
+    year: '2025',
+    status: 'Concept build',
+    href: 'https://protein-cartel.vercel.app/',
   },
   {
-    title: 'Artist Website',
-    category: 'Premium Musician Portfolio',
-    status: 'Creative Web Experience',
-    description:
-      'A refined artist website built for music, visual identity, social presence, and a premium personal brand experience.',
-    highlights: [
-      'Artist landing page',
-      'Music and gallery sections',
-      'Premium motion feel',
-      'Mobile-responsive layout',
-    ],
-    link: 'https://shubhampmusic.vercel.app/',
-    icon: Globe2,
+    name: 'Artist Portfolio',
+    outcome:
+      'A musician’s presence where the work had to carry the page, not the layout.',
+    discipline: 'Web Development',
+    year: '2025',
+    status: 'Creative build',
+    href: 'https://shubhampmusic.vercel.app/',
   },
 ];
 
+/**
+ * §6.3: typographic rows, not cards. The row is the link — the whole surface
+ * is clickable, and the name shifts right on hover as the only affordance.
+ *
+ * Separated by whitespace, not by rules. §2 allows exactly one border in the
+ * system, --stroke-hairline, and only on vitrine surfaces; a row separator at
+ * the same value is still a border where the system does not have one.
+ */
+function ProjectRow({ project }: { project: Project }) {
+  return (
+    <Reveal>
+      <a
+        href={project.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group block py-16 md:py-20"
+      >
+        <div className="md:grid md:grid-cols-12 md:items-baseline md:gap-8">
+          <div className="md:col-span-7">
+            <h2 className="text-heading text-bone transition-transform duration-(--dur-reveal) ease-out-expo md:group-hover:translate-x-3">
+              {project.name}
+            </h2>
+
+            <p className="mt-5 max-w-[46ch] text-body text-mist">
+              {project.outcome}
+            </p>
+          </div>
+
+          <div className="mt-8 flex flex-wrap items-baseline gap-x-8 gap-y-3 md:col-span-4 md:mt-0 md:flex-col md:gap-3">
+            <p className="font-mono text-mono-label uppercase tracking-mono text-ash">
+              {project.discipline}
+            </p>
+            <p className="font-mono text-mono-label uppercase tracking-mono text-ash">
+              {project.status} · {project.year}
+            </p>
+          </div>
+
+          <p className="mt-8 font-mono text-mono-label uppercase tracking-mono text-gold md:col-span-1 md:mt-0 md:text-right">
+            View
+          </p>
+        </div>
+      </a>
+    </Reveal>
+  );
+}
+
 export default function WorkPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-void">
-
-
-      <section className="relative z-10 px-0 pb-10 pt-24 md:pb-20 md:pt-32">
-        <div className="premium-container">
-          <div className="mx-auto max-w-7xl rounded-[1.5rem] border border-gold/12 bg-vitrine/70 p-4 shadow-2xl shadow-black/30 md:rounded-[2.25rem] md:p-8 lg:p-10">
-            <div className="mx-auto max-w-5xl text-center">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold md:text-xs">
+    <main className="relative overflow-x-clip">
+      <ResolveWaypoint formation="grid">
+        <section className="premium-container flex min-h-[70svh] items-center pt-32 md:min-h-[80svh] md:pt-20">
+          <div>
+            <Reveal immediate>
+              <p className="font-mono text-mono-label uppercase tracking-mono text-gold">
                 Selected Work
               </p>
+            </Reveal>
 
-              <h1 className="font-display mx-auto mt-3 max-w-4xl text-4xl font-normal leading-[0.9] tracking-[-0.055em] text-bone md:mt-4 md:text-7xl">
-                Built work that shows clarity, presence, and execution.
+            <Reveal immediate>
+              <h1 className="mt-6 max-w-[15ch] text-display text-bone">
+                Built to be looked at closely.
               </h1>
+            </Reveal>
 
-              <p className="mx-auto mt-4 max-w-2xl text-xs leading-6 text-mist md:mt-6 md:text-base md:leading-8">
-                A selection of client projects, business concepts, and creative
-                web experiences built to demonstrate strategy, design,
-                development, and digital execution.
+            <Reveal immediate>
+              <p className="mt-8 max-w-[52ch] text-lead font-extralight text-mist">
+                Client projects and concept builds. Every one of them is live —
+                open them and look.
               </p>
-
-              <div className="mx-auto mt-5 h-px w-full max-w-2xl gold-line opacity-60 md:mt-7" />
-            </div>
-
-            <div className="mt-7 grid gap-4 md:mt-10 lg:grid-cols-3">
-              {projects.map((project) => {
-                const Icon = project.icon;
-
-                return (
-                  <article
-                    key={project.title}
-                    className="group flex h-full flex-col rounded-[1.25rem] border border-gold/14 bg-vitrine/85 p-4 transition duration-500 hover:-translate-y-1 hover:border-gold-bright/32 hover:bg-vitrine md:rounded-[1.5rem] md:p-6"
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-gold md:text-[10px]">
-                          {project.category}
-                        </p>
-
-                        <h2 className="font-display mt-3 text-3xl font-normal leading-[0.95] tracking-[-0.045em] text-bone md:text-4xl">
-                          {project.title}
-                        </h2>
-                      </div>
-
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gold/18 bg-gold/8 text-gold-bright transition duration-500 group-hover:scale-110 group-hover:border-gold-bright/45">
-                        <Icon className="h-4 w-4" />
-                      </div>
-                    </div>
-
-                    <div className="mt-4 inline-flex w-fit rounded-full border border-gold/16 bg-gold/8 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-gold-bright">
-                      {project.status}
-                    </div>
-
-                    <p className="mt-4 text-xs leading-6 text-ash md:text-sm md:leading-7">
-                      {project.description}
-                    </p>
-
-                    <div className="mt-5 grid gap-2">
-                      {project.highlights.map((item) => (
-                        <div key={item} className="flex items-center gap-2.5">
-                          <span className="h-1.5 w-1.5 rounded-full bg-gold" />
-                          <p className="text-xs text-mist md:text-sm">
-                            {item}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="mt-auto pt-6">
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group/link inline-flex w-full items-center justify-center gap-2 rounded-full border border-gold/22 bg-gold/8 px-5 py-3 text-sm font-semibold text-gold-bright transition hover:border-gold-bright/45 hover:bg-gold/12"
-                      >
-                        View Live Project
-                        <ExternalLink className="h-4 w-4 transition group-hover/link:translate-x-1" />
-                      </a>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-
-            <div className="premium-card mt-5 rounded-[1.35rem] p-5 text-center md:mt-7 md:rounded-[1.75rem] md:p-8">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold md:text-xs">
-                Build With Us
-              </p>
-
-              <h2 className="font-display mx-auto mt-3 max-w-3xl text-3xl font-normal leading-[0.92] tracking-[-0.05em] text-bone md:text-5xl">
-                Want your business to look this sharp online?
-              </h2>
-
-              <p className="mx-auto mt-4 max-w-2xl text-xs leading-6 text-mist md:text-sm md:leading-7">
-                Acesta Analytics can help you build a premium website, clearer
-                digital structure, and a stronger enquiry flow.
-              </p>
-
-              <div className="mt-5">
-                <Link
-                  href="/contact"
-                  className="gold-pill group gap-2"
-                >
-                  Start a Conversation
-                  <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-                </Link>
-              </div>
-            </div>
+            </Reveal>
           </div>
-        </div>
+        </section>
+      </ResolveWaypoint>
+
+      <section className="premium-container pt-(--section-gap)">
+        {projects.map((project) => (
+          <ProjectRow key={project.name} project={project} />
+        ))}
       </section>
 
+      <section className="premium-container pt-(--section-gap)">
+        <Reveal>
+          <p className="font-mono text-mono-label uppercase tracking-mono text-gold">
+            Start
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.06}>
+          <h2 className="mt-8 max-w-[18ch] text-heading-lg text-bone">
+            Want your business to hold up to the same look?
+          </h2>
+        </Reveal>
+
+        <Reveal delay={0.12}>
+          <Link href="/contact" className="ghost-link mt-10 inline-block">
+            Start a conversation
+          </Link>
+        </Reveal>
+      </section>
     </main>
   );
 }

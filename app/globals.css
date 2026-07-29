@@ -276,16 +276,6 @@ html.lenis body {
   }
 }
 
-/* Transitional surface. Phases 4–6 delete the remaining call sites; §5 permits
-   exactly one container (the vitrine) and only for service-proof artifacts. */
-@layer components {
-  .premium-card {
-    background: var(--color-vitrine);
-    border: var(--stroke-hairline);
-    border-radius: var(--radius);
-  }
-}
-
 /* §5 components. Declared in the components layer so Tailwind utilities at
    call sites (e.g. `hidden md:inline-flex`) win conflicts, as they should. */
 @layer components {
@@ -375,13 +365,6 @@ html.lenis body {
   }
 }
 
-/* Transitional hairline divider, retained until Phases 4–6 remove call sites. */
-@layer components {
-  .gold-line {
-    background: var(--color-gold-deep);
-  }
-}
-
 /* ---------------------------------------------------------------------------
    Motion primitives — resting states (§8)
 
@@ -422,6 +405,12 @@ html.lenis body {
   html:has(main[data-page='services']) [data-resolve-host] {
     opacity: 0.45;
   }
+}
+
+/* §6.2 — /contact runs the field unresolved and quiet at every width. The
+   form is the only thing on the page allowed to ask for attention. */
+html:has(main[data-page='contact']) [data-resolve-host] {
+  opacity: 0.35;
 }
 
 /* ---------------------------------------------------------------------------

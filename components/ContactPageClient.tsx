@@ -1,13 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  ArrowRight,
-  CheckCircle2,
-  ChevronDown,
-  Loader2,
-  MessageCircle,
-} from 'lucide-react';
+
+import { cn } from '@/lib/cn';
+
+/**
+ * Restyled per §6.2. The form logic below is untouched from the Phase 0
+ * audit — the state machine, every field `name`, the `serviceOptions` strings
+ * and the fetch to /api/contact are byte-identical, because the API validates
+ * those exact keys and those strings are emailed verbatim as lead data.
+ *
+ * Inputs are underlined, not boxed: a bottom hairline over a transparent
+ * ground, with the focus rule wiping in from the left. Boxed inputs were the
+ * single biggest remaining source of the "boxes everywhere" problem.
+ */
 
 const serviceOptions = [
   'Executive Data Intelligence',
@@ -41,61 +47,26 @@ export default function ContactPageClient() {
   const [submitted, setSubmitted] = useState(false);
 
   return (
-    <section className="relative z-10 px-0 pb-8 pt-24 md:pb-20 md:pt-32">
-      <div className="premium-container">
-        <div className="mx-auto max-w-6xl rounded-[1.5rem] border border-gold/12 bg-vitrine/70 p-4 shadow-2xl shadow-black/30 md:rounded-[2.25rem] md:p-8 lg:p-10">
-          <div className="grid items-start gap-6 lg:grid-cols-[0.82fr_1fr] lg:gap-10">
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-gold md:text-xs">
-                Contact
-              </p>
+    <section className="premium-container pt-40 md:pt-48">
+      <div className="mx-auto max-w-[46rem]">
+        <p className="font-mono text-mono-label uppercase tracking-mono text-gold">
+          Contact
+        </p>
 
-              <h1 className="font-display mt-3 max-w-2xl text-4xl font-normal leading-[0.9] tracking-[-0.055em] text-bone md:mt-4 md:text-7xl">
-                Let’s build something precise.
-              </h1>
+        <h1 className="mt-6 max-w-[14ch] text-display text-bone">
+          Let&rsquo;s build something precise.
+        </h1>
 
-              <p className="mt-4 max-w-lg text-xs leading-6 text-mist md:mt-5 md:text-base md:leading-8">
-                Tell us what you are building, improving, or trying to
-                understand. We will help shape the right data, web, or growth
-                system around it.
-              </p>
+        <p className="mt-8 max-w-[52ch] text-lead font-extralight text-mist">
+          Tell us what you are building, improving, or trying to understand.
+        </p>
 
-              <div className="mt-5 max-w-md rounded-[1.25rem] border border-gold/14 bg-black/25 p-4 md:mt-8 md:rounded-[1.35rem] md:p-5">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-gold md:text-xs">
-                  Direct enquiry
-                </p>
-
-                <p className="mt-3 text-sm font-semibold text-gold-bright">
-                  shubham@acestaanalytics.com
-                </p>
-
-                <p className="mt-2 text-xs leading-5 text-ash md:mt-3 md:text-sm md:leading-6">
-                  For project enquiries, collaborations, and business
-                  conversations.
-                </p>
-
-                <div className="mt-4">
-                  <a
-                    href={whatsappLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-gold/22 bg-gold/8 px-5 py-3 text-sm font-semibold text-gold-bright transition hover:border-gold-bright/45 hover:bg-gold/12"
-                  >
-                    <MessageCircle className="h-4 w-4" />
-                    Message on WhatsApp
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div className="mx-auto w-full max-w-xl">
-              {submitted ? (
-                <SuccessMessage onReset={() => setSubmitted(false)} />
-              ) : (
-                <ContactForm onSuccess={() => setSubmitted(true)} />
-              )}
-            </div>
-          </div>
+        <div className="mt-20 md:mt-24">
+          {submitted ? (
+            <SuccessMessage onReset={() => setSubmitted(false)} />
+          ) : (
+            <ContactForm onSuccess={() => setSubmitted(true)} />
+          )}
         </div>
       </div>
     </section>
@@ -150,15 +121,11 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="rounded-[1.35rem] border border-gold/14 bg-vitrine/85 p-4 md:rounded-[1.75rem] md:p-5"
-    >
-      <div className="grid gap-3 md:grid-cols-2">
+    <form onSubmit={handleSubmit}>
+      <div className="grid gap-12 sm:grid-cols-2">
         <Field
           label="Name"
           name="name"
-          placeholder="Your name"
           value={form.name}
           onChange={(value) => updateField('name', value)}
           required
@@ -167,7 +134,6 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
         <Field
           label="Company"
           name="company"
-          placeholder="Company name"
           value={form.company}
           onChange={(value) => updateField('company', value)}
         />
@@ -176,7 +142,6 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
           label="Email"
           name="email"
           type="email"
-          placeholder="you@example.com"
           value={form.email}
           onChange={(value) => updateField('email', value)}
           required
@@ -186,49 +151,46 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
           label="Phone"
           name="phone"
           type="tel"
-          placeholder="+91 98765 43210"
           value={form.phone}
           onChange={(value) => updateField('phone', value)}
         />
-
-        <div className="md:col-span-2">
-          <CustomSelect
-            label="Service Needed"
-            name="service"
-            options={serviceOptions}
-            value={form.service}
-            isOpen={isOpen}
-            onToggle={() => setIsOpen((current) => !current)}
-            onChange={(value) => {
-              updateField('service', value);
-              setIsOpen(false);
-            }}
-          />
-        </div>
       </div>
 
-      <div className="mt-3">
-        <label
-          htmlFor="message"
-          className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-gold"
-        >
-          Message
-        </label>
-
-        <textarea
-          id="message"
-          name="message"
-          rows={4}
-          value={form.message}
-          onChange={(event) => updateField('message', event.target.value)}
-          placeholder="Tell us what you are trying to build, improve, or understand."
-          required
-          className="min-h-[95px] w-full resize-none rounded-2xl border border-gold/14 bg-black/35 px-4 py-3 text-sm text-bone outline-none transition placeholder:text-ash focus:border-gold-bright/45 md:min-h-[105px]"
+      <div className="mt-12">
+        <CustomSelect
+          label="Service needed"
+          name="service"
+          options={serviceOptions}
+          value={form.service}
+          isOpen={isOpen}
+          onToggle={() => setIsOpen((current) => !current)}
+          onChange={(value) => {
+            updateField('service', value);
+            setIsOpen(false);
+          }}
         />
       </div>
 
+      <div className="mt-12">
+        <FieldLabel htmlFor="message">Message</FieldLabel>
+
+        <div className="relative">
+          <textarea
+            id="message"
+            name="message"
+            rows={3}
+            value={form.message}
+            onChange={(event) => updateField('message', event.target.value)}
+            required
+            className="peer mt-4 w-full resize-none border-0 border-b border-ash/60 bg-transparent pb-3 text-body text-bone outline-none focus:ring-0"
+          />
+          <FocusRule />
+        </div>
+      </div>
+
+      {/* §6.2: states as typography on void. No alert box, no coloured panel. */}
       {status === 'error' && (
-        <p className="mt-3 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-xs leading-5 text-red-200">
+        <p role="alert" className="mt-10 text-body text-gold">
           {errorMessage}
         </p>
       )}
@@ -236,44 +198,41 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
       <button
         type="submit"
         disabled={status === 'sending'}
-        className="gold-pill group mt-4 w-full gap-2 disabled:cursor-not-allowed disabled:opacity-70 md:mt-5"
+        data-hero-cta
+        className="gold-pill mt-16 disabled:cursor-not-allowed disabled:opacity-70"
       >
-        {status === 'sending' ? (
-          <>
-            Sending
-            <Loader2 className="h-4 w-4 animate-spin" />
-          </>
-        ) : (
-          <>
-            Submit Enquiry
-            <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-          </>
-        )}
+        {status === 'sending' ? 'Sending' : 'Send enquiry'}
       </button>
+
+      <p className="mt-12 text-caption text-ash">
+        Prefer WhatsApp?{' '}
+        <a
+          href={whatsappLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ghost-link"
+        >
+          Message us directly
+        </a>
+      </p>
     </form>
   );
 }
 
 function SuccessMessage({ onReset }: { onReset: () => void }) {
   return (
-    <div className="rounded-[1.35rem] border border-gold/14 bg-vitrine/85 p-5 text-center md:rounded-[1.75rem] md:p-6">
-      <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-gold/20 bg-gold/10 text-gold-bright">
-        <CheckCircle2 className="h-5 w-5" />
-      </div>
+    <div role="status">
+      <h2 className="max-w-[16ch] text-heading text-bone">Enquiry received.</h2>
 
-      <h2 className="font-display mt-5 text-3xl font-normal tracking-[-0.04em] text-bone">
-        Enquiry received.
-      </h2>
-
-      <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-ash">
-        Thank you for reaching out. Your enquiry has been sent successfully.
-        We’ll get back to you soon.
+      <p className="mt-6 max-w-[46ch] text-body text-mist">
+        Thank you for reaching out. We will come back to you shortly, usually
+        within one working day.
       </p>
 
       <button
         type="button"
         onClick={onReset}
-        className="mt-7 text-sm font-semibold text-gold-bright underline decoration-gold/45 underline-offset-4 transition hover:text-bone"
+        className="ghost-link mt-10 inline-block"
       >
         Send another enquiry
       </button>
@@ -281,11 +240,37 @@ function SuccessMessage({ onReset }: { onReset: () => void }) {
   );
 }
 
+function FieldLabel({
+  htmlFor,
+  children,
+}: {
+  htmlFor: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <label
+      htmlFor={htmlFor}
+      className="block font-mono text-mono-label uppercase tracking-mono text-gold"
+    >
+      {children}
+    </label>
+  );
+}
+
+/** The §6.2 focus state — hairline wiping ash to gold, left to right, 200ms. */
+function FocusRule() {
+  return (
+    <span
+      aria-hidden
+      className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-gold transition-transform duration-(--dur-micro) ease-out-expo peer-focus:scale-x-100"
+    />
+  );
+}
+
 function Field({
   label,
   name,
   type = 'text',
-  placeholder,
   value,
   onChange,
   required = false,
@@ -293,30 +278,26 @@ function Field({
   label: string;
   name: string;
   type?: string;
-  placeholder: string;
   value: string;
   onChange: (value: string) => void;
   required?: boolean;
 }) {
   return (
     <div>
-      <label
-        htmlFor={name}
-        className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-gold"
-      >
-        {label}
-      </label>
+      <FieldLabel htmlFor={name}>{label}</FieldLabel>
 
-      <input
-        id={name}
-        name={name}
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        required={required}
-        className="h-10 w-full rounded-2xl border border-gold/14 bg-black/35 px-4 text-sm text-bone outline-none transition placeholder:text-ash focus:border-gold-bright/45 md:h-11"
-      />
+      <div className="relative">
+        <input
+          id={name}
+          name={name}
+          type={type}
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          required={required}
+          className="peer mt-4 h-11 w-full border-0 border-b border-ash/60 bg-transparent text-body text-bone outline-none focus:ring-0"
+        />
+        <FocusRule />
+      </div>
     </div>
   );
 }
@@ -340,45 +321,53 @@ function CustomSelect({
 }) {
   return (
     <div className="relative">
-      <label
-        htmlFor={name}
-        className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.22em] text-gold"
-      >
-        {label}
-      </label>
+      <FieldLabel htmlFor={name}>{label}</FieldLabel>
 
       <input type="hidden" name={name} value={value} required />
 
-      <button
-        id={name}
-        type="button"
-        onClick={onToggle}
-        className="flex h-10 w-full items-center justify-between rounded-2xl border border-gold/14 bg-black/35 px-4 text-left text-sm text-bone outline-none transition hover:border-gold-bright/35 focus:border-gold-bright/45 md:h-11"
-      >
-        <span className={value ? 'text-bone' : 'text-ash'}>
-          {value || 'Select an option'}
-        </span>
+      <div className="relative">
+        <button
+          id={name}
+          type="button"
+          onClick={onToggle}
+          aria-expanded={isOpen}
+          aria-haspopup="listbox"
+          className="peer mt-4 flex h-11 w-full items-center justify-between border-0 border-b border-ash/60 bg-transparent text-left text-body outline-none"
+        >
+          <span className={value ? 'text-bone' : 'text-ash'}>
+            {value || 'Select an option'}
+          </span>
 
-        <ChevronDown
-          className={`h-4 w-4 text-gold transition ${
-            isOpen ? 'rotate-180' : ''
-          }`}
-        />
-      </button>
+          <span
+            aria-hidden
+            className={cn(
+              'font-mono text-caption text-gold transition-transform duration-(--dur-micro) ease-out-expo',
+              isOpen && 'rotate-180'
+            )}
+          >
+            ↓
+          </span>
+        </button>
+        <FocusRule />
+      </div>
 
       {isOpen && (
-        <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-30 overflow-hidden rounded-2xl border border-gold/16 bg-vitrine p-1 shadow-2xl shadow-black/50">
+        <ul
+          role="listbox"
+          className="absolute inset-x-0 top-[calc(100%+12px)] z-30 flex flex-col gap-1 bg-vitrine p-2"
+        >
           {options.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => onChange(option)}
-              className="block w-full rounded-xl px-4 py-2.5 text-left text-sm text-mist transition hover:bg-gold/12 hover:text-gold-bright"
-            >
-              {option}
-            </button>
+            <li key={option}>
+              <button
+                type="button"
+                onClick={() => onChange(option)}
+                className="block w-full px-3 py-3 text-left text-body text-mist transition-[color] duration-(--dur-micro) ease-out-expo hover:text-gold-bright"
+              >
+                {option}
+              </button>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );
