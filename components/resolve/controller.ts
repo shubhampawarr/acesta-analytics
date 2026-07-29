@@ -1,5 +1,9 @@
 import type { FormationName } from './formations';
 
+/** §8 morph duration, and the §7 closing morph which is deliberately slower. */
+export const MORPH_MS = 1400;
+export const MORPH_SLOW_MS = 2600;
+
 /**
  * The morph controller — the one mutable seam between the DOM world
  * (waypoints, dev switcher) and the render loop. The canvas registers an
@@ -9,6 +13,8 @@ import type { FormationName } from './formations';
  */
 type MorphOptions = {
   instant?: boolean;
+  /** Override the §8 morph duration. Used for the §7 lattice close. */
+  durationMs?: number;
 };
 
 type ResolveApi = {

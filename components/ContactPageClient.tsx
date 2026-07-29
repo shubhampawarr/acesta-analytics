@@ -182,7 +182,7 @@ function ContactForm({ onSuccess }: { onSuccess: () => void }) {
             value={form.message}
             onChange={(event) => updateField('message', event.target.value)}
             required
-            className="peer mt-4 w-full resize-none border-0 border-b border-ash/60 bg-transparent pb-3 text-body text-bone outline-none focus:ring-0"
+            className="peer mt-4 w-full resize-none border-0 border-b border-ash/60 bg-transparent pb-3 text-body text-bone"
           />
           <FocusRule />
         </div>
@@ -257,7 +257,15 @@ function FieldLabel({
   );
 }
 
-/** The §6.2 focus state — hairline wiping ash to gold, left to right, 200ms. */
+/**
+ * The §6.2 focus state — hairline wiping ash to gold, left to right, 200ms.
+ *
+ * This is the designed affordance, but it is one pixel tall. The global
+ * :focus-visible ring is deliberately NOT suppressed on these fields: an
+ * earlier pass set `outline-none`, which silently left six form controls with
+ * no focus indicator at all, since a utility outranks the base-layer rule.
+ * The wipe is the enhancement; the ring is the guarantee.
+ */
 function FocusRule() {
   return (
     <span
@@ -294,7 +302,7 @@ function Field({
           value={value}
           onChange={(event) => onChange(event.target.value)}
           required={required}
-          className="peer mt-4 h-11 w-full border-0 border-b border-ash/60 bg-transparent text-body text-bone outline-none focus:ring-0"
+          className="peer mt-4 h-11 w-full border-0 border-b border-ash/60 bg-transparent text-body text-bone"
         />
         <FocusRule />
       </div>
@@ -332,7 +340,7 @@ function CustomSelect({
           onClick={onToggle}
           aria-expanded={isOpen}
           aria-haspopup="listbox"
-          className="peer mt-4 flex h-11 w-full items-center justify-between border-0 border-b border-ash/60 bg-transparent text-left text-body outline-none"
+          className="peer mt-4 flex h-11 w-full items-center justify-between border-0 border-b border-ash/60 bg-transparent text-left text-body"
         >
           <span className={value ? 'text-bone' : 'text-ash'}>
             {value || 'Select an option'}

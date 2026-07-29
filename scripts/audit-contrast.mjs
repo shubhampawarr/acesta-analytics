@@ -26,6 +26,19 @@
  */
 
 import puppeteer from 'puppeteer-core';
+import sharp from 'sharp';
+
+/**
+ * Optional second pass: `npm run audit:contrast -- --density`.
+ *
+ * Enumeration alone says "these nodes sit over the canvas". This measures how
+ * much of the field is actually behind each one, by screenshotting the
+ * viewport with the canvas visible and again with it hidden, then diffing the
+ * pixels inside each node's box. It still cannot compute a contrast ratio, but
+ * it turns a list of several hundred "unknown" nodes into the handful with
+ * meaningful particle coverage — which is a checklist a human can finish.
+ */
+const MEASURE_DENSITY = process.argv.includes('--density');
 
 const BASE = process.env.BASE_URL ?? 'http://localhost:3111';
 const ROUTES = (
@@ -150,6 +163,94 @@ function ratio(foreground, background) {
   return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 }
 
+/**
+ * Fraction of pixels inside each node box that change when the canvas is
+ * hidden — i.e. how much particle field is actually behind that text.
+ */
+async function measureDensity(page, nodes) {
+  if (nodes.length === 0) return;
+
+  const viewport = page.viewport();
+  const step = Math.round(viewport.height * 0.85);
+  const pageHeight = await page.evaluate(() => document.body.scrollHeight);
+
+  for (let top = 0; top < pageHeight; top += step) {
+    await page.evaluate((y) => window.scrollTo(0, y), top);
+    await new Promise((r) => setTimeout(r, 350));
+
+    const visible = await page.evaluate(() =>
+      [...document.querySelectorAll('body *')]
+        .filter((el) => {
+          const own = [...el.childNodes].some(
+            (n) => n.nodeType === 3 && n.textContent.trim().length > 1
+          );
+          if (!own) return false;
+          const r = el.getBoundingClientRect();
+          return r.top >= 0 && r.bottom <= window.innerHeight && r.width > 1;
+        })
+        .map((el) => {
+          const r = el.getBoundingClientRect();
+          return {
+            key: (el.textContent || '').trim().slice(0, 48),
+            x: Math.max(0, Math.round(r.left)),
+            y: Math.max(0, Math.round(r.top)),
+            w: Math.round(r.width),
+            h: Math.round(r.height),
+          };
+        })
+    );
+
+    if (visible.length === 0) continue;
+
+    const withField = await page.screenshot({ type: 'png' });
+    await page.evaluate(() => {
+      const host = document.querySelector('[data-resolve-host]');
+      if (host) host.style.visibility = 'hidden';
+    });
+    await new Promise((r) => setTimeout(r, 120));
+    const withoutField = await page.screenshot({ type: 'png' });
+    await page.evaluate(() => {
+      const host = document.querySelector('[data-resolve-host]');
+      if (host) host.style.visibility = '';
+    });
+
+    const a = await sharp(withField).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+    const b = await sharp(withoutField).removeAlpha().raw().toBuffer();
+    const { width } = a.info;
+    const scale = a.info.width / viewport.width;
+
+    for (const box of visible) {
+      const target = nodes.find((n) => n.text === box.key.slice(0, 48));
+      if (!target) continue;
+
+      let differing = 0;
+      let total = 0;
+      const x0 = Math.round(box.x * scale);
+      const y0 = Math.round(box.y * scale);
+      const x1 = Math.min(a.info.width, Math.round((box.x + box.w) * scale));
+      const y1 = Math.min(a.info.height, Math.round((box.y + box.h) * scale));
+
+      for (let y = y0; y < y1; y += 2) {
+        for (let x = x0; x < x1; x += 2) {
+          const i = (y * width + x) * 3;
+          total += 1;
+          if (
+            Math.abs(a.data[i] - b[i]) > 8 ||
+            Math.abs(a.data[i + 1] - b[i + 1]) > 8 ||
+            Math.abs(a.data[i + 2] - b[i + 2]) > 8
+          ) {
+            differing += 1;
+          }
+        }
+      }
+
+      if (total > 0) {
+        target.density = Math.max(target.density ?? 0, differing / total);
+      }
+    }
+  }
+}
+
 async function main() {
   const executablePath = CHROME_CANDIDATES.find(Boolean);
   const browser = await puppeteer.launch({
@@ -195,14 +296,18 @@ async function main() {
         }
       }
 
-      for (const node of result.overCanvas) {
-        overCanvas.push({
-          route,
-          viewport: viewport.name,
-          canvasOpacity: result.canvasOpacity,
-          ...node,
-        });
+      const routeNodes = result.overCanvas.map((node) => ({
+        route,
+        viewport: viewport.name,
+        canvasOpacity: result.canvasOpacity,
+        ...node,
+      }));
+
+      if (MEASURE_DENSITY && routeNodes.length > 0) {
+        await measureDensity(page, routeNodes);
       }
+
+      overCanvas.push(...routeNodes);
 
       await page.close();
     }
@@ -240,13 +345,25 @@ async function main() {
       (a, b) => a.fontSize * a.fontWeight - b.fontSize * b.fontWeight
     );
 
-    for (const node of ranked.slice(0, 8)) {
+    const measured = ranked.filter((n) => (n.density ?? 0) > 0.02);
+    const shown = MEASURE_DENSITY ? measured : ranked.slice(0, 8);
+
+    for (const node of shown) {
+      const density =
+        node.density === undefined
+          ? ''
+          : `  field ${(node.density * 100).toFixed(0)}%`;
+
       console.log(
-        `      ${String(Math.round(node.fontSize)).padStart(3)}px/${node.fontWeight}  y=${String(node.top).padStart(5)}  ${node.selector}  "${node.text}"`
+        `      ${String(Math.round(node.fontSize)).padStart(3)}px/${node.fontWeight}  y=${String(node.top).padStart(5)}  ${node.selector}  "${node.text}"${density}`
       );
     }
 
-    if (ranked.length > 8) {
+    if (MEASURE_DENSITY) {
+      console.log(
+        `      ${measured.length} of ${nodes.length} have measurable field behind them`
+      );
+    } else if (ranked.length > 8) {
       console.log(`      … and ${ranked.length - 8} more`);
     }
 

@@ -208,8 +208,8 @@ export default function ServicesPage() {
         }
       />
 
-      {/* Close on the lattice — the field returns to where the page opened. */}
-      <ResolveWaypoint formation="lattice">
+      {/* §7: close on the lattice, slower than the section morphs. */}
+      <ResolveWaypoint formation="lattice" slow>
         <section className="premium-container pt-(--section-gap)">
           <Reveal>
             <p className="font-mono text-mono-label uppercase tracking-mono text-gold">

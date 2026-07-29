@@ -152,6 +152,9 @@ Photography is permitted but **strictly disciplined**:
 - Only in team/about contexts and where a human presence genuinely helps.
 - Large rounded-rect crops at `--radius`, no frames, no overlays, floating on void.
 - Every photo gets a **gold-duotone treatment** (`--color-gold-deep` shadows → `--color-gold-bright` highlights) so it reads as part of the system, not stock.
+- **The duotone assumes photographic tonal range.** A luminance-to-colour mapping only works when the source has a spread of tones to map. Screenshots of light UIs, flat illustrations and pale scans do not — a straight mapping puts nearly the whole frame on `--color-gold-bright` and produces the large gold field §9 forbids. For non-photographic sources, apply a tone curve that pushes midtones down while leaving both endpoints exactly as specified. Target a mean luminance around 100–120.
+- **Some sources cannot be treated at all.** Where the tonal spread is too narrow to redistribute — a near-uniform pale page, for instance — no curve will manufacture range that isn't there, and the result is a solid gold slab. §6 permits photography rather than requiring it: leave that slot typographic. A gap in a sequence of images breaks the rhythm usefully; a gold rectangle does not.
+- Bake the duotone at build time rather than applying a runtime SVG filter. Filter cost on large images is real, and Safari's handling of filtered `<img>` is unreliable.
 - No lifestyle stock in the hero region. Ever.
 
 **Icons: near-zero.** The previous build was icon-heavy and it read as templated. Icons are permitted only where they label a genuine interactive control. Decorative icons beside headings, feature bullets, and service cards are removed — replaced by type, number, or particle formation.
@@ -175,6 +178,8 @@ The one thing this site is remembered by, and the answer to the brief.
 | Growth Systems Architecture | A directed flow diagram — nodes and connecting paths |
 
 The particles never reset to zero between sections; they *morph* from one formation to the next as the user scrolls. This single continuous system is what unifies four services into one company.
+
+**Pages close on the lattice.** Any page that runs through service formations returns to `lattice` for its closing section — a slow, calm morph, slower than the inter-section transitions. Two reasons. First, it bookends: the page opens in the brand formation, travels through four disciplines, and settles back into it, which is the tagline's arc made structural. Second, holding the last service formation through the closing over-weights one discipline at the exact moment the page should read as Acesta entire rather than Acesta-as-growth-consultancy. This applies to the homepage and to `/services` alike.
 
 **Rendering.** Points in three.js, additive blending, gold ramp from `--color-gold-deep` → `--color-gold` → `--color-gold-bright`. 1–2px, sharp. Never grayscale.
 

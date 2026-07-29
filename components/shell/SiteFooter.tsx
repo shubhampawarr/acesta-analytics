@@ -10,6 +10,12 @@ const pages = [
 /**
  * A closing signature, not a second page (§5 Footer).
  *
+ * Opaque void ground, deliberately. The footer is chrome rather than content,
+ * and the fixed particle canvas sits behind the whole document — the density
+ * pass measured a third of the legal links' area with field behind it. Void is
+ * the ground everywhere anyway (§9), so making it explicit costs nothing
+ * visually and takes the entire footer off the unchecked list.
+ *
  * Mobile is a single column on a consistent --space-24 rhythm, with email and
  * phone stacked rather than sharing a line. The legal block is Switzer in
  * sentence case, not mono uppercase: uppercase mono is a label treatment, and
@@ -17,7 +23,8 @@ const pages = [
  */
 export function SiteFooter() {
   return (
-    <footer className="premium-container pb-(--space-36) pt-(--space-36) md:pb-(--space-60) md:pt-(--section-gap)">
+    <footer className="relative bg-void">
+      <div className="premium-container pb-(--space-36) pt-(--space-36) md:pb-(--space-60) md:pt-(--section-gap)">
       <div className="flex flex-col gap-(--space-24) md:flex-row md:items-baseline md:justify-between md:gap-(--space-60)">
         <Link href="/" className="text-heading-xs text-bone">
           Acesta
@@ -71,6 +78,7 @@ export function SiteFooter() {
         <p className="text-balance">
           GST not charged as supplier is not registered under GST.
         </p>
+        </div>
       </div>
     </footer>
   );

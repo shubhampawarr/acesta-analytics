@@ -215,7 +215,7 @@ export function SiteNav() {
               tabIndex={menuOpen ? undefined : -1}
               style={{ transitionDelay: `${index * STAGGER_MS}ms` }}
               className={cn(
-                'border-b border-gold/12 py-6 font-mono text-[0.875rem] uppercase tracking-mono',
+                'py-5 font-mono text-[0.875rem] uppercase tracking-mono',
                 'transition-[opacity,transform] duration-(--dur-reveal) ease-out-expo',
                 isActive(item.href) ? 'text-bone' : 'text-ash',
                 menuOpen

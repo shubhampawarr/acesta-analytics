@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useReducedMotion } from '@/lib/useReducedMotion';
 import { FORMATIONS, type FormationName } from './formations';
-import { resolveController } from './controller';
+import { MORPH_SLOW_MS, resolveController } from './controller';
 
 /**
  * The canvas is code-split and client-only, so three.js never lands in the
@@ -160,10 +160,13 @@ export function Resolve() {
 export function ResolveWaypoint({
   formation,
   className,
+  slow = false,
   children,
 }: {
   formation: FormationName;
   className?: string;
+  /** §7: the closing return to lattice runs slower than section morphs. */
+  slow?: boolean;
   children?: React.ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -180,7 +183,10 @@ export function ResolveWaypoint({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          resolveController.morphTo(formation);
+          resolveController.morphTo(
+            formation,
+            slow ? { durationMs: MORPH_SLOW_MS } : undefined
+          );
         }
       },
       // Fires as the section settles into the middle of the viewport.
@@ -190,7 +196,7 @@ export function ResolveWaypoint({
     observer.observe(element);
 
     return () => observer.disconnect();
-  }, [formation]);
+  }, [formation, slow]);
 
   return (
     <div ref={ref} className={className}>

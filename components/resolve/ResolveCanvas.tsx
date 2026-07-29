@@ -20,7 +20,7 @@ import {
   offsetsYMobile,
   type FormationName,
 } from './formations';
-import { easeMorph, resolveController } from './controller';
+import { MORPH_MS, easeMorph, resolveController } from './controller';
 
 /**
  * Raw three.js rather than react-three-fiber: the scene is one Points object
@@ -32,7 +32,7 @@ import { easeMorph, resolveController } from './controller';
 /** §7 rendering constants. */
 const COUNT_DESKTOP = 4000;
 const COUNT_MOBILE = 1200;
-const MORPH_MS = 1400;
+
 const ROTATION_SPEED = 0.1;
 
 const VERTEX = /* glsl */ `
@@ -253,6 +253,7 @@ export default function ResolveCanvas({
       offsetYFrom: 0,
       offsetYTo: 0,
       offsetY: 0,
+      duration: MORPH_MS,
       t: 1,
       start: 0,
       active: false,
@@ -275,6 +276,7 @@ export default function ResolveCanvas({
         state.offsetTo = mobile ? 0 : offsets[formation];
         state.offsetYFrom = state.offsetY;
         state.offsetYTo = mobile ? offsetsYMobile[formation] : 0;
+        state.duration = options?.durationMs ?? MORPH_MS;
 
         if (options?.instant || reducedMotion) {
           state.weights.fill(0);
@@ -319,7 +321,7 @@ export default function ResolveCanvas({
       u.uTime.value += delta;
 
       if (state.active) {
-        state.t = Math.min(1, (now - state.start) / MORPH_MS);
+        state.t = Math.min(1, (now - state.start) / state.duration);
 
         const e = easeMorph(state.t);
 

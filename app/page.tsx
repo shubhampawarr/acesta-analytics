@@ -65,8 +65,15 @@ export default function Home() {
         />
       ))}
 
-      <Method />
-      <Closing />
+      {/* §7: the page closes on the lattice. It opens in the brand formation,
+          travels through four disciplines and settles back into it — and
+          holding `flow` through the close would over-weight one discipline at
+          the moment the page should read as Acesta entire. Slower than the
+          section morphs, per the same rule. */}
+      <ResolveWaypoint formation="lattice" slow>
+        <Method />
+        <Closing />
+      </ResolveWaypoint>
     </main>
   );
 }
