@@ -245,17 +245,24 @@ html.lenis body {
    Layout primitives
 --------------------------------------------------------------------------- */
 
-.premium-container {
-  width: min(var(--page-max-width), calc(100% - (2 * var(--gutter))));
-  margin: 0 auto;
+/* In @layer components for the same reason as the §5 components below: these
+   set `margin` and `width`, and unlayered they silently beat any mt-* or
+   max-w-* utility applied at a call site. */
+@layer components {
+  .premium-container {
+    width: min(var(--page-max-width), calc(100% - (2 * var(--gutter))));
+    margin: 0 auto;
+  }
 }
 
 /* Transitional surface. Phases 4–6 delete the remaining call sites; §5 permits
    exactly one container (the vitrine) and only for service-proof artifacts. */
-.premium-card {
-  background: var(--color-vitrine);
-  border: var(--stroke-hairline);
-  border-radius: var(--radius);
+@layer components {
+  .premium-card {
+    background: var(--color-vitrine);
+    border: var(--stroke-hairline);
+    border-radius: var(--radius);
+  }
 }
 
 /* §5 components. Declared in the components layer so Tailwind utilities at
@@ -304,6 +311,16 @@ html.lenis body {
     background: transparent;
     color: var(--color-bone);
     box-shadow: none;
+  }
+
+  /* §5 Vitrine — the only container permitted in the system, and only for
+     service-proof artifacts. Never nest a vitrine inside a vitrine.
+     Glow is --glow-gold at 50% opacity, per the component spec. */
+  .vitrine {
+    background: var(--color-vitrine);
+    border: var(--stroke-hairline);
+    border-radius: var(--radius);
+    box-shadow: 0 0 60px rgba(201, 169, 97, 0.075);
   }
 
   /* §5 Ghost Link — no background, no border. Gold underline wipes in on hover. */
@@ -356,8 +373,10 @@ html.lenis body {
 }
 
 /* Transitional hairline divider, retained until Phases 4–6 remove call sites. */
-.gold-line {
-  background: var(--color-gold-deep);
+@layer components {
+  .gold-line {
+    background: var(--color-gold-deep);
+  }
 }
 
 /* ---------------------------------------------------------------------------

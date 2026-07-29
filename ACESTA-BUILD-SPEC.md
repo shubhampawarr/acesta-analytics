@@ -135,6 +135,27 @@ Reviewed on a real iPhone. Four further items, all mobile-specific.
 
 **8. Rebuild the mobile footer.** Currently messy. §5 now carries a full Footer spec — the key fixes: the legal block moves from mono uppercase to Switzer sentence case (mono uppercase turns three lines of statutory text into visual noise), Privacy and Terms get a mid-dot separator, email and phone stack instead of sharing a line, and vertical rhythm becomes consistent at `--space-24` between groups. Footer height should not exceed roughly 40% of viewport at 390px.
 
+### Phase 4.1 — result
+
+Passed on the deployed build. PageSpeed mobile: **performance 99**, accessibility 100, best practices 100, SEO 100, **FCP 0.9s, LCP 1.7s, CLS 0**.
+
+LCP improved from 2.4s to 1.7s — the type scale reduction shortened the largest paint element from five lines at 113px to three at 88px. Local measurement read 2.73s for the same build, a full second adrift; deployed PageSpeed remains the only number to trust on this project.
+
+Variable-font instancing at three weights (200 / 300 / 400) is not a performance concern at 99 and needs no optimisation.
+
+**Homepage is closed.** Do not revisit it during Phase 5 except where `/services` anchors require it.
+
+### Phase 5 — split into two runs
+
+Phase 5 is the heaviest in the build. Execute it as two separately committed halves with a report between them:
+
+- **Phase 5a** — the `/services` page structure: four anchored sections (`#web`, `#data`, `#search`, `#growth`), positioning copy, scope and deliverables, particle formation waypoints, lattice close. No proof artifacts yet; leave sized placeholders where the vitrines will sit.
+- **Phase 5b** — the three proof artifacts, built into those placeholders.
+
+Report and stop after 5a. This keeps the diff reviewable and gives a clean restart point.
+
+**Deployed LCP baseline entering Phase 5 is 1.7s.** Re-run PageSpeed on the deployed build after each half and report the number.
+
 ---
 
 ## Dependencies to install
@@ -273,6 +294,16 @@ This is the page that closes the sale. Build it as a single long-scroll page wit
 Each service section runs: eyebrow → oversized headline → weight-200 positioning copy → scope and deliverables → **the proof artifact inside a vitrine** (§5). The particle system morphs to that service's formation as the section enters view — same continuous system as the homepage, mounted once.
 
 Build the artifacts as **real components with plausible dummy data**, not images. They must survive a prospect zooming in.
+
+### Chart implementation — no charting library
+
+Build every chart as hand-written SVG. Do not install recharts, chart.js, d3 or any equivalent.
+
+The data is fixed illustrative sample data. It does not stream, does not update, and needs no axis auto-scaling, no responsive re-binning and no interaction model beyond a filter row that swaps between pre-computed data sets. A charting library exists to solve problems this page does not have, and would add six figures of bytes to a homepage currently running LCP 1.7s on mobile.
+
+Hand-written SVG also gives exact control over the design tokens — stroke weights, the gold ramp, the single steel comparison series — which a library will fight at every step.
+
+If a specific chart turns out to be genuinely impractical by hand, say so and explain why before installing anything.
 
 ### On dummy data
 There is no real client data available. Invent it, and invent it *credibly*:
