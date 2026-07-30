@@ -63,34 +63,38 @@ export default function AboutPage() {
       </ResolveWaypoint>
 
       <section className="premium-container pt-(--section-gap)">
-        <div className="md:grid md:grid-cols-12 md:gap-16">
-          {/* §6: full colour, no duotone — a duotoned face reads as a graphic
-              rather than a person. Rounded crop at --radius, contained, and
-              capped at 40% of viewport width.
+        <div className="md:grid md:grid-cols-12 md:items-stretch md:gap-16">
+          {/* §6: full colour, head-and-shoulders crop, floating on void.
 
-              Placed in the LEFT column deliberately: the lattice sits at world
-              offset +2.9, i.e. the right half, and §6 forbids the particle
-              field crossing a photograph — particles over a face read as dirt
-              on the lens. On mobile there is only one column to work with, so
-              the field is suppressed there instead (see globals.css).
+              Height is tied to the copy column rather than to a viewport
+              percentage. The wrapper is a grid item that stretches to the row
+              height, and the image is absolutely positioned inside it, so the
+              portrait can never drive the row taller than the text beside it —
+              it stays an accompaniment rather than growing into a peer of the
+              copy on wide screens. Capped at 24% of viewport width.
 
-              It also comes FIRST in the DOM: grid auto-placement is sparse, so
-              a later item is never backtracked into an earlier column, and
-              placing it after the copy silently pushed it onto its own row. */}
+              Left column deliberately: the lattice sits at world offset +2.9,
+              the right half, and §6 forbids the field crossing a photograph.
+              On mobile there is one column and no room to offset, so the field
+              is suppressed there instead (see globals.css).
+
+              First in the DOM because grid auto-placement is sparse — a later
+              item is never backtracked into an earlier column, which silently
+              pushed this onto its own row when it followed the copy. */}
           <Reveal
-            className="mb-20 md:col-span-4 md:col-start-1 md:mb-0 md:max-w-[40vw]"
+            className="mb-16 md:relative md:col-span-3 md:col-start-1 md:mb-0 md:max-w-[24vw]"
             delay={0.12}
           >
             <Image
               src="/founder.webp"
               alt="Shubham Pawar, founder of Acesta Analytics"
-              width={1100}
-              height={1653}
-              sizes="(max-width: 768px) 100vw, 34vw"
-              className="w-full rounded-3xl"
+              width={760}
+              height={900}
+              sizes="(max-width: 768px) 70vw, 24vw"
+              className="w-full rounded-3xl object-cover object-top md:absolute md:inset-0 md:h-full"
             />
           </Reveal>
-          <div className="md:col-span-6 md:col-start-6">
+          <div className="md:col-span-7 md:col-start-5">
             <Reveal>
               <p className="text-lead font-extralight text-mist">
                 Acesta is a founder-led studio. The person who scopes the work

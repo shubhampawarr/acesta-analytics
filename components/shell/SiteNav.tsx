@@ -11,7 +11,14 @@ import { cn } from '@/lib/cn';
 const SCROLL_THRESHOLD = 80;
 const STAGGER_MS = 60;
 
+/**
+ * §5: an explicit Home link. The logo links home, but that convention is not
+ * universal and a visitor deep in /services otherwise has no obvious route
+ * back. Filtered out on the homepage itself, where it would point at the
+ * current page.
+ */
 const navItems = [
+  { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
   { label: 'Services', href: '/services' },
   { label: 'Work', href: '/work' },
@@ -109,8 +116,16 @@ export function SiteNav() {
   }, [menuOpen]);
 
   function isActive(href: string) {
+    if (href === '/') {
+      return pathname === '/';
+    }
+
     return pathname === href || pathname.startsWith(`${href}/`);
   }
+
+  const visibleNavItems = navItems.filter(
+    (item) => item.href !== '/' || pathname !== '/'
+  );
 
   return (
     <>
@@ -133,7 +148,7 @@ export function SiteNav() {
               aria-label="Primary"
               className="hidden items-center gap-9 md:flex"
             >
-              {navItems.map((item) => (
+              {visibleNavItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
@@ -208,7 +223,7 @@ export function SiteNav() {
         )}
       >
         <nav aria-label="Mobile" className="flex flex-col">
-          {navItems.map((item, index) => (
+          {visibleNavItems.map((item, index) => (
             <Link
               key={item.href}
               href={item.href}
@@ -230,7 +245,7 @@ export function SiteNav() {
           <Link
             href="/contact"
             tabIndex={menuOpen ? undefined : -1}
-            style={{ transitionDelay: `${navItems.length * STAGGER_MS}ms` }}
+            style={{ transitionDelay: `${visibleNavItems.length * STAGGER_MS}ms` }}
             className={cn(
               'gold-pill mt-12 self-start',
               'transition-[opacity,transform] duration-(--dur-reveal) ease-out-expo',

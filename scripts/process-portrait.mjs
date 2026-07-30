@@ -23,10 +23,25 @@ import sharp from 'sharp';
 const SRC = path.join(process.cwd(), 'public/founder.png');
 const OUT = path.join(process.cwd(), 'public/founder.webp');
 
+/**
+ * §6: a head-and-shoulders crop, not the full-body source. Scaling a
+ * full-length shot down renders the face too small to register while the frame
+ * still occupies the same real estate — cropping in solves what shrinking
+ * cannot.
+ *
+ * Derived from the source's own alpha profile rather than picked by eye: the
+ * head runs y 160-720 (peak width 441 at y 360), the neck narrows to 235 at
+ * y 720, and the shoulders widen from y 760 out to the full frame by y 1000.
+ * This box takes head, shoulders and upper chest, horizontally centred between
+ * the face centre (~620) and the shoulder centre (~550).
+ */
+const CROP = { left: 195, top: 130, width: 760, height: 900 };
+
 
 async function main() {
   const { data, info } = await sharp(SRC)
-    .resize({ width: 1100, withoutEnlargement: true })
+    .extract(CROP)
+    .resize({ width: 760, withoutEnlargement: true })
     .ensureAlpha()
     .raw()
     .toBuffer({ resolveWithObject: true });

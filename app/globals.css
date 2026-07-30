@@ -27,25 +27,26 @@
     var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Type — scale, with line-height and tracking bound per §3.
-     Desktop ceilings are deliberately restrained: display tops out at 88px,
-     not 113px. A headline that fills the viewport reads as shouting. */
-  --text-display: clamp(2.75rem, 6.5vw, 5.5rem);
+     Desktop ceilings are deliberately restrained: display tops out at 72px.
+     Reduced from 113px, then 88px — a headline that fills the viewport reads
+     as shouting, and each reduction bought back room for content. */
+  --text-display: clamp(2.5rem, 5.5vw, 4.5rem);
   --text-display--line-height: 1.05;
   --text-display--letter-spacing: -0.04em;
 
-  --text-heading-lg: clamp(2.5rem, 5vw, 3.75rem);
+  --text-heading-lg: clamp(2rem, 4vw, 3rem);
   --text-heading-lg--line-height: 1.1;
   --text-heading-lg--letter-spacing: -0.035em;
 
-  --text-heading: clamp(1.875rem, 4vw, 2.5rem);
+  --text-heading: clamp(1.625rem, 3.25vw, 2.125rem);
   --text-heading--line-height: 1.15;
   --text-heading--letter-spacing: -0.03em;
 
-  --text-heading-sm: clamp(1.625rem, 3vw, 2.125rem);
+  --text-heading-sm: clamp(1.5rem, 2.5vw, 1.875rem);
   --text-heading-sm--line-height: 1.2;
   --text-heading-sm--letter-spacing: -0.03em;
 
-  --text-subheading: clamp(1.375rem, 2.25vw, 1.75rem);
+  --text-subheading: clamp(1.25rem, 2vw, 1.5rem);
   --text-subheading--line-height: 1.25;
   --text-subheading--letter-spacing: -0.02em;
 
@@ -85,8 +86,8 @@
      p-6 / gap-8 / mt-10. These yield px-gutter, gap-section, p-vitrine. */
   --spacing-gutter: 60px;
   --spacing-gutter-sm: 24px;
-  --spacing-section: 180px;
-  --spacing-section-sm: 96px;
+  --spacing-section: 140px;
+  --spacing-section-sm: 80px;
   --spacing-vitrine: 36px;
 
   /* Shape — §4. Nothing else has a radius. Nothing has a shadow. */

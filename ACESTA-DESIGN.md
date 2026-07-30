@@ -66,11 +66,11 @@ Mobile floors are set so nothing breaks below 380px. **Desktop ceilings are deli
 
 | Role | Clamp | Line height | Tracking | Token |
 |------|-------|-------------|----------|-------|
-| display | `clamp(2.75rem, 6.5vw, 5.5rem)` | 1.05 | -0.04em | `--text-display` |
-| heading-lg | `clamp(2.5rem, 5vw, 3.75rem)` | 1.1 | -0.035em | `--text-heading-lg` |
-| heading | `clamp(1.875rem, 4vw, 2.5rem)` | 1.15 | -0.03em | `--text-heading` |
-| heading-sm | `clamp(1.625rem, 3vw, 2.125rem)` | 1.2 | -0.03em | `--text-heading-sm` |
-| subheading | `clamp(1.375rem, 2.25vw, 1.75rem)` | 1.25 | -0.02em | `--text-subheading` |
+| display | `clamp(2.5rem, 5.5vw, 4.5rem)` | 1.05 | -0.04em | `--text-display` |
+| heading-lg | `clamp(2rem, 4vw, 3rem)` | 1.1 | -0.035em | `--text-heading-lg` |
+| heading | `clamp(1.625rem, 3.25vw, 2.125rem)` | 1.15 | -0.03em | `--text-heading` |
+| heading-sm | `clamp(1.5rem, 2.5vw, 1.875rem)` | 1.2 | -0.03em | `--text-heading-sm` |
+| subheading | `clamp(1.25rem, 2vw, 1.5rem)` | 1.25 | -0.02em | `--text-subheading` |
 | heading-xs | `1.5rem` | 1.15 | -0.02em | `--text-heading-xs` |
 | heading-2xs | `1.25rem` | 1.3 | -0.01em | `--text-heading-2xs` |
 | lead | `clamp(1.25rem, 1.6vw, 1.5rem)` | 1.45 | normal | `--text-lead` |
@@ -95,7 +95,7 @@ OpenType: enable `"ss01"`, `"cv01"`, and `"tnum"` on all mono numerals.
 |----------|-------|
 | Page max-width | `1280px` |
 | Gutter (desktop / mobile) | `60px` / `24px` |
-| Section gap (desktop / mobile) | `180px` / `96px` |
+| Section gap (desktop / mobile) | `140px` / `80px` |
 | Vitrine padding | `36px` (desktop) / `24px` (mobile) |
 | Element gap | `6–18px` |
 
@@ -128,6 +128,8 @@ Two-column asymmetric. Left: eyebrow → headline at `--text-heading-lg` weight 
 ### Nav
 Transparent, sits directly on void. No backdrop blur at top of page; blur + `rgba(0,0,0,0.6)` fades in after 80px scroll. Logo left. Links centre-right, mono 14px uppercase, `--color-ash` → `--color-bone`. Gold pill CTA anchors right. Mobile: full-screen overlay, links stagger in at 60ms intervals.
 
+**Include an explicit Home link.** The logo links home, but that convention is not universal and a visitor on `/services` who wants to go back has no obvious route. An explicit link costs one nav slot and removes a dead end. Suppress it on the homepage itself, where it would link to the current page.
+
 ### Footer
 Typographic and quiet — a closing signature, not a second page.
 
@@ -148,13 +150,36 @@ Geist Mono. Value at `--text-mono-metric` in `--color-bone`. Label below at `--t
 
 Primarily **procedural and abstract** — the particle system is the brand.
 
-Photography is permitted but **strictly disciplined**:
-- Only in team/about contexts and where a human presence genuinely helps.
+Imagery is permitted but **strictly disciplined**:
+- Only where it does real work: portfolio evidence on `/work`, and a founder presence on `/about`.
 - Large rounded-rect crops at `--radius`, no frames, no overlays, floating on void.
-- Every photo gets a **gold-duotone treatment** (`--color-gold-deep` shadows → `--color-gold-bright` highlights) so it reads as part of the system, not stock.
-- **The duotone assumes photographic tonal range.** A luminance-to-colour mapping only works when the source has a spread of tones to map. Screenshots of light UIs, flat illustrations and pale scans do not — a straight mapping puts nearly the whole frame on `--color-gold-bright` and produces the large gold field §9 forbids. For non-photographic sources, apply a tone curve that pushes midtones down while leaving both endpoints exactly as specified. Target a mean luminance around 100–120.
-- **Some sources cannot be treated at all.** Where the tonal spread is too narrow to redistribute — a near-uniform pale page, for instance — no curve will manufacture range that isn't there, and the result is a solid gold slab. §6 permits photography rather than requiring it: leave that slot typographic. A gap in a sequence of images breaks the rhythm usefully; a gold rectangle does not.
-- Bake the duotone at build time rather than applying a runtime SVG filter. Filter cost on large images is real, and Safari's handling of filtered `<img>` is unreliable.
+
+### Full colour. No duotone.
+
+*Corrected after Phase 8.* The gold duotone was specified so images would read as part of the system rather than as stock. It fails on both classes of image this site actually uses:
+
+- **Portfolio captures are evidence, not decoration.** This is a studio selling web design. The prospect must be able to evaluate the work, and a monochrome wash hides the exact thing being sold. Accuracy outranks system consistency here.
+- **A duotoned face reads as a graphic, not a person.** On a page arguing that the person who scopes the work is the person who builds it, the portrait's job is to make that person real.
+
+Ship both at full colour.
+
+### Integration without colour treatment
+
+Full-colour images on pure black look pasted in if nothing holds them. Handle that with **crop, scale, opacity and placement** — never by tinting:
+
+- **Rounded crop at `--radius`, always contained.** No full-bleed cutouts, nothing running off a viewport edge.
+- **The founder portrait is a head-and-shoulders crop**, not the full-body source. A full-length shot scaled down renders the face too small to register while the frame still occupies real estate — cropping in solves what shrinking cannot. Crop to roughly head, shoulders and upper chest.
+- **Maximum 24% of viewport width**, and never taller than the copy block beside it. Tie its height to the adjacent column rather than a viewport percentage, so it stays a portrait accompanying the text rather than growing into a peer of it on wide screens.
+- **The particle field must not cross a photograph.** Offset the field, or suppress it within the portrait's bounds. Particles over a face read as dirt on the lens.
+- **Portfolio capture opacity depends on source luminance.**
+  - *Dark and mid-tone sources* (mean luminance below ~200): 30% at rest on desktop, full on hover. 85% on mobile.
+  - *Light sources* (mean luminance above ~200): 85% at rest on desktop, full on hover. 85% on mobile.
+
+  Low opacity on a light capture doesn't restrain it, it destroys it — a white page at 30% on void becomes a flat grey slab with its type and detail washed out. The restraint that works on a dark screenshot is the wrong instrument for a light one. A white site shown at high opacity in a contained rounded crop reads accurately as a white site, and provides useful contrast against darker captures in the same list.
+
+  There is no hover on touch, so the mobile at-rest value is the only state a phone user sees. A 45% wash there hides the work rather than restraining it.
+
+- **The tonal-spread gate applies to duotone treatment only, and duotone is no longer used.** A near-uniform source is not disqualifying now that captures ship in colour at an opacity matched to their luminance. Retain the HTTP status check — that catches dead URLs, which is a separate and real problem — but do not exclude a capture for low tonal spread alone.
 - No lifestyle stock in the hero region. Ever.
 
 **Icons: near-zero.** The previous build was icon-heavy and it read as templated. Icons are permitted only where they label a genuine interactive control. Decorative icons beside headings, feature bullets, and service cards are removed — replaced by type, number, or particle formation.
@@ -255,11 +280,11 @@ The particles never reset to zero between sections; they *morph* from one format
   --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Type — scale */
-  --text-display: clamp(2.75rem, 6.5vw, 5.5rem);
-  --text-heading-lg: clamp(2.5rem, 5vw, 3.75rem);
-  --text-heading: clamp(1.875rem, 4vw, 2.5rem);
-  --text-heading-sm: clamp(1.625rem, 3vw, 2.125rem);
-  --text-subheading: clamp(1.375rem, 2.25vw, 1.75rem);
+  --text-display: clamp(2.5rem, 5.5vw, 4.5rem);
+  --text-heading-lg: clamp(2rem, 4vw, 3rem);
+  --text-heading: clamp(1.625rem, 3.25vw, 2.125rem);
+  --text-heading-sm: clamp(1.5rem, 2.5vw, 1.875rem);
+  --text-subheading: clamp(1.25rem, 2vw, 1.5rem);
   --text-heading-xs: 1.5rem;
   --text-heading-2xs: 1.25rem;
   --text-lead: clamp(1.25rem, 1.6vw, 1.5rem);
@@ -288,7 +313,7 @@ The particles never reset to zero between sections; they *morph* from one format
   /* Layout */
   --page-max-width: 1280px;
   --gutter: 60px;
-  --section-gap: 180px;
+  --section-gap: 140px;
 
   /* Shape */
   --radius: 24px;
@@ -305,7 +330,7 @@ The particles never reset to zero between sections; they *morph* from one format
 @media (max-width: 768px) {
   :root {
     --gutter: 24px;
-    --section-gap: 96px;
+    --section-gap: 80px;
   }
 }
 
@@ -335,11 +360,11 @@ The particles never reset to zero between sections; they *morph* from one format
   --font-display: 'Switzer', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, monospace;
 
-  --text-display: clamp(2.75rem, 6.5vw, 5.5rem);
-  --text-heading-lg: clamp(2.5rem, 5vw, 3.75rem);
-  --text-heading: clamp(1.875rem, 4vw, 2.5rem);
-  --text-heading-sm: clamp(1.625rem, 3vw, 2.125rem);
-  --text-subheading: clamp(1.375rem, 2.25vw, 1.75rem);
+  --text-display: clamp(2.5rem, 5.5vw, 4.5rem);
+  --text-heading-lg: clamp(2rem, 4vw, 3rem);
+  --text-heading: clamp(1.625rem, 3.25vw, 2.125rem);
+  --text-heading-sm: clamp(1.5rem, 2.5vw, 1.875rem);
+  --text-subheading: clamp(1.25rem, 2vw, 1.5rem);
   --text-lead: clamp(1.25rem, 1.6vw, 1.5rem);
   --text-body: clamp(1rem, 1.2vw, 1.125rem);
   --text-mono-label: 0.75rem;
@@ -352,8 +377,8 @@ The particles never reset to zero between sections; they *morph* from one format
      in the codebase. Named keys add new utilities without collision. */
   --spacing-gutter: 60px;
   --spacing-gutter-sm: 24px;
-  --spacing-section: 180px;
-  --spacing-section-sm: 96px;
+  --spacing-section: 140px;
+  --spacing-section-sm: 80px;
   --spacing-vitrine: 36px;
 
   --radius-3xl: 24px;

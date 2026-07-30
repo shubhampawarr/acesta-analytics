@@ -406,6 +406,102 @@ Never scoped in any earlier phase — an omission in this spec, not a skipped in
 
 ---
 
+## Phase 8 — Work roster and mobile refinement
+
+Runs after Phase 7. Two independent pieces of work, then a short re-verification of only what changed.
+
+### 8.1 `/work` — updated client roster
+
+Four projects, replacing the current three. Capture each with the existing `capture:work` script and apply the §6 duotone with the midtone curve.
+
+| Client | URL |
+|---|---|
+| CareRadar | careradar.de |
+| Axira Media | axiramedia.vercel.app |
+| Balaji Arts | balajiarts.vercel.app |
+| Protein Cartel | proteincartel.vercel.app |
+| Artist portfolio | existing URL in repo |
+
+Lead with CareRadar — a live product on its own domain serving a German market is the strongest credibility signal in the set and should not sit fourth.
+
+**Capture the hero section, not the full page.** Screenshot at viewport size (1440×900, no full-page scroll) rather than capturing the entire document. Two reasons:
+
+- A 900px full-page capture squeezed into a portfolio row renders most of its content at unreadable size. A hero crop shows one strong composition legibly, which is what a portfolio row is for.
+- Full-page captures of light sites average out to a single flat tone. The artist portfolio failed the duotone at full page — mean luminance 254, tonal spread 13.4 — because there was no range to map. Heroes generally carry type, imagery and a dark control or two, so the spread is usually sufficient.
+
+**Check HTTP status before applying the tonal gate.** A 404 or error page is itself tonally flat, so a dead URL fails the spread test and gets filed as "source too flat" — the right rejection with entirely the wrong diagnosis, silently, on the page whose job is credibility. Assert a 200 and a non-error title on every capture target before measuring anything. This caught a dead Protein Cartel URL in Phase 8 only because a working variant existed elsewhere in the repo.
+
+**The gate is measured tonal spread, not visual judgement.** Measure each hero capture before shipping it. If a crop still comes out near-uniform, that row stays typographic — §6's rule holds regardless of how good the hero looks in a browser. Five rows absorb one image gap without looking incomplete.
+
+Note that captures ship at 30% opacity on desktop and 45% on mobile, so a moderately flat source is less damaging than the raw duotone suggests. That reduces the margin for error; it does not remove the gate.
+
+**Display client names, not URLs.** Three of the four are `.vercel.app` subdomains. Showing those in the interface reads as "not launched yet" or "client didn't buy a domain" to exactly the prospect being targeted. Link the row to the live site, label it with client name and discipline, and let the URL live only in the `href`.
+
+Each row: client name at `--text-heading`, one-line outcome in mist, mono labels for discipline and year, duotone capture revealed on hover per §6.3. No bordered project cards.
+
+Check tonal spread before shipping each capture. Any source that comes out as a flat gold field stays typographic — that rule from §6 still applies, and four rows absorb one image gap without looking incomplete.
+
+### 8.2 `/services` — mobile refinement
+
+The page is cramped at 390px. The artifacts were composed for desktop and the current mobile treatment scales them down rather than rethinking them.
+
+**Simplify on mobile, don't shrink.** Same lesson the particle system produced in Phase 4 — mobile needed a different strategy, not the same one smaller. Apply it to the artifacts:
+
+- **Dashboard:** metric tiles stack or go 2×2 rather than sitting in a row. Reduce to the two or three metrics that carry the argument. Charts get taller relative to width so they stay readable at column size.
+- **SEO panel:** the keyword table drops to two columns — keyword and position change. Fewer rows. A table needing horizontal scroll has failed.
+- **Flow diagram:** fewer nodes, or a vertical rather than horizontal flow. A wide directed graph compressed to 390px is unreadable.
+- **Vitrine padding** to `--space-24` at mobile per §4.
+- Verify `--section-gap` is actually applying at 96px between sections, and that nothing inside a vitrine sits below the 12px legibility floor.
+
+**Acceptance:** every artifact is readable at 390px without pinch-zoom or horizontal scroll, and each still reads as a deliverable rather than a truncated desktop layout.
+
+### 8.3 Re-verify
+
+Only the changed routes. Contrast auditor on `/work` and `/services`, PageSpeed on both, and the four-boxes test at 25% zoom again since `/work` gains an image.
+
+---
+
+## Phase 9 — `/about` and `/work` depth
+
+Both pages are under-written. `/about` runs 187 words; `/work` runs 110 across five projects, roughly 22 each. That is a list, not evidence, on the two pages a prospect visits after being convinced by `/services` and before deciding whether to email.
+
+Content comes first. Visual treatment applied to thin content reads as an empty template.
+
+### 9.1 `/about` — substantiate the founder-led claim
+
+The page argues that the person who scopes the work builds it. Nothing on it currently supports that beyond the assertion.
+
+Add, as mono-labelled entries rather than prose blocks or cards:
+- **Credentials.** MSc Data Science and Artificial Intelligence, University of Liverpool. B.E. Mechanical Engineering, University of Pune. For an Indian SMB buyer weighing a ₹50,000 decision, a UK master's in data science is a concrete trust signal, and it is currently absent from the site entirely.
+- **How an engagement runs.** Three or four short lines: what happens first, who does the work, what the client receives, roughly how long it takes. The founder-led argument is only credible if the process is legible.
+- Keep the existing positioning statement at display scale as the page opener.
+
+Target 350–450 words. Still spare, but enough to be believed.
+
+### 9.2 `/work` — projects need a story
+
+Each row currently carries a client name, a one-line outcome and mono labels. Expand each to three short elements: **the problem**, **what was built**, **what changed**.
+
+**Do not invent any of this.** The client supplies it. Build the structure with visible placeholders and report which projects remain unfilled rather than writing plausible-sounding copy. Same rule that governed the `/services` sample data: invented specifics on a credibility page are worse than a gap.
+
+Target 60–90 words per project.
+
+### 9.3 Visual treatment
+
+Only after the content lands.
+
+**`/work` — the captures are now the payload.** With colour restored, the images carry the argument. Make the hover reveal substantial rather than incidental: the capture comes to full opacity and scale, the client name shifts, the row commits to the interaction. On mobile, where there is no hover, captures stay visible at their at-rest opacity.
+
+**`/about` — fix the composition per §6.** Contained rounded crop at `--radius`, maximum 40% of viewport width, fully inside its section, no full-bleed cutout. Offset or suppress the particle field within the portrait's bounds — particles across a face read as dirt on the lens.
+
+Set the credentials as a sparse mono grid on void. No cards, no borders, no icons.
+
+### 9.4 Verify
+
+Contrast auditor on both routes, PageSpeed on both, and confirm neither page regresses below 95 mobile.
+
+---
+
 ## Phase 7 — QA and hardening
 
 1. **Performance** — Lighthouse ≥ 90 performance on mobile, ≥ 95 on desktop. All images through `next/image` with correct `sizes`. Lazy-load below-fold. Code-split the three.js bundle so it never blocks first paint.
@@ -432,6 +528,7 @@ Never scoped in any earlier phase — an omission in this spec, not a skipped in
 
 ## Working agreement
 
+- **Never use `git add -A` or `git add .`** Stage files explicitly by path. The working tree may contain work placed there by the client — assets, documents, credentials, notes — and a blanket stage commits and pushes files nobody reviewed. Before any commit, run `git status` and stage only what the current task produced. If an unexpected file appears in the tree, name it in the report rather than sweeping it in.
 - Report at the end of each phase: what changed, what files, what's left.
 - If any instruction here conflicts with `ACESTA-DESIGN.md`, the design system wins — flag the conflict.
 - If a decision isn't specified in either file, ask rather than defaulting. Defaults are how this site got boring the first time.
