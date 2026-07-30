@@ -25,6 +25,19 @@ const serviceOptions = [
 const whatsappLink =
   'https://wa.me/919869371603?text=Hello%20Acesta%20Analytics%2C%20I%20would%20like%20to%20discuss%20a%20project.';
 
+/**
+ * The pricing signal, held as a single constant so it changes in one place.
+ *
+ * As supplied this sentence carries no figure — it commits to a written scope
+ * rather than to a number. The brief said "the figure is a placeholder pending
+ * final confirmation", so when a number is confirmed it goes here and nowhere
+ * else. Deliberately body copy: not a heading, not in a box, and above the
+ * form so a visitor reads how the engagement starts before being asked for
+ * their details.
+ */
+const PRICING_SIGNAL =
+  'Every engagement starts with a written scope — what’s being built, what it costs, how long it takes — agreed before any work begins.';
+
 type FormState = {
   name: string;
   company: string;
@@ -59,6 +72,10 @@ export default function ContactPageClient() {
 
         <p className="mt-8 max-w-[52ch] text-lead font-extralight text-mist">
           Tell us what you are building, improving, or trying to understand.
+        </p>
+
+        <p className="mt-8 max-w-[58ch] text-body text-mist">
+          {PRICING_SIGNAL}
         </p>
 
         <div className="mt-20 md:mt-24">
