@@ -13,77 +13,135 @@ export const metadata: Metadata = {
     'Selected work from Acesta Analytics — agency websites, ecommerce storefronts and creative web experiences.',
 };
 
+/**
+ * Problem / built / changed, per 9.2. Modelled as a list rather than three
+ * fixed fields because not every project has all three: Shubham Music is a
+ * self-initiated piece with a single descriptive paragraph, and padding it out
+ * to match the client entries would mean inventing the parts that are missing.
+ */
+type NarrativeBlock = { label: string; body: string };
+
 type Project = {
   name: string;
-  outcome: string;
   discipline: string;
-  year: string;
+  /** "Client project" or "Self-initiated" — never blurred together. */
   status: string;
+  /** Omitted where the year is not established. */
+  year?: string;
   href: string;
-  /**
-   * Optional. A capture ships unless its URL is dead — the tonal-spread gate
-   * is retired (§6). All five ship as of Phase 9.
-   */
-  image?: string;
   /** Key into captures.json, which carries the measured source luminance. */
-  slug?: string;
+  slug: string;
+  image: string;
+  narrative: NarrativeBlock[];
 };
 
 const projects: Project[] = [
   {
     name: 'CareRadar',
-    outcome:
-      'International nurse recruitment, presented to a German market that had to trust it on sight.',
     discipline: 'Web Development · Search Visibility',
-    year: '2025',
     status: 'Client project',
+    year: '2025',
     href: 'https://careradar.de/',
     slug: 'careradar',
     image: '/work/careradar.webp',
+    narrative: [
+      {
+        label: 'Problem',
+        body: 'Indian nurses moving to Germany face a process nobody explains clearly — qualification routes, costs, timelines, what happens when. Someone deciding whether to commit years of their life needs to understand it before they’ll trust anyone with it.',
+      },
+      {
+        label: 'Built',
+        body: 'A bilingual platform with role-based access for nurses, employers and administrators. Public pathway pages set out each qualification route end to end; behind sign-in, document upload, shortlisting and pipeline management. Next.js, Supabase, Postgres with row-level security.',
+      },
+      {
+        label: 'Changed',
+        body: 'The process is legible before anyone creates an account. Candidates see the route, the requirements and the timeline, then decide — rather than trusting a recruiter first and finding out later.',
+      },
+    ],
+  },
+  {
+    name: 'Balaji Arts',
+    discipline: 'Web Development',
+    status: 'Client project',
+    year: '2026',
+    href: 'https://balajiarts.vercel.app/',
+    slug: 'balaji-arts',
+    image: '/work/balaji-arts.webp',
+    narrative: [
+      {
+        label: 'Problem',
+        body: 'Offset printing, labelling and packaging is a specification business. Buyers need to see substrates, finishes and formats before they enquire, and a brochure page can’t carry that.',
+      },
+      {
+        label: 'Built',
+        body: 'A product catalogue with real category structure, photography and motion across the range — offset printing, labels, packaging and tags.',
+      },
+      {
+        label: 'Changed',
+        body: 'The range is browsable. Buyers arrive at an enquiry already knowing roughly what they want, instead of it being explained on a call.',
+      },
+    ],
   },
   {
     name: 'Axira Media',
-    outcome:
-      'A digital marketing agency that needed to look like one before the first call.',
-    discipline: 'Web Development · SEO Foundation',
-    year: '2025',
+    discipline: 'Web Development',
     status: 'Client project',
     href: 'https://axiramedia.vercel.app/',
     slug: 'axira-media',
     image: '/work/axira-media.webp',
-  },
-  {
-    name: 'Balaji Arts',
-    outcome:
-      'Printing, packaging and label manufacturing, given a presence that matches the plant.',
-    discipline: 'Web Development',
-    year: '2025',
-    status: 'Client project',
-    href: 'https://balajiarts.vercel.app/',
-    slug: 'balaji-arts',
-    image: '/work/balaji-arts.webp',
+    narrative: [
+      {
+        label: 'Problem',
+        body: 'A digital marketing agency is judged on its own presence before anyone reads a case study. The site has to demonstrate the standard it sells.',
+      },
+      {
+        label: 'Built',
+        body: 'A marketing site built around the agency’s service lines and positioning.',
+      },
+      {
+        label: 'Changed',
+        body: 'The agency’s own presence now matches the work it asks clients to buy.',
+      },
+    ],
   },
   {
     name: 'Protein Cartel',
-    outcome:
-      'A nutrition storefront built around browsing, cart and a checkout-ready structure.',
-    discipline: 'Web Development · Growth Systems',
-    year: '2025',
-    status: 'Concept build',
+    discipline: 'Web Development',
+    status: 'Client project',
     href: 'https://protein-cartel.vercel.app/',
     slug: 'protein-cartel',
     image: '/work/protein-cartel.webp',
+    narrative: [
+      {
+        label: 'Problem',
+        body: 'Premium ingredients are the entire proposition, and a photograph of a salad is exactly what fails to communicate that.',
+      },
+      {
+        label: 'Built',
+        body: 'A brand site for the range — rice bowls, paneer and chicken salads, and the sourcing behind them.',
+      },
+      {
+        label: 'Changed',
+        body: 'The positioning is legible before someone orders, rather than something they work out afterwards.',
+      },
+    ],
   },
   {
-    name: 'Artist Portfolio',
-    outcome:
-      'A musician’s presence where the work had to carry the page, not the layout.',
+    name: 'Shubham Music',
     discipline: 'Web Development',
-    year: '2025',
-    status: 'Creative build',
+    // Not a client engagement, and labelled so. Presenting a personal project
+    // under the same framing as paid work would be the one dishonest thing on
+    // a page whose entire job is credibility.
+    status: 'Self-initiated',
     href: 'https://shubhampmusic.vercel.app/',
     slug: 'artist-portfolio',
     image: '/work/artist-portfolio.webp',
+    narrative: [
+      {
+        label: 'Built',
+        body: 'A music portfolio built as one continuous composition — sparse type, an animated particle field, and gallery and mixtape sections that stay out of the way of the work.',
+      },
+    ],
   },
 ];
 
@@ -106,65 +164,88 @@ const REST_OPACITY = {
   dark: 'opacity-85 md:opacity-30',
 };
 
-function restOpacity(slug?: string) {
-  const capture = slug
-    ? (captures as Record<string, { light: boolean } | undefined>)[slug]
-    : undefined;
+function restOpacity(slug: string) {
+  const capture = (captures as Record<string, { light: boolean } | undefined>)[
+    slug
+  ];
 
   return capture?.light ? REST_OPACITY.light : REST_OPACITY.dark;
 }
 
 /**
- * §6.3: typographic rows, not cards. The row is the link — the whole surface
- * is clickable, and the name shifts right on hover as the only affordance.
+ * §1's two-column zigzag, alternating capture-left and capture-right down the
+ * page. Explicit `col-start` on both columns rather than relying on flow:
+ * grid auto-placement is sparse, so a later DOM item is never backtracked into
+ * an earlier column, which is what silently pushed the /about portrait onto a
+ * row of its own.
  *
- * Separated by whitespace, not by rules. §2 allows exactly one border in the
- * system, --stroke-hairline, and only on vitrine surfaces; a row separator at
- * the same value is still a border where the system does not have one.
+ * The capture is height-capped by a fixed aspect ratio rather than running at
+ * the source's own proportions. A full-width 1.6:1 capture plus this much copy
+ * put a single entry well over a 720px viewport, and §1 asks for one or two
+ * elements per viewport — the crop is what makes an entry legible whole.
  */
-function ProjectRow({ project }: { project: Project }) {
+function ProjectEntry({ project, index }: { project: Project; index: number }) {
+  const captureLeft = index % 2 === 0;
+
   return (
     <Reveal>
       <a
         href={project.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="group block py-16 md:py-20"
+        className="group block py-12 md:grid md:grid-cols-12 md:items-start md:gap-x-16 md:py-16"
       >
-        {project.image ? (
-          <div className="mb-12 overflow-hidden rounded-3xl md:mb-16">
-            <Image
-              src={project.image}
-              alt=""
-              width={1600}
-              height={1000}
-              sizes="(max-width: 768px) 100vw, 1280px"
-              className={`w-full transition-opacity duration-(--dur-reveal) ease-out-expo md:group-hover:opacity-100 ${restOpacity(project.slug)}`}
-            />
+        {/* Opaque ground, deliberately. The capture sits below full opacity at
+            rest, and the particle canvas is at -z-10 behind the whole page, so
+            without something solid behind it the field composites *through*
+            the screenshot — gold speckle across a client's website. §6 forbids
+            the field crossing an image. bg-void is invisible on a void page,
+            so this blocks the canvas without introducing a box. */}
+        <div
+          className={`mb-10 overflow-hidden rounded-3xl bg-void md:mb-0 md:col-span-5 ${
+            captureLeft ? 'md:col-start-1' : 'md:col-start-8'
+          }`}
+        >
+          <Image
+            src={project.image}
+            alt=""
+            width={1600}
+            height={1000}
+            sizes="(max-width: 768px) 100vw, 42vw"
+            className={`aspect-[16/10] w-full object-cover object-top transition-[opacity,transform] duration-(--dur-reveal) ease-out-expo md:group-hover:scale-[1.03] md:group-hover:opacity-100 ${restOpacity(
+              project.slug
+            )}`}
+          />
+        </div>
+
+        <div
+          className={`md:col-span-6 ${
+            captureLeft ? 'md:col-start-7' : 'md:col-start-1 md:row-start-1'
+          }`}
+        >
+          <h2 className="text-heading text-bone transition-transform duration-(--dur-reveal) ease-out-expo md:group-hover:translate-x-3">
+            {project.name}
+          </h2>
+
+          <p className="mt-4 font-mono text-mono-label uppercase tracking-mono text-ash">
+            {project.discipline} · {project.status}
+            {project.year ? ` · ${project.year}` : ''}
+          </p>
+
+          <div className="mt-8 space-y-6 md:mt-10">
+            {project.narrative.map((block) => (
+              <div key={block.label}>
+                <h3 className="font-mono text-mono-label uppercase tracking-mono text-gold">
+                  {block.label}
+                </h3>
+                <p className="mt-2 max-w-[62ch] text-body text-mist">
+                  {block.body}
+                </p>
+              </div>
+            ))}
           </div>
-        ) : null}
 
-        <div className="md:grid md:grid-cols-12 md:items-baseline md:gap-8">
-          <div className="md:col-span-7">
-            <h2 className="text-heading text-bone transition-transform duration-(--dur-reveal) ease-out-expo md:group-hover:translate-x-3">
-              {project.name}
-            </h2>
-
-            <p className="mt-5 max-w-[46ch] text-body text-mist">
-              {project.outcome}
-            </p>
-          </div>
-
-          <div className="mt-8 flex flex-wrap items-baseline gap-x-8 gap-y-3 md:col-span-4 md:mt-0 md:flex-col md:gap-3">
-            <p className="font-mono text-mono-label uppercase tracking-mono text-ash">
-              {project.discipline}
-            </p>
-            <p className="font-mono text-mono-label uppercase tracking-mono text-ash">
-              {project.status} · {project.year}
-            </p>
-          </div>
-
-          <p className="mt-8 font-mono text-mono-label uppercase tracking-mono text-gold md:col-span-1 md:mt-0 md:text-right">
+          <p className="mt-8 font-mono text-mono-label uppercase tracking-mono text-gold">
             View
           </p>
         </div>
@@ -193,8 +274,8 @@ export default function WorkPage() {
 
             <Reveal immediate>
               <p className="mt-8 max-w-[52ch] text-lead font-extralight text-mist">
-                Client projects and concept builds. Every one of them is live —
-                open them and look.
+                Client projects and self-initiated builds. Every one of them is
+                live — open them and look.
               </p>
             </Reveal>
           </div>
@@ -202,8 +283,8 @@ export default function WorkPage() {
       </ResolveWaypoint>
 
       <section className="premium-container pt-(--section-gap)">
-        {projects.map((project) => (
-          <ProjectRow key={project.name} project={project} />
+        {projects.map((project, index) => (
+          <ProjectEntry key={project.name} project={project} index={index} />
         ))}
       </section>
 

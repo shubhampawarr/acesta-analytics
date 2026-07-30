@@ -19,6 +19,41 @@ const facts = [
   { label: 'Disciplines', value: 'Data · Web · Search · Growth' },
 ];
 
+/** §9.1 — a sparse mono grid on void. No cards, no borders, no icons. */
+const credentials = [
+  {
+    qualification: 'MSc Data Science and Artificial Intelligence',
+    institution: 'University of Liverpool',
+  },
+  {
+    qualification: 'B.E. Mechanical Engineering',
+    institution: 'University of Pune',
+  },
+];
+
+/**
+ * The founder-led argument is only credible if the process is legible. Four
+ * lines, mono labels, no cards.
+ */
+const engagement = [
+  {
+    label: 'Scope',
+    line: 'A call, then a written scope. What is being built, what it costs, how long it takes.',
+  },
+  {
+    label: 'Build',
+    line: 'The person who scoped the work builds it. Progress is visible as it happens, not at the end.',
+  },
+  {
+    label: 'Handover',
+    line: 'Code, accounts and a walkthrough. Nothing is locked to us.',
+  },
+  {
+    label: 'After',
+    line: 'A support window, then ongoing work only if it’s useful.',
+  },
+];
+
 const practice = [
   {
     label: 'Data',
@@ -73,6 +108,12 @@ export default function AboutPage() {
               it stays an accompaniment rather than growing into a peer of the
               copy on wide screens. Capped at 24% of viewport width.
 
+              bg-void on the wrapper, deliberately: the source is a cutout with
+              a transparent surround, and the particle canvas sits at -z-10
+              behind the whole page, so without an opaque ground the field
+              shows through that transparency and reads as dirt on the lens.
+              Black on a void page is invisible, so this costs nothing.
+
               Left column deliberately: the lattice sits at world offset +2.9,
               the right half, and §6 forbids the field crossing a photograph.
               On mobile there is one column and no room to offset, so the field
@@ -82,7 +123,7 @@ export default function AboutPage() {
               item is never backtracked into an earlier column, which silently
               pushed this onto its own row when it followed the copy. */}
           <Reveal
-            className="mb-16 md:relative md:col-span-3 md:col-start-1 md:mb-0 md:max-w-[24vw]"
+            className="mb-16 overflow-hidden rounded-3xl bg-void md:relative md:col-span-3 md:col-start-1 md:mb-0 md:max-w-[24vw]"
             delay={0.12}
           >
             <Image
@@ -91,9 +132,10 @@ export default function AboutPage() {
               width={760}
               height={900}
               sizes="(max-width: 768px) 70vw, 24vw"
-              className="w-full rounded-3xl object-cover object-top md:absolute md:inset-0 md:h-full"
+              className="w-full object-cover object-top md:absolute md:inset-0 md:h-full"
             />
           </Reveal>
+
           <div className="md:col-span-7 md:col-start-5">
             <Reveal>
               <p className="text-lead font-extralight text-mist">
@@ -112,8 +154,17 @@ export default function AboutPage() {
                 businesses end up with four tools and no answer.
               </p>
             </Reveal>
-          </div>
 
+            <Reveal delay={0.12}>
+              <p className="mt-6 max-w-[54ch] text-body text-mist">
+                That is the argument for keeping this small. One person carrying
+                a brief from the first call through to handover loses nothing in
+                translation, and there is nobody to point at when something is
+                wrong. It is a narrower offer than an agency, and a more
+                accountable one.
+              </p>
+            </Reveal>
+          </div>
         </div>
       </section>
 
@@ -125,6 +176,65 @@ export default function AboutPage() {
             business flow.
           </p>
         </Reveal>
+      </section>
+
+      <section className="premium-container pt-(--section-gap)">
+        <Reveal>
+          <p className="font-mono text-mono-label uppercase tracking-mono text-gold">
+            Credentials
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.06}>
+          <p className="mt-8 max-w-[54ch] text-body text-mist">
+            Qualifications are not the work. They are the reason the data side
+            of it is not guesswork — the reason a question that arrives as a
+            marketing problem can be answered with a model rather than an
+            opinion.
+          </p>
+        </Reveal>
+
+        <StaggerGroup className="mt-16 grid gap-12 sm:grid-cols-2 md:mt-20 md:gap-16">
+          {credentials.map((credential) => (
+            <div key={credential.qualification}>
+              <h2 className="max-w-[26ch] text-heading-sm text-bone">
+                {credential.qualification}
+              </h2>
+              <p className="mt-4 font-mono text-mono-label uppercase tracking-mono text-ash">
+                {credential.institution}
+              </p>
+            </div>
+          ))}
+        </StaggerGroup>
+      </section>
+
+      <section className="premium-container pt-(--section-gap)">
+        <Reveal>
+          <p className="font-mono text-mono-label uppercase tracking-mono text-gold">
+            How an engagement runs
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.06}>
+          <p className="mt-8 max-w-[54ch] text-body text-mist">
+            Four steps, with the same person present at each of them. The shape
+            is deliberately short: there is no internal handover to manage, so
+            there is no process built to survive one.
+          </p>
+        </Reveal>
+
+        <StaggerGroup className="mt-16 grid gap-12 sm:grid-cols-2 md:mt-20 md:gap-16">
+          {engagement.map((step) => (
+            <div key={step.label}>
+              <h2 className="font-mono text-mono-label uppercase tracking-mono text-ash">
+                {step.label}
+              </h2>
+              <p className="mt-4 max-w-[42ch] text-body text-mist">
+                {step.line}
+              </p>
+            </div>
+          ))}
+        </StaggerGroup>
       </section>
 
       <section className="premium-container pt-(--section-gap)">
