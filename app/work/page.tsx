@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { Reveal } from '@/components/motion/Reveal';
 import { ResolveWaypoint } from '@/components/resolve/Resolve';
 
+import captures from './captures.json';
+
 export const metadata: Metadata = {
   title: 'Selected Work',
   description:
@@ -19,11 +21,12 @@ type Project = {
   status: string;
   href: string;
   /**
-   * Optional. A capture ships only if it clears the measured tonal-spread
-   * gate in scripts/capture-work.mjs; the artist portfolio does not, so that
-   * row stays typographic (§8.1).
+   * Optional. A capture ships unless its URL is dead — the tonal-spread gate
+   * is retired (§6). All five ship as of Phase 9.
    */
   image?: string;
+  /** Key into captures.json, which carries the measured source luminance. */
+  slug?: string;
 };
 
 const projects: Project[] = [
@@ -35,6 +38,7 @@ const projects: Project[] = [
     year: '2025',
     status: 'Client project',
     href: 'https://careradar.de/',
+    slug: 'careradar',
     image: '/work/careradar.webp',
   },
   {
@@ -45,6 +49,7 @@ const projects: Project[] = [
     year: '2025',
     status: 'Client project',
     href: 'https://axiramedia.vercel.app/',
+    slug: 'axira-media',
     image: '/work/axira-media.webp',
   },
   {
@@ -55,6 +60,7 @@ const projects: Project[] = [
     year: '2025',
     status: 'Client project',
     href: 'https://balajiarts.vercel.app/',
+    slug: 'balaji-arts',
     image: '/work/balaji-arts.webp',
   },
   {
@@ -65,6 +71,7 @@ const projects: Project[] = [
     year: '2025',
     status: 'Concept build',
     href: 'https://protein-cartel.vercel.app/',
+    slug: 'protein-cartel',
     image: '/work/protein-cartel.webp',
   },
   {
@@ -75,8 +82,37 @@ const projects: Project[] = [
     year: '2025',
     status: 'Creative build',
     href: 'https://shubhampmusic.vercel.app/',
+    slug: 'artist-portfolio',
+    image: '/work/artist-portfolio.webp',
   },
 ];
+
+/**
+ * §6: at-rest opacity is a function of the source, not a constant.
+ *
+ * Reducing a light capture does not restrain it, it destroys it — a white page
+ * at 30% on void is a flat grey slab with its type washed out, which is the
+ * same error as the old 45% mobile value. A dark screenshot needs holding
+ * back; a light one needs showing. Full opacity on hover either way.
+ *
+ * Both branches are complete literals so Tailwind's scanner sees the classes;
+ * the luminance behind the choice is measured in capture-work.mjs and carried
+ * in captures.json, so this is derived rather than picked per project.
+ */
+const REST_OPACITY = {
+  // Mobile is 85% throughout: there is no hover on touch, so the at-rest state
+  // is the only state a phone user ever sees.
+  light: 'opacity-85 md:opacity-85',
+  dark: 'opacity-85 md:opacity-30',
+};
+
+function restOpacity(slug?: string) {
+  const capture = slug
+    ? (captures as Record<string, { light: boolean } | undefined>)[slug]
+    : undefined;
+
+  return capture?.light ? REST_OPACITY.light : REST_OPACITY.dark;
+}
 
 /**
  * §6.3: typographic rows, not cards. The row is the link — the whole surface
@@ -103,7 +139,7 @@ function ProjectRow({ project }: { project: Project }) {
               width={1600}
               height={1000}
               sizes="(max-width: 768px) 100vw, 1280px"
-              className="w-full opacity-45 transition-opacity duration-(--dur-reveal) ease-out-expo md:opacity-30 md:group-hover:opacity-100"
+              className={`w-full transition-opacity duration-(--dur-reveal) ease-out-expo md:group-hover:opacity-100 ${restOpacity(project.slug)}`}
             />
           </div>
         ) : null}

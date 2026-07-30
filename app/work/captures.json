@@ -1,0 +1,22 @@
+{
+  "careradar": {
+    "meanLuminance": 212,
+    "light": true
+  },
+  "axira-media": {
+    "meanLuminance": 86,
+    "light": false
+  },
+  "balaji-arts": {
+    "meanLuminance": 177,
+    "light": false
+  },
+  "protein-cartel": {
+    "meanLuminance": 39,
+    "light": false
+  },
+  "artist-portfolio": {
+    "meanLuminance": 254,
+    "light": true
+  }
+}
